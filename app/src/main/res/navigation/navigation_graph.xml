@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/homeDisplayBodyInfoFragment">
+    <!--註: 選單資源檔中MenuItem的資源ID必須與導覽圖中Fragment的資源ID相同!-->
+    <fragment
+        android:id="@+id/fragmentShopping"
+        android:name="idv.example.goodposture.shopping.ShoppingFragment"
+        android:label="fragment_shopping"
+        tools:layout="@layout/fragment_shopping" />
+    <fragment
+        android:id="@+id/fragmentForum"
+        android:name="idv.example.goodposture.forum.ForumFragment"
+        android:label="ForumFragment"
+        tools:layout="@layout/fragment_forum" />
+    <fragment
+        android:id="@+id/fragmentMy"
+        android:name="idv.example.goodposture.my.MyFragment"
+        android:label="MyFragment"
+        tools:layout="@layout/fragment_my" />
+    <fragment
+        android:id="@+id/homeDisplayBodyInfoFragment"
+        android:name="idv.example.goodposture.home.HomeDisplayBodyInfoFragment"
+        android:label="fragment_home_display_body_info"
+        tools:layout="@layout/fragment_home_display_body_info" >
+        <action
+            android:id="@+id/actionDisplayToShopping"
+            app:destination="@id/fragmentShopping" />
+        <action
+            android:id="@+id/actionDisplayToForum"
+            app:destination="@id/fragmentForum" />
+        <action
+            android:id="@+id/actionDisplayToModify"
+            app:destination="@id/homeModifyBodyInfoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeModifyBodyInfoFragment"
+        android:name="idv.example.goodposture.home.HomeModifyBodyInfoFragment"
+        android:label="HomeModifyBodyInfoFragment"
+        tools:layout="@layout/fragment_home_modify_body_info">
+        <action
+            android:id="@+id/actionModifyToDisplay"
+            app:destination="@id/homeDisplayBodyInfoFragment" />
+    </fragment>
+</navigation>

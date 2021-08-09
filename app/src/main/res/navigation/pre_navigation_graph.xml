@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeWelcomeFragment">
+    <fragment
+        android:id="@+id/homeWelcomeFragment"
+        android:name="idv.example.goodposture.home.HomeWelcomeFragment"
+        android:label="activity_pre"
+        tools:layout="@layout/fragment_home_welcome" >
+        <action
+            android:id="@+id/actionWelcomeToRegister"
+            app:destination="@id/homeRegisterFragment" />
+        <action
+            android:id="@+id/actionWelcomeToLogin"
+            app:destination="@id/homeLoginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeRegisterFragment"
+        android:name="idv.example.goodposture.home.HomeRegisterFragment"
+        android:label="fragment_home_register_success"
+        tools:layout="@layout/fragment_home_register" >
+        <action
+            android:id="@+id/actionRegisterToRegisterSuccess"
+            app:destination="@id/homeRegisterSuccessFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeRegisterSuccessFragment"
+        android:name="idv.example.goodposture.home.HomeRegisterSuccessFragment"
+        android:label="HomeRegisterSuccessFragment"
+        tools:layout="@layout/fragment_home_register_success" >
+        <action
+            android:id="@+id/actionRegisterSuccessToLogin"
+            app:destination="@id/homeLoginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeLoginFragment"
+        android:name="idv.example.goodposture.home.HomeLoginFragment"
+        android:label="HomeLoginFragment"
+        tools:layout="@layout/fragment_home_login" >
+        <action
+            android:id="@+id/actionLoginToTypeBodyInfo"
+            app:destination="@id/homeTypeBodyInfoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeTypeBodyInfoFragment"
+        android:name="idv.example.goodposture.home.HomeTypeBodyInfoFragment"
+        android:label="fragment_home_type_body_info"
+        tools:layout="@layout/fragment_home_type_body_info" />
+</navigation>
