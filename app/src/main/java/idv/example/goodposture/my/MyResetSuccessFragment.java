@@ -15,8 +15,8 @@ import android.widget.Button;
 
 import idv.example.goodposture.R;
 
-public class MyFragment extends Fragment {
-    private Button bt_goReset;
+public class MyResetSuccessFragment extends Fragment {
+    private Button btResetSuccess;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,8 +27,7 @@ public class MyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-        return inflater.inflate(R.layout.fragment_my, container, false);
+        return inflater.inflate(R.layout.fragment_my_reset_success, container, false);
     }
 
     @Override
@@ -39,15 +38,15 @@ public class MyFragment extends Fragment {
     }
 
     private void findViews(View view) {
-        bt_goReset = view.findViewById(R.id.bt_goReset);
+        btResetSuccess = view.findViewById(R.id.bt_resetSuccess);
     }
 
     private void handleButton() {
-        bt_goReset.setOnClickListener(view -> {
+        btResetSuccess.setOnClickListener(view -> {
             // 取得NavController物件
             NavController navController = Navigation.findNavController(view);
             // 跳至頁面
-            navController.navigate(R.id.actionMyToReset);
+            navController.navigate(R.id.actionSuccessToMy);
         });
     }
 }

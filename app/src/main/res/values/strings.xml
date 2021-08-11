@@ -40,4 +40,5 @@
     <string name="text_discussNow">立即討論</string>
     <string name="text_discussWords">開始和大家熱絡地討論</string>
     <string name="text_modifyBodyInfoWords">請修改你的身體資訊</string>
+    <string name="text_back">返回</string>
 </resources>
