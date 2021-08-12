@@ -12,7 +12,7 @@
         android:title="@string/title_shopping" />
 
     <item
-        android:id="@+id/fragmentForum"
+        android:id="@+id/forumBrowseFragment"
         android:icon="@drawable/ic_baseline_forum_black"
         android:title="@string/title_forum" />
 

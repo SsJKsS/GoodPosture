@@ -90,7 +90,7 @@ public class HomeDisplayBodyInfoFragment extends Fragment {
             // 取得NavController物件
             NavController navController = Navigation.findNavController(view);
             // 跳至討論首頁
-            navController.navigate(R.id.actionDisplayToForum);
+            navController.navigate(R.id.action_homeDisplayBodyInfoFragment_to_forumBrowseFragment);
         });
     }
 }
