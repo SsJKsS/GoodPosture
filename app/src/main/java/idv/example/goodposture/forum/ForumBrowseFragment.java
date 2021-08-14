@@ -1,24 +1,37 @@
 package idv.example.goodposture.forum;
 
+import android.app.SearchManager;
+import android.content.ComponentName;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import idv.example.goodposture.R;
 
@@ -28,6 +41,8 @@ public class ForumBrowseFragment extends Fragment {
     private ArrayAdapter<ForumBrowseList> forumBrowseListArrayAdapter;
     private MyAdapter myAdapter;
     private CardView cardView;
+    private SearchView searchView;
+    private ImageView ivAdd;
 
 
 
@@ -41,6 +56,7 @@ public class ForumBrowseFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         activity = (AppCompatActivity) getActivity();
+
         return inflater.inflate(R.layout.fragment_forum_browse, container, false);
     }
 
@@ -49,11 +65,61 @@ public class ForumBrowseFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         findViews(view);
         handleRecyclerView();
+        handleSearchView();
+        handleAdd();
     }
 
     private void findViews(View view) {
         recyclerView = view.findViewById(R.id.recyclerView);
         cardView = view.findViewById(R.id.cardView);
+        searchView = view.findViewById(R.id.searchView);
+        ivAdd = view.findViewById(R.id.ivAdd);
+
+    }
+
+    private void handleAdd() {
+        ivAdd.setOnClickListener(view -> {
+            // 取得NavController物件
+            NavController navController = Navigation.findNavController(view);
+            // 跳至頁面
+            navController.navigate(R.id.action_forumBrowseFragment_to_forumAddFragment);
+        });
+    }
+
+
+    private void handleSearchView() {
+
+        // 註冊/實作 查詢文字監聽器
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            // 當點擊提交鍵(虛擬鍵盤)時，自動被呼叫
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            // 當查詢文字改變時，自動被呼叫
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                MyAdapter adapter = (MyAdapter) recyclerView.getAdapter();
+                if (adapter == null) {
+                    return false;
+                }
+
+                if (newText.isEmpty()) {
+                    adapter.list = getForumBrowseList();
+                } else {
+                    List<ForumBrowseList> resultList = new ArrayList<>();
+                    for (ForumBrowseList forumBrowseList : adapter.list) {
+                        if (forumBrowseList.getTitle().toLowerCase().contains(newText.toLowerCase())) {
+                            resultList.add(forumBrowseList);
+                        }
+                    }
+                    adapter.list = resultList;
+                }
+                adapter.notifyDataSetChanged();
+                return true;
+            }
+        });
     }
 
     private void handleRecyclerView() {
@@ -71,6 +137,7 @@ public class ForumBrowseFragment extends Fragment {
 //            navController.navigate(R.id.action_forumBrowseFragment_to_forumContextFragment);
 //        });
 
+
     }
 
     /**
@@ -80,7 +147,7 @@ public class ForumBrowseFragment extends Fragment {
     private static class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         // 3.2 欄位: Context物件、選項資料物件
         private final Context context;
-        private final List<ForumBrowseList> list;
+        private List<ForumBrowseList> list;
 
         // 3.3 建構子: 2個參數(Context型態、選項資料的型態)，用來初始化2欄位
         public MyAdapter(ForumBrowseFragment context, List<ForumBrowseList> list) {
@@ -91,6 +158,7 @@ public class ForumBrowseFragment extends Fragment {
         // 3.4 內部類別: 自定義ViewHolder類別
         // 3.4.1 繼承RecyclerView.ViewHolder
         private static class MyViewHolder extends RecyclerView.ViewHolder {
+            public View forumBrowseItemView;
             // 3.4.2 欄位: 對應選項容器元件，之內的所有元件
             TextView tvTitle;
             TextView tvAuthor;
@@ -99,6 +167,7 @@ public class ForumBrowseFragment extends Fragment {
             TextView tvLikes;
             ImageView ivMessage;
             TextView tvMessages;
+
 
 
             // 3.4.3 建構子: 1個參數(View型態)，該參數就是選項容器元件，用來取得各容器元件的參考
@@ -111,6 +180,16 @@ public class ForumBrowseFragment extends Fragment {
                 tvLikes = forumBrowseItemView.findViewById(R.id.tvLikes);
                 ivMessage = forumBrowseItemView.findViewById(R.id.ivMessage);
                 tvMessages = forumBrowseItemView.findViewById(R.id.tvMessages);
+
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // 取得NavController物件
+                        NavController navController = Navigation.findNavController(view);
+                        // 跳至頁面
+                        navController.navigate(R.id.action_forumBrowseFragment_to_forumContextFragment);
+                    }
+                });
             }
         }
 

@@ -65,5 +65,34 @@
         android:id="@+id/forumBrowseFragment"
         android:name="idv.example.goodposture.forum.ForumBrowseFragment"
         android:label="ForumBrowseFragment"
-        tools:layout="@layout/fragment_forum_browse"/>
+        tools:layout="@layout/fragment_forum_browse">
+        <action
+            android:id="@+id/action_forumBrowseFragment_to_forumAddFragment"
+            app:destination="@id/forumAddFragment" />
+        <action
+            android:id="@+id/action_forumBrowseFragment_to_forumContextFragment"
+            app:destination="@id/forumContextFragment" />
+        <action
+            android:id="@+id/action_forumBrowseFragment_to_forumNotFindFragment"
+            app:destination="@id/forumNotFindFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/forumAddFragment"
+        android:name="idv.example.goodposture.forum.ForumAddFragment"
+        android:label="fragment_forum_add"
+        tools:layout="@layout/fragment_forum_add" >
+        <action
+            android:id="@+id/action_forumAddFragment_to_forumContextFragment"
+            app:destination="@id/forumContextFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/forumContextFragment"
+        android:name="idv.example.goodposture.forum.ForumContextFragment"
+        android:label="fragment_forum_context"
+        tools:layout="@layout/fragment_forum_context" />
+    <fragment
+        android:id="@+id/forumNotFindFragment"
+        android:name="idv.example.goodposture.forum.ForumNotFindFragment"
+        android:label="fragment_forum_not_find"
+        tools:layout="@layout/fragment_forum_not_find" />
 </navigation>
