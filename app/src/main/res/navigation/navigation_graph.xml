@@ -82,8 +82,8 @@
         android:label="fragment_forum_add"
         tools:layout="@layout/fragment_forum_add" >
         <action
-            android:id="@+id/action_forumAddFragment_to_forumContextFragment"
-            app:destination="@id/forumContextFragment" />
+            android:id="@+id/action_forumAddFragment_to_forumBrowseFragment"
+            app:destination="@id/forumBrowseFragment" />
     </fragment>
     <fragment
         android:id="@+id/forumContextFragment"
