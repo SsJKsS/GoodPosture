@@ -102,5 +102,18 @@
     <fragment
         android:id="@+id/shoppingListFragment"
         android:name="idv.example.goodposture.shopping.ShoppingListFragment"
-        android:label="ShoppingListFragment" />
+        android:label="ShoppingListFragment" >
+        <action
+            android:id="@+id/action_shoppingListFragment_to_shoppingNoResultFragment"
+            app:destination="@id/shoppingNoResultFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/shoppingNoResultFragment"
+        android:name="idv.example.goodposture.shopping.ShoppingNoResultFragment"
+        android:label="fragment_shooping_no_result"
+        tools:layout="@layout/fragment_shooping_no_result" >
+        <action
+            android:id="@+id/action_shoppingNoResultFragment_to_shoppingListFragment"
+            app:destination="@id/shoppingListFragment" />
+    </fragment>
 </navigation>

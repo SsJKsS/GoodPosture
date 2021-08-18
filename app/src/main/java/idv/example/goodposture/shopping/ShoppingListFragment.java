@@ -117,8 +117,13 @@ public class ShoppingListFragment extends Fragment {
 
     private void handleRecyclerView(String searchText) {
         List<Product> newListS = changedProductList(searchText);
-        recyclerView.setAdapter(new SearchRecyclerViewAdapter(getContext(), newListS));
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        if(newListS.size() != 0 ){
+            recyclerView.setAdapter(new SearchRecyclerViewAdapter(getContext(), newListS));
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        }else{
+            NavController navController = Navigation.findNavController(toolbar);
+            navController.navigate(R.id.action_shoppingListFragment_to_shoppingNoResultFragment);
+        }
     }
 
     private List<Product> changedProductList(String newText){

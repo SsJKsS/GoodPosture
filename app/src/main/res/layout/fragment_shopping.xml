@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="28dp"
         android:layout_marginEnd="32dp"
         android:animateFirstView="true"
         android:autoStart="true"
@@ -35,27 +35,29 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/appBar_shopping">
 
     </ViewFlipper>
 
     <ImageButton
         android:id="@+id/ib_food"
-        android:layout_width="171dp"
+        android:layout_width="160dp"
         android:layout_height="287dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
         android:src="@drawable/shopping_food_region"
         app:layout_constraintEnd_toStartOf="@+id/ib_equipment"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/vf_ad"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/vf_ad" />
 
     <ImageButton
         android:id="@+id/ib_equipment"
-        android:layout_width="165dp"
-        android:layout_height="282dp"
+        android:layout_width="160dp"
+        android:layout_height="287dp"
         android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
         android:src="@drawable/shopping_equipment_region"
-        app:layout_constraintEnd_toEndOf="@+id/vf_ad"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/vf_ad" />
 </androidx.constraintlayout.widget.ConstraintLayout>
