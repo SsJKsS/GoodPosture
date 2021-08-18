@@ -84,12 +84,19 @@
         <action
             android:id="@+id/action_forumAddFragment_to_forumBrowseFragment"
             app:destination="@id/forumBrowseFragment" />
+        <action
+            android:id="@+id/action_forumAddFragment_to_forumBrowseFragment2"
+            app:destination="@id/forumBrowseFragment" />
     </fragment>
     <fragment
         android:id="@+id/forumContextFragment"
         android:name="idv.example.goodposture.user.forum.ForumContextFragment"
         android:label="fragment_forum_context"
-        tools:layout="@layout/fragment_forum_context" />
+        tools:layout="@layout/fragment_forum_context" >
+        <action
+            android:id="@+id/action_forumContextFragment_to_forumBrowseFragment"
+            app:destination="@id/forumBrowseFragment" />
+    </fragment>
     <fragment
         android:id="@+id/forumNotFindFragment"
         android:name="idv.example.goodposture.user.forum.ForumNotFindFragment"
