@@ -31,6 +31,7 @@ public class ShoppingFragment extends Fragment {
     private SearchView searchView;
     int images[] = {R.drawable.shopping_cat, R.drawable.shopping_cat2, R.drawable.shopping_cat3};
     private ImageButton ibFood, ibEquipment;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +55,8 @@ public class ShoppingFragment extends Fragment {
         findViews(view);
         handleToolbar();
         handleViewFlipper(images);
+        handleIbFood();
+        handleIbEquipment();
     }
 
     private void findViews(View view) {
@@ -83,7 +86,6 @@ public class ShoppingFragment extends Fragment {
     //覆寫menu選項的監聽
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        Log.d("onOptionsItemSelected","success");
         int itemId = item.getItemId();
         if(itemId == R.id.menu_toolbar_cart){
             //建立navController
@@ -92,9 +94,6 @@ public class ShoppingFragment extends Fragment {
             //navController.navigate(R.id.action_fragmentShopping_to_shoppingListFragment,bundle);
             return true;
         }else if(itemId == R.id.menu_toolbar_search){
-            Log.d("onOptionsItemSelected","before handleSearchView()");
-            // 獲取搜尋Menu
-            //MenuItem menuSearchItem = menu.findItem(R.id.toolbar_search);
             //通過MenuItemCompat.getActionView()方法獲取SearchView
             searchView = (SearchView) item.getActionView();
             handleSearchView();
@@ -113,9 +112,9 @@ public class ShoppingFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("searchText",query);
                 //建立navController
-                //NavController navController = Navigation.findNavController(tbShopping);
+                NavController navController = Navigation.findNavController(tbShopping);
                 // 跳至頁面
-                //navController.navigate(R.id.action_fragmentShopping_to_shoppingListFragment,bundle);
+                navController.navigate(R.id.action_fragmentShopping_to_shoppingListFragment,bundle);
                 return false;
             }
             // 文字搜尋框發生變化時呼叫
@@ -139,6 +138,27 @@ public class ShoppingFragment extends Fragment {
         vfAd.setInAnimation(getContext(), android.R.anim.slide_in_left );
         vfAd.setOutAnimation(getContext(),android.R.anim.slide_out_right);
 
+    }
+    //顯示食物類型商品
+    private void handleIbFood() {
+        ibFood.setOnClickListener(v -> {
+            Bundle bundle =new Bundle();
+            bundle.putString("searchText","a");
+            NavController navController = Navigation.findNavController(ibFood);
+            // 跳至頁面
+            navController.navigate(R.id.action_fragmentShopping_to_shoppingListFragment,bundle);
+        });
+    }
+    //顯示器材類型商品
+    private void handleIbEquipment() {
+        ibEquipment.setOnClickListener(v -> {
+
+            Bundle bundle =new Bundle();
+            bundle.putString("searchText","b");
+            NavController navController = Navigation.findNavController(ibEquipment);
+            // 跳至頁面
+            navController.navigate(R.id.action_fragmentShopping_to_shoppingListFragment,bundle);
+        });
     }
 
 }

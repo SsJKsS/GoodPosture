@@ -9,7 +9,11 @@
         android:id="@+id/fragmentShopping"
         android:name="idv.example.goodposture.shopping.ShoppingFragment"
         android:label="fragment_shopping"
-        tools:layout="@layout/fragment_shopping" />
+        tools:layout="@layout/fragment_shopping" >
+        <action
+            android:id="@+id/action_fragmentShopping_to_shoppingListFragment"
+            app:destination="@id/shoppingListFragment" />
+    </fragment>
     <fragment
         android:id="@+id/fragmentMy"
         android:name="idv.example.goodposture.my.MyFragment"
@@ -95,4 +99,8 @@
         android:name="idv.example.goodposture.forum.ForumNotFindFragment"
         android:label="fragment_forum_not_find"
         tools:layout="@layout/fragment_forum_not_find" />
+    <fragment
+        android:id="@+id/shoppingListFragment"
+        android:name="idv.example.goodposture.shopping.ShoppingListFragment"
+        android:label="ShoppingListFragment" />
 </navigation>

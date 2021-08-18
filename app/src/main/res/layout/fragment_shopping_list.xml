@@ -9,6 +9,18 @@
     tools:context=".shopping.ShoppingFragment">
     <!--add toolbar to emulate state bar    -->
     <!--tools:ignore="MissingConstraints"  to ignore the red line hahaha  -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar_shopping"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tb_shopping"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize" />
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_shopping_list"
@@ -18,6 +30,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/appBar_shopping" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
