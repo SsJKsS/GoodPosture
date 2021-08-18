@@ -7,12 +7,12 @@
     <!--註: 選單資源檔中MenuItem的資源ID必須與導覽圖中Fragment的資源ID相同!-->
     <fragment
         android:id="@+id/fragmentShopping"
-        android:name="idv.example.goodposture.shopping.ShoppingFragment"
+        android:name="idv.example.goodposture.user.shopping.ShoppingFragment"
         android:label="fragment_shopping"
         tools:layout="@layout/fragment_shopping" />
     <fragment
         android:id="@+id/fragmentMy"
-        android:name="idv.example.goodposture.my.MyFragment"
+        android:name="idv.example.goodposture.user.my.MyFragment"
         android:label="MyFragment"
         tools:layout="@layout/fragment_my" >
         <action
@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeDisplayBodyInfoFragment"
-        android:name="idv.example.goodposture.home.HomeDisplayBodyInfoFragment"
+        android:name="idv.example.goodposture.user.home.HomeDisplayBodyInfoFragment"
         android:label="fragment_home_display_body_info"
         tools:layout="@layout/fragment_home_display_body_info" >
         <action
@@ -36,7 +36,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeModifyBodyInfoFragment"
-        android:name="idv.example.goodposture.home.HomeModifyBodyInfoFragment"
+        android:name="idv.example.goodposture.user.home.HomeModifyBodyInfoFragment"
         android:label="HomeModifyBodyInfoFragment"
         tools:layout="@layout/fragment_home_modify_body_info">
         <action
@@ -45,7 +45,7 @@
     </fragment>
     <fragment
         android:id="@+id/myResetPasswordFragment"
-        android:name="idv.example.goodposture.my.MyResetPasswordFragment"
+        android:name="idv.example.goodposture.user.my.MyResetPasswordFragment"
         android:label="MyResetPasswordFragment"
         tools:layout="@layout/fragment_my_reset_password">
         <action
@@ -54,7 +54,7 @@
     </fragment>
     <fragment
         android:id="@+id/myResetSuccess"
-        android:name="idv.example.goodposture.my.MyResetSuccessFragment"
+        android:name="idv.example.goodposture.user.my.MyResetSuccessFragment"
         android:label="HomeRegisterSuccessFragment"
         tools:layout="@layout/fragment_my_reset_success">
         <action
@@ -63,7 +63,36 @@
     </fragment>
     <fragment
         android:id="@+id/forumBrowseFragment"
-        android:name="idv.example.goodposture.forum.ForumBrowseFragment"
+        android:name="idv.example.goodposture.user.forum.ForumBrowseFragment"
         android:label="ForumBrowseFragment"
-        tools:layout="@layout/fragment_forum_browse"/>
+        tools:layout="@layout/fragment_forum_browse">
+        <action
+            android:id="@+id/action_forumBrowseFragment_to_forumAddFragment"
+            app:destination="@id/forumAddFragment" />
+        <action
+            android:id="@+id/action_forumBrowseFragment_to_forumContextFragment"
+            app:destination="@id/forumContextFragment" />
+        <action
+            android:id="@+id/action_forumBrowseFragment_to_forumNotFindFragment"
+            app:destination="@id/forumNotFindFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/forumAddFragment"
+        android:name="idv.example.goodposture.user.forum.ForumAddFragment"
+        android:label="fragment_forum_add"
+        tools:layout="@layout/fragment_forum_add" >
+        <action
+            android:id="@+id/action_forumAddFragment_to_forumBrowseFragment"
+            app:destination="@id/forumBrowseFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/forumContextFragment"
+        android:name="idv.example.goodposture.user.forum.ForumContextFragment"
+        android:label="fragment_forum_context"
+        tools:layout="@layout/fragment_forum_context" />
+    <fragment
+        android:id="@+id/forumNotFindFragment"
+        android:name="idv.example.goodposture.user.forum.ForumNotFindFragment"
+        android:label="fragment_forum_not_find"
+        tools:layout="@layout/fragment_forum_not_find" />
 </navigation>

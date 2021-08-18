@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E1F5FE"
-    tools:context=".forum.ForumNotFindFragment">
+    tools:context=".user.forum.ForumNotFindFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -43,6 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:text="找不到結果..."
+        android:textColor="@color/black"
         android:textSize="60sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

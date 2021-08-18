@@ -9,8 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GoodPosture">
+        <activity android:name=".admin.AdminActivity"></activity>
         <activity
-            android:name=".PreActivity"
+            android:name=".user.PreActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,9 +20,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name">
-        </activity>
+            android:name=".user.MainActivity"
+            android:label="@string/app_name"></activity>
 
         <meta-data
             android:name="preloaded_fonts"
