@@ -6,7 +6,7 @@
     app:startDestination="@id/homeWelcomeFragment">
     <fragment
         android:id="@+id/homeWelcomeFragment"
-        android:name="idv.example.goodposture.home.HomeWelcomeFragment"
+        android:name="idv.example.goodposture.user.home.HomeWelcomeFragment"
         android:label="activity_pre"
         tools:layout="@layout/fragment_home_welcome" >
         <action
@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeRegisterFragment"
-        android:name="idv.example.goodposture.home.HomeRegisterFragment"
+        android:name="idv.example.goodposture.user.home.HomeRegisterFragment"
         android:label="fragment_home_register_success"
         tools:layout="@layout/fragment_home_register" >
         <action
@@ -27,7 +27,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeRegisterSuccessFragment"
-        android:name="idv.example.goodposture.home.HomeRegisterSuccessFragment"
+        android:name="idv.example.goodposture.user.home.HomeRegisterSuccessFragment"
         android:label="HomeRegisterSuccessFragment"
         tools:layout="@layout/fragment_home_register_success" >
         <action
@@ -36,7 +36,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeLoginFragment"
-        android:name="idv.example.goodposture.home.HomeLoginFragment"
+        android:name="idv.example.goodposture.user.home.HomeLoginFragment"
         android:label="HomeLoginFragment"
         tools:layout="@layout/fragment_home_login" >
         <action
@@ -45,7 +45,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeTypeBodyInfoFragment"
-        android:name="idv.example.goodposture.home.HomeTypeBodyInfoFragment"
+        android:name="idv.example.goodposture.user.home.HomeTypeBodyInfoFragment"
         android:label="fragment_home_type_body_info"
         tools:layout="@layout/fragment_home_type_body_info" />
 </navigation>

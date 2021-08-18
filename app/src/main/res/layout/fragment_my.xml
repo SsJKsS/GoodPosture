@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#A1D9A3"
-    tools:context=".home.HomeFragment">
+    tools:context=".user.home.HomeFragment">
 
     <TextView
         android:id="@+id/textView2"

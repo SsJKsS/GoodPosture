@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E1F5FE"
-    tools:context=".home.HomeWelcomeFragment">
+    tools:context=".user.home.HomeWelcomeFragment">
 
     <TextView
         android:id="@+id/tv_appName"
