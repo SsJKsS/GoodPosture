@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/admin_navigation_graph"
+    app:startDestination="@id/adminHomeFragment">
+
+    <fragment
+        android:id="@+id/adminHomeFragment"
+        android:name="idv.example.goodposture.admin.home.AdminHomeFragment"
+        android:label="fragment_admin_home"
+        tools:layout="@layout/fragment_admin_home" />
+    <fragment
+        android:id="@+id/adminCommodityFragment"
+        android:name="idv.example.goodposture.admin.commodity.AdminCommodityFragment"
+        android:label="fragment_admin_commodity"
+        tools:layout="@layout/fragment_admin_commodity" />
+    <fragment
+        android:id="@+id/adminOrderFragment"
+        android:name="idv.example.goodposture.admin.order.AdminOrderFragment"
+        android:label="fragment_admin_order"
+        tools:layout="@layout/fragment_admin_order" />
+    <fragment
+        android:id="@+id/adminSettingFragment"
+        android:name="idv.example.goodposture.admin.setting.AdminSettingFragment"
+        android:label="fragment_admin_setting"
+        tools:layout="@layout/fragment_admin_setting" />
+    <fragment
+        android:id="@+id/adminHomeTypeSalesFragment"
+        android:name="idv.example.goodposture.admin.home.AdminHomeTypeSalesFragment"
+        android:label="fragment_admin_home_type_sales"
+        tools:layout="@layout/fragment_admin_home_type_sales" />
+</navigation>
