@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#EA9276"
-    tools:context=".shopping.ShoppingFragment">
+    tools:context=".user.shopping.ShoppingFragment">
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar_shopping"
         android:layout_width="match_parent"

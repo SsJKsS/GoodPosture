@@ -1,4 +1,4 @@
-package idv.example.goodposture.shopping;
+package idv.example.goodposture.user.shopping;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -13,7 +13,6 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;

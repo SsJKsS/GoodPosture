@@ -1,4 +1,4 @@
-package idv.example.goodposture.shopping;
+package idv.example.goodposture.user.shopping;
 
 public class Product {
     private Integer imageId;

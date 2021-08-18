@@ -5,7 +5,7 @@
     android:id="@+id/constraintLayoutNoResult"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".shopping.ShoppingNoResultFragment">
+    tools:context=".user.shopping.ShoppingNoResultFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar_shopping"

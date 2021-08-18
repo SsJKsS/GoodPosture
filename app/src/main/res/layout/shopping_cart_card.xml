@@ -9,7 +9,7 @@
     app:cardCornerRadius="16dp"
     app:cardElevation="16dp"
     app:contentPadding="16dp"
-    tools:context=".shopping.ShoppingProductFragment">
+    tools:context=".user.shopping.ShoppingProductFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
