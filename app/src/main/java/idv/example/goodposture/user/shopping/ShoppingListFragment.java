@@ -159,7 +159,7 @@ public class ShoppingListFragment extends Fragment {
 
         @Override
         public SearchResultListAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.shopping_productlist_card, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_view_shopping_list, parent, false);
             return new SearchResultListAdapterViewHolder(itemView);
         }
 
@@ -168,6 +168,13 @@ public class ShoppingListFragment extends Fragment {
             final Product product = list.get(position);
             holder.imageView.setImageResource(product.getImageId());
             holder.textView.setText(product.getProductName());
+            holder.itemView.setOnClickListener( v -> {
+                //寫帶過去的資料
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("product", product);
+                NavController navController = Navigation.findNavController(v);
+                navController.navigate(R.id.action_shoppingListFragment_to_shoppingProductFragment, bundle);
+            });
         }
 
 

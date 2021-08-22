@@ -109,10 +109,14 @@
     <fragment
         android:id="@+id/shoppingListFragment"
         android:name="idv.example.goodposture.user.shopping.ShoppingListFragment"
-        android:label="ShoppingListFragment" >
+        android:label="ShoppingListFragment"
+        tools:layout="@layout/fragment_shopping_list">
         <action
             android:id="@+id/action_shoppingListFragment_to_shoppingNoResultFragment"
             app:destination="@id/shoppingNoResultFragment" />
+        <action
+            android:id="@+id/action_shoppingListFragment_to_shoppingProductFragment"
+            app:destination="@id/shoppingProductFragment" />
     </fragment>
     <fragment
         android:id="@+id/shoppingNoResultFragment"
@@ -123,4 +127,10 @@
             android:id="@+id/action_shoppingNoResultFragment_to_shoppingListFragment"
             app:destination="@id/shoppingListFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/shoppingProductFragment"
+        android:name="idv.example.goodposture.user.shopping.ShoppingProductFragment"
+        android:label="shoppingProductFragment"
+        tools:layout="@layout/fragment_shopping_product" />
+
 </navigation>
