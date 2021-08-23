@@ -16,7 +16,7 @@ import android.widget.Button;
 import idv.example.goodposture.R;
 
 public class MyFragment extends Fragment {
-    private Button bt_goReset;
+    private Button btMyBodyInfo;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,15 +39,15 @@ public class MyFragment extends Fragment {
     }
 
     private void findViews(View view) {
-        bt_goReset = view.findViewById(R.id.bt_goReset);
+        btMyBodyInfo = view.findViewById(R.id.bt_myBodyInfo);
     }
 
     private void handleButton() {
-        bt_goReset.setOnClickListener(view -> {
+        btMyBodyInfo.setOnClickListener(view -> {
             // 取得NavController物件
             NavController navController = Navigation.findNavController(view);
             // 跳至頁面
-            navController.navigate(R.id.actionMyToReset);
+            navController.navigate(R.id.action_fragmentMy_to_myBodyInfoDetailFragment);
         });
     }
 }

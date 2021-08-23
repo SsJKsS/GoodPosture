@@ -7,63 +7,59 @@
     android:background="#E1F5FE"
     tools:context=".user.home.HomeDisplayBodyInfoFragment">
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bodyInfoLayout"
         android:layout_width="match_parent"
         android:layout_height="187dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/white_cardview"
-        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/tv_displayBodyStatus"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="55dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
             android:text="@string/text_currentBodyStatus"
             android:textColor="@color/black"
             android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/tv_displayBMI"
+            app:layout_constraintStart_toStartOf="@+id/tv_displayBMI"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_displayBMI"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="2dp"
-            android:layout_marginLeft="55dp"
+            android:layout_marginTop="16dp"
             android:text="@string/text_currentBMI"
             android:textColor="@color/black"
             android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/tv_displayBMR"
+            app:layout_constraintStart_toStartOf="@+id/tv_displayBMR"
+            app:layout_constraintTop_toBottomOf="@+id/tv_displayBodyStatus" />
 
         <TextView
             android:id="@+id/tv_displayBMR"
-            android:layout_width="match_parent"
+            android:layout_width="341dp"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="2dp"
-            android:layout_marginLeft="55dp"
+            android:layout_marginStart="63dp"
+            android:layout_marginLeft="63dp"
+            android:layout_marginTop="16dp"
             android:text="@string/text_BRI"
             android:textColor="@color/black"
             android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_displayBMI" />
 
-        <Button
-            android:id="@+id/bt_modifyBodyInfo"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/blue_button_frame_shape"
-            android:text="@string/text_modifyBodyInfo"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout3"
@@ -75,7 +71,7 @@
         android:background="@drawable/white_cardview"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" >
+        app:layout_constraintTop_toBottomOf="@+id/bodyInfoLayout" >
 
         <ImageView
             android:id="@+id/imageView6"

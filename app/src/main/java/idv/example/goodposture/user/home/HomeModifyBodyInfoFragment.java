@@ -70,7 +70,7 @@ public class HomeModifyBodyInfoFragment extends Fragment {
                 // 取得NavController物件
                 NavController navController = Navigation.findNavController(view);
                 // 跳至修改身體資訊頁
-                navController.navigate(R.id.actionModifyToDisplay);
+                navController.navigate(R.id.action_homeModifyBodyInfoFragment_to_myBodyInfoDetailFragment);
             }
         });
     }

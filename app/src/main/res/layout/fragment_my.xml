@@ -5,33 +5,77 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#A1D9A3"
+    android:background="#E1F5FE"
     tools:context=".user.home.HomeFragment">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="我的"
-        android:textSize="34sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <Button
+        android:id="@+id/bt_myBodyInfo"
+        android:layout_width="180dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="60dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:background="@drawable/blue_button_frame_shape"
+        android:text="我的身體資訊"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/bt_goReset"
-        android:layout_width="105dp"
-        android:layout_height="61dp"
-        android:layout_marginStart="161dp"
-        android:layout_marginTop="70dp"
-        android:layout_marginEnd="162dp"
+        android:id="@+id/bt_myOrder"
+        android:layout_width="180dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="50dp"
         android:background="@drawable/blue_button_frame_shape"
-        android:text="修改密碼"
+        android:text="我的訂單"
         android:textColor="@color/white"
-        android:textSize="16sp"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/bt_myBodyInfo" />
+
+    <Button
+        android:id="@+id/bt_myCalorieRecord"
+        android:layout_width="180dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/blue_button_frame_shape"
+        android:text="我的熱量紀錄"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bt_myOrder" />
+
+    <Button
+        android:id="@+id/bt_aboutTheApp"
+        android:layout_width="180dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/blue_button_frame_shape"
+        android:text="關於本 APP"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bt_myAccountData" />
+
+    <Button
+        android:id="@+id/bt_myAccountData"
+        android:layout_width="180dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/blue_button_frame_shape"
+        android:text="我的帳號資料"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bt_myCalorieRecord" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
