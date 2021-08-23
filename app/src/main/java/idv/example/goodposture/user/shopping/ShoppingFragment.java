@@ -34,16 +34,15 @@ public class ShoppingFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        //取得activity參考
+        activity = (AppCompatActivity) getActivity();
+        // 設定允許Fragment有功能選單
+        setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //取得activity參考
-        activity = (AppCompatActivity) getActivity();
-        // 設定允許Fragment有功能選單
-        setHasOptionsMenu(true);
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_shopping, container, false);
     }
@@ -61,7 +60,6 @@ public class ShoppingFragment extends Fragment {
     private void findViews(View view) {
         vfAd = view.findViewById(R.id.vf_ad);
         toolbar = view.findViewById(R.id.tb_shopping);
-        //searchView = view.findViewById(R.id.menu_toolbar_search);
         ibFood = view.findViewById(R.id.ib_food);
         ibEquipment = view.findViewById(R.id.ib_equipment);
     }
@@ -90,7 +88,7 @@ public class ShoppingFragment extends Fragment {
             //建立navController
             NavController navController = Navigation.findNavController(toolbar);
             // 跳至shoppingCart頁面
-            //navController.navigate(R.id.action_fragmentShopping_to_shoppingListFragment,bundle);
+            navController.navigate(R.id.action_fragmentShopping_to_shoppingCartFragment);
             return true;
         }else if(itemId == R.id.menu_toolbar_search){
             //通過MenuItemCompat.getActionView()方法獲取SearchView

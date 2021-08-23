@@ -26,13 +26,13 @@ public class ShoppingNoResultFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = (AppCompatActivity) getActivity();   //取得activity參考
+        setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        activity = (AppCompatActivity) getActivity();   //取得activity參考
-        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_shooping_no_result, container, false);
     }
 
@@ -66,7 +66,7 @@ public class ShoppingNoResultFragment extends Fragment {
             //建立navController
             NavController navController = Navigation.findNavController(toolbar);
             // 跳至shoppingCart頁面
-            //navController.navigate(R.id.action_fragmentShopping_to_shoppingListFragment,bundle);
+            navController.navigate(R.id.action_fragmentShopping_to_shoppingCartFragment);
             return true;
         }else if(itemId == R.id.menu_toolbar_search){
             //通過MenuItemCompat.getActionView()方法獲取SearchView

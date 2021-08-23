@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_fragmentShopping_to_shoppingListFragment"
             app:destination="@id/shoppingListFragment" />
+        <action
+            android:id="@+id/action_fragmentShopping_to_shoppingCartFragment"
+            app:destination="@id/shoppingCartFragment" />
     </fragment>
     <fragment
         android:id="@+id/fragmentMy"
@@ -117,6 +120,9 @@
         <action
             android:id="@+id/action_shoppingListFragment_to_shoppingProductFragment"
             app:destination="@id/shoppingProductFragment" />
+        <action
+            android:id="@+id/action_shoppingListFragment_to_shoppingCartFragment"
+            app:destination="@id/shoppingCartFragment" />
     </fragment>
     <fragment
         android:id="@+id/shoppingNoResultFragment"
@@ -126,11 +132,23 @@
         <action
             android:id="@+id/action_shoppingNoResultFragment_to_shoppingListFragment"
             app:destination="@id/shoppingListFragment" />
+        <action
+            android:id="@+id/action_shoppingNoResultFragment_to_shoppingCartFragment"
+            app:destination="@id/shoppingCartFragment" />
     </fragment>
     <fragment
         android:id="@+id/shoppingProductFragment"
         android:name="idv.example.goodposture.user.shopping.ShoppingProductFragment"
         android:label="shoppingProductFragment"
         tools:layout="@layout/fragment_shopping_product" />
+    <fragment
+        android:id="@+id/shoppingCartFragment"
+        android:name="idv.example.goodposture.user.shopping.ShoppingCartFragment"
+        android:label="ShoppingCartFragment"
+        tools:layout="@layout/fragment_shopping_cart">
+        <action
+            android:id="@+id/action_shoppingCartFragment_to_shoppingProductFragment"
+            app:destination="@id/shoppingProductFragment" />
+    </fragment>
 
 </navigation>
