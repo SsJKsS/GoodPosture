@@ -152,7 +152,7 @@ public class ShoppingListFragment extends Fragment {
 
             public SearchResultListAdapterViewHolder(@NonNull View itemView) {
                 super(itemView);
-                imageView = itemView.findViewById(R.id.iv_cart_item_product);
+                imageView = itemView.findViewById(R.id.iv_product);
                 textView = itemView.findViewById(R.id.tv_product_name);
             }
         }
