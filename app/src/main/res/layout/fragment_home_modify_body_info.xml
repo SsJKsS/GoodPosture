@@ -131,7 +131,7 @@
         android:id="@+id/bt_modifyBodyInfoSubmit"
         android:layout_width="280dp"
         android:layout_height="66dp"
-        android:layout_marginTop="90dp"
+        android:layout_marginTop="60dp"
         android:background="@drawable/blue_button_frame_shape"
         android:text="@string/text_submit"
         android:textColor="@color/white"

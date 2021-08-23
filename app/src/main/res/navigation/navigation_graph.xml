@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_fragmentShopping_to_shoppingListFragment"
             app:destination="@id/shoppingListFragment" />
+        <action
+            android:id="@+id/action_fragmentShopping_to_shoppingCartFragment"
+            app:destination="@id/shoppingCartFragment" />
     </fragment>
     <fragment
         android:id="@+id/fragmentMy"
@@ -20,8 +23,8 @@
         android:label="MyFragment"
         tools:layout="@layout/fragment_my" >
         <action
-            android:id="@+id/actionMyToReset"
-            app:destination="@id/myResetPasswordFragment" />
+            android:id="@+id/action_fragmentMy_to_myBodyInfoDetailFragment"
+            app:destination="@id/myBodyInfoDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/homeDisplayBodyInfoFragment"
@@ -32,9 +35,6 @@
             android:id="@+id/actionDisplayToShopping"
             app:destination="@id/fragmentShopping" />
         <action
-            android:id="@+id/actionDisplayToModify"
-            app:destination="@id/homeModifyBodyInfoFragment" />
-        <action
             android:id="@+id/action_homeDisplayBodyInfoFragment_to_forumBrowseFragment"
             app:destination="@id/forumBrowseFragment" />
     </fragment>
@@ -44,8 +44,8 @@
         android:label="HomeModifyBodyInfoFragment"
         tools:layout="@layout/fragment_home_modify_body_info">
         <action
-            android:id="@+id/actionModifyToDisplay"
-            app:destination="@id/homeDisplayBodyInfoFragment" />
+            android:id="@+id/action_homeModifyBodyInfoFragment_to_myBodyInfoDetailFragment"
+            app:destination="@id/myBodyInfoDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/myResetPasswordFragment"
@@ -60,11 +60,7 @@
         android:id="@+id/myResetSuccess"
         android:name="idv.example.goodposture.user.my.MyResetSuccessFragment"
         android:label="HomeRegisterSuccessFragment"
-        tools:layout="@layout/fragment_my_reset_success">
-        <action
-            android:id="@+id/actionSuccessToMy"
-            app:destination="@id/fragmentMy" />
-    </fragment>
+        tools:layout="@layout/fragment_my_reset_success"/>
     <fragment
         android:id="@+id/forumBrowseFragment"
         android:name="idv.example.goodposture.user.forum.ForumBrowseFragment"
@@ -109,10 +105,17 @@
     <fragment
         android:id="@+id/shoppingListFragment"
         android:name="idv.example.goodposture.user.shopping.ShoppingListFragment"
-        android:label="ShoppingListFragment" >
+        android:label="ShoppingListFragment"
+        tools:layout="@layout/fragment_shopping_list">
         <action
             android:id="@+id/action_shoppingListFragment_to_shoppingNoResultFragment"
             app:destination="@id/shoppingNoResultFragment" />
+        <action
+            android:id="@+id/action_shoppingListFragment_to_shoppingProductFragment"
+            app:destination="@id/shoppingProductFragment" />
+        <action
+            android:id="@+id/action_shoppingListFragment_to_shoppingCartFragment"
+            app:destination="@id/shoppingCartFragment" />
     </fragment>
     <fragment
         android:id="@+id/shoppingNoResultFragment"
@@ -122,5 +125,34 @@
         <action
             android:id="@+id/action_shoppingNoResultFragment_to_shoppingListFragment"
             app:destination="@id/shoppingListFragment" />
+        <action
+            android:id="@+id/action_shoppingNoResultFragment_to_shoppingCartFragment"
+            app:destination="@id/shoppingCartFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/shoppingProductFragment"
+        android:name="idv.example.goodposture.user.shopping.ShoppingProductFragment"
+        android:label="shoppingProductFragment"
+        tools:layout="@layout/fragment_shopping_product" />
+    <fragment
+        android:id="@+id/shoppingCartFragment"
+        android:name="idv.example.goodposture.user.shopping.ShoppingCartFragment"
+        android:label="ShoppingCartFragment"
+        tools:layout="@layout/fragment_shopping_cart">
+        <action
+            android:id="@+id/action_shoppingCartFragment_to_shoppingProductFragment"
+            app:destination="@id/shoppingProductFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myBodyInfoDetailFragment"
+        android:name="idv.example.goodposture.user.my.MyBodyInfoDetailFragment"
+        android:label="fragment_my_body_info_detail"
+        tools:layout="@layout/fragment_my_body_info_detail" >
+        <action
+            android:id="@+id/action_myBodyInfoDetailFragment_to_homeModifyBodyInfoFragment"
+            app:destination="@id/homeModifyBodyInfoFragment" />
+        <action
+            android:id="@+id/action_myBodyInfoDetailFragment_to_fragmentMy"
+            app:destination="@id/fragmentMy" />
     </fragment>
 </navigation>

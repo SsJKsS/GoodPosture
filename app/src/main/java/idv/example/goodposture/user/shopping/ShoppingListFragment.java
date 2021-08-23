@@ -41,20 +41,20 @@ public class ShoppingListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = (AppCompatActivity) getActivity();
+        setHasOptionsMenu(true);
+        bundle = getArguments();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        activity = (AppCompatActivity) getActivity();
-        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_shopping_list, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        bundle = getArguments();
         findViews(view);    //取得元件的參考
         handleToolbar();
         handleRecyclerView(bundle.getString("searchText"));
@@ -86,7 +86,7 @@ public class ShoppingListFragment extends Fragment {
             //建立navController
             NavController navController = Navigation.findNavController(toolbar);
             // 跳至shoppingCart頁面
-            //navController.navigate(R.id.action_fragmentShopping_to_shoppingListFragment,bundle);
+            navController.navigate(R.id.action_shoppingListFragment_to_shoppingCartFragment);
             return true;
         }else if(itemId == R.id.menu_toolbar_search){
             //通過MenuItemCompat.getActionView()方法獲取SearchView
@@ -159,7 +159,7 @@ public class ShoppingListFragment extends Fragment {
 
         @Override
         public SearchResultListAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.shopping_productlist_card, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_view_shopping_list, parent, false);
             return new SearchResultListAdapterViewHolder(itemView);
         }
 
@@ -168,6 +168,13 @@ public class ShoppingListFragment extends Fragment {
             final Product product = list.get(position);
             holder.imageView.setImageResource(product.getImageId());
             holder.textView.setText(product.getProductName());
+            holder.itemView.setOnClickListener( v -> {
+                //寫帶過去的資料
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("product", product);
+                NavController navController = Navigation.findNavController(v);
+                navController.navigate(R.id.action_shoppingListFragment_to_shoppingProductFragment, bundle);
+            });
         }
 
 

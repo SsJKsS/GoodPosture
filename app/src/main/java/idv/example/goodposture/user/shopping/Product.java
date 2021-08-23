@@ -1,8 +1,17 @@
 package idv.example.goodposture.user.shopping;
 
-public class Product {
-    private Integer imageId;
+import java.io.Serializable;
+import java.util.Date;
+
+public class Product implements Serializable {
+    private Integer imageId;    //假資料抓imageId
+    //private int productId;
     private String productName;
+    //private String productDescription;
+    //private int productPrice;
+    //private Date productDate;
+    //private String productPicture;
+    //private int productType;
 
     public Product() {
     }
@@ -12,7 +21,7 @@ public class Product {
         this.productName = productName;
     }
 
-    public  Integer getImageId() {
+    public Integer getImageId() {
         return imageId;
     }
 

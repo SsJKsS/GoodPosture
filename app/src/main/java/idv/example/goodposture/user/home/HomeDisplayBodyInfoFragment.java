@@ -21,7 +21,7 @@ import idv.example.goodposture.R;
 
 public class HomeDisplayBodyInfoFragment extends Fragment {
     private TextView tvDisplayBodyStatus, tvDisplayBMI, tvDisplayBMR;
-    private Button btModifyBodyInfo, btBuyNow, btDiscussNow;
+    private Button btBuyNow, btDiscussNow;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,7 +48,6 @@ public class HomeDisplayBodyInfoFragment extends Fragment {
         tvDisplayBodyStatus = view.findViewById(R.id.tv_displayBodyStatus);
         tvDisplayBMI = view.findViewById(R.id.tv_displayBMI);
         tvDisplayBMR = view.findViewById(R.id.tv_displayBMR);
-        btModifyBodyInfo = view.findViewById(R.id.bt_modifyBodyInfo);
         btBuyNow = view.findViewById(R.id.bt_buyNow);
         btDiscussNow = view.findViewById(R.id.bt_discussNow);
     }
@@ -67,13 +66,6 @@ public class HomeDisplayBodyInfoFragment extends Fragment {
     }
 
     private void handleButton() {
-        btModifyBodyInfo.setOnClickListener(view -> {
-            // 取得NavController物件
-            NavController navController = Navigation.findNavController(view);
-            // 跳至修改身體資訊頁
-            navController.navigate(R.id.actionDisplayToModify);
-        });
-
         btBuyNow.setOnClickListener(view -> {
             // 取得NavController物件
             NavController navController = Navigation.findNavController(view);

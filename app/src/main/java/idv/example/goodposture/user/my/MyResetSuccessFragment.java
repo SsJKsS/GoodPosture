@@ -46,7 +46,7 @@ public class MyResetSuccessFragment extends Fragment {
             // 取得NavController物件
             NavController navController = Navigation.findNavController(view);
             // 跳至頁面
-            navController.navigate(R.id.actionSuccessToMy);
+//            navController.navigate(R.id.actionSuccessToMy);
         });
     }
 }
