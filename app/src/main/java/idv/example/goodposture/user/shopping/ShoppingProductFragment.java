@@ -3,11 +3,14 @@ package idv.example.goodposture.user.shopping;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +34,7 @@ public class ShoppingProductFragment extends Fragment {
     private static final String TAG = "ShoppingProductFragment";
     private AppCompatActivity activity;
     private Toolbar toolbar;
+    private SearchView searchView;
     private Product product;
     private ImageView ivProduct;
     private TextView tvProductName;
@@ -43,14 +47,13 @@ public class ShoppingProductFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = (AppCompatActivity) getActivity();
+        setHasOptionsMenu(true);
         product = (Product) (getArguments() != null ? getArguments().getSerializable("product") : null);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_shopping_product, container, false);
     }
 
@@ -87,28 +90,71 @@ public class ShoppingProductFragment extends Fragment {
         }
     }
 
+    //建立ToolBar的menu選單
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        //載入menu
+        inflater.inflate(R.menu.shopping_toolbar_menu, menu);
+        //Log.d("onCreateOptionsMenu","success");
+    }
     //返回鑑被視為功能選單的選項
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         final int itemId = item.getItemId();
         if(itemId == android.R.id.home){
             Navigation.findNavController(ivProduct).popBackStack();
+        }else if(itemId == R.id.menu_toolbar_cart){
+            NavController navController = Navigation.findNavController(toolbar);
+            navController.navigate(R.id.action_shoppingProductFragment_to_shoppingCartFragment);
+            return true;
+        }else if(itemId == R.id.menu_toolbar_search){
+            searchView = (SearchView) item.getActionView();
+            handleSearchView();
+            return  true;
+        }else{
+            return super.onOptionsItemSelected(item);
         }
         return true;
     }
+    //搜尋結果
+    private void handleSearchView() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            // // 提交文字時呼叫
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                //搜尋文字
+                Bundle bundle = new Bundle();
+                bundle.putString("searchText",query);
+                //建立navController
+                NavController navController = Navigation.findNavController(toolbar);
+                // 跳至頁面
+                navController.navigate(R.id.action_fragmentShopping_to_shoppingListFragment,bundle);
+                return false;
+            }
+            // 文字搜尋框發生變化時呼叫
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+    }
 
+    //顯示商品畫面
     private void showProduct(Product product) {
         int imageId = product.getImageId();
         String productName = product.getProductName();
+        int productPrice = product.getProductPrice();
         ivProduct.setImageResource(imageId);
         tvProductName.setText(productName);
+        tvProductPrice.setText("$" + productPrice);
     }
 
-    //加入購物車，跳轉到購物車頁面
+    //加入購物車，顯示加入的動畫|改變購物車icon的圖案
     private void addToCart() {
         btAddToCart.setOnClickListener(v -> {
-            NavController navController = Navigation.findNavController(toolbar);
-            //navController.navigate(//destination or action);
+            //todo
+            //顯示加入購物車的動畫|改變購物車icon的圖案
         });
     }
 

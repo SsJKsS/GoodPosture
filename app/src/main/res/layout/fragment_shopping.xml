@@ -5,8 +5,9 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EA9276"
+    android:background="#E1F5FE"
     tools:context=".user.shopping.ShoppingFragment">
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar_shopping"
         android:layout_width="match_parent"
@@ -29,7 +30,7 @@
         android:layout_marginEnd="32dp"
         android:animateFirstView="true"
         android:autoStart="true"
-        android:background="#E1BEE7"
+        android:background="#B3E5FC"
         android:fitsSystemWindows="true"
         android:flipInterval="2000"
         app:layout_constraintEnd_toEndOf="parent"

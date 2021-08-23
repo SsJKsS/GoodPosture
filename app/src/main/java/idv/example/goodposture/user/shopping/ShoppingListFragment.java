@@ -67,7 +67,7 @@ public class ShoppingListFragment extends Fragment {
 
     private void handleToolbar() {
         activity.setSupportActionBar(toolbar);
-        toolbar.setTitle("");
+        toolbar.setTitle("搜尋商品列表");
     }
 
     //建立ToolBar的menu選單
@@ -147,13 +147,15 @@ public class ShoppingListFragment extends Fragment {
             this.list = list;
         }
         private static class SearchResultListAdapterViewHolder extends RecyclerView.ViewHolder {
-            ImageView imageView;
-            TextView textView;
+            ImageView ivProduct;
+            TextView tvProductName;
+            TextView tvProductPrice;
 
             public SearchResultListAdapterViewHolder(@NonNull View itemView) {
                 super(itemView);
-                imageView = itemView.findViewById(R.id.iv_product);
-                textView = itemView.findViewById(R.id.tv_product_name);
+                ivProduct = itemView.findViewById(R.id.iv_product);
+                tvProductName = itemView.findViewById(R.id.tv_product_name);
+                tvProductPrice = itemView.findViewById(R.id.tv_product_price);
             }
         }
 
@@ -166,8 +168,9 @@ public class ShoppingListFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull @NotNull SearchResultListAdapterViewHolder holder, int position) {
             final Product product = list.get(position);
-            holder.imageView.setImageResource(product.getImageId());
-            holder.textView.setText(product.getProductName());
+            holder.ivProduct.setImageResource(product.getImageId());
+            holder.tvProductName.setText(product.getProductName());
+            holder.tvProductPrice.setText("$" + product.getProductPrice());
             holder.itemView.setOnClickListener( v -> {
                 //寫帶過去的資料
                 Bundle bundle = new Bundle();
@@ -176,7 +179,6 @@ public class ShoppingListFragment extends Fragment {
                 navController.navigate(R.id.action_shoppingListFragment_to_shoppingProductFragment, bundle);
             });
         }
-
 
         @Override
         public int getItemCount() {
@@ -188,9 +190,21 @@ public class ShoppingListFragment extends Fragment {
 
     private List<Product> getProductList() {
         List<Product> productsList = new ArrayList<>();
-        productsList.add(new Product(R.drawable.shopping_cat, "a貓咪一號"));
-        productsList.add(new Product(R.drawable.shopping_cat2, "b貓咪二號"));
-        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號"));
+        productsList.add(new Product(R.drawable.shopping_cat, "a貓咪一號", 200));
+        productsList.add(new Product(R.drawable.shopping_cat2, "b貓咪二號", 300));
+        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
         return productsList;
     }
 
