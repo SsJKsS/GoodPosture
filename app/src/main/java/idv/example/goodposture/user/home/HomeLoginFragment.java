@@ -14,13 +14,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import idv.example.goodposture.R;
 import idv.example.goodposture.admin.AdminActivity;
 
 public class HomeLoginFragment extends Fragment {
-    private EditText etAccount;
-    private EditText etPassword;
+    private EditText etAccount, etPassword;
+    private ImageView ivPerson, ivKey;
     private Button btLogin;
 
 
@@ -41,13 +43,28 @@ public class HomeLoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         findViews(view);
+        handleImage();
         handleButton();
     }
 
     private void findViews(View view) {
+        ivPerson = view.findViewById(R.id.iv_person);
+        ivKey = view.findViewById(R.id.iv_key);
         etAccount = view.findViewById(R.id.et_loginAccount);
         etPassword = view.findViewById(R.id.et_loginPassword);
         btLogin = view.findViewById(R.id.bt_login);
+    }
+
+    private void handleImage() {
+        ivPerson.setOnClickListener(view -> {
+            etAccount.setText("s");
+            etPassword.setText("s");
+        });
+
+        ivKey.setOnClickListener(view -> {
+            etAccount.setText("a");
+            etPassword.setText("a");
+        });
     }
 
     private void handleButton() {

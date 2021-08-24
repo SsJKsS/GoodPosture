@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_fragmentMy_to_myBodyInfoDetailFragment"
             app:destination="@id/myBodyInfoDetailFragment" />
+        <action
+            android:id="@+id/action_fragmentMy_to_myExerciseRecordFragment"
+            app:destination="@id/myExerciseRecordFragment" />
     </fragment>
     <fragment
         android:id="@+id/homeDisplayBodyInfoFragment"
@@ -154,5 +157,23 @@
         <action
             android:id="@+id/action_myBodyInfoDetailFragment_to_fragmentMy"
             app:destination="@id/fragmentMy" />
+    </fragment>
+    <fragment
+        android:id="@+id/myEatRecordFragment"
+        android:name="idv.example.goodposture.user.my.MyEatRecordFragment"
+        android:label="fragment_my_eat_record"
+        tools:layout="@layout/fragment_my_eat_record" >
+        <action
+            android:id="@+id/action_myEatRecordFragment_to_myExerciseRecordFragment"
+            app:destination="@id/myExerciseRecordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myExerciseRecordFragment"
+        android:name="idv.example.goodposture.user.my.MyExerciseRecordFragment"
+        android:label="fragment_my_exercise_record"
+        tools:layout="@layout/fragment_my_exercise_record" >
+        <action
+            android:id="@+id/action_myExerciseRecordFragment_to_myEatRecordFragment"
+            app:destination="@id/myEatRecordFragment" />
     </fragment>
 </navigation>
