@@ -9,7 +9,7 @@
     tools:context=".user.home.HomeRegisterFragment">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/iv_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -19,11 +19,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/iv_person"
         android:layout_width="53dp"
         android:layout_height="55dp"
         android:layout_marginStart="56dp"
         android:layout_marginTop="300dp"
+        android:clickable="true"
         android:src="@drawable/ic_baseline_person_black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -38,17 +39,18 @@
         android:hint="帳號"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/iv_logo" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/iv_key"
         android:layout_width="51dp"
         android:layout_height="51dp"
         android:layout_marginStart="56dp"
         android:layout_marginTop="28dp"
+        android:clickable="true"
         android:src="@drawable/ic_baseline_vpn_key_black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/iv_person" />
 
     <EditText
         android:id="@+id/et_loginPassword"

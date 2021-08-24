@@ -1,5 +1,6 @@
 package idv.example.goodposture.user.home;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -12,11 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import idv.example.goodposture.user.MainActivity;
 import idv.example.goodposture.R;
 
 public class HomeTypeBodyInfoFragment extends Fragment {
+    private TextView tvBodyStatus;
     private EditText etAge, etHeight, etWeight;
     private Button btSubmit;
 
@@ -37,14 +40,24 @@ public class HomeTypeBodyInfoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         findViews(view);
+        handleTextView();
         handleButton();
     }
 
     private void findViews(View view) {
+        tvBodyStatus = view.findViewById(R.id.tv_bodyStatus);
         etAge = view.findViewById(R.id.et_age);
         etHeight = view.findViewById(R.id.et_height);
         etWeight = view.findViewById(R.id.et_weight);
         btSubmit = view.findViewById(R.id.bt_bodyInfoSubmit);
+    }
+
+    private void handleTextView() {
+        tvBodyStatus.setOnClickListener(view -> {
+            etAge.setText("1");
+            etHeight.setText("1");
+            etWeight.setText("1");
+        });
     }
 
     private void handleButton() {

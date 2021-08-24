@@ -16,7 +16,7 @@ import android.widget.Button;
 import idv.example.goodposture.R;
 
 public class MyFragment extends Fragment {
-    private Button btMyBodyInfo;
+    private Button btMyBodyInfo, btMyCalorieRecord;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,6 +40,7 @@ public class MyFragment extends Fragment {
 
     private void findViews(View view) {
         btMyBodyInfo = view.findViewById(R.id.bt_myBodyInfo);
+        btMyCalorieRecord = view.findViewById(R.id.bt_myCalorieRecord);
     }
 
     private void handleButton() {
@@ -48,6 +49,13 @@ public class MyFragment extends Fragment {
             NavController navController = Navigation.findNavController(view);
             // 跳至頁面
             navController.navigate(R.id.action_fragmentMy_to_myBodyInfoDetailFragment);
+        });
+
+        btMyCalorieRecord.setOnClickListener(view -> {
+            // 取得NavController物件
+            NavController navController = Navigation.findNavController(view);
+            // 跳至頁面
+            navController.navigate(R.id.action_fragmentMy_to_myExerciseRecordFragment);
         });
     }
 }
