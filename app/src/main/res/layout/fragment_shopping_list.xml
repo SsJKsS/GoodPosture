@@ -5,20 +5,19 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EA9276"
+    android:background="#E1F5FE"
     tools:context=".user.shopping.ShoppingFragment">
     <!--add toolbar to emulate state bar    -->
-    <!--tools:ignore="MissingConstraints"  to ignore the red line hahaha  -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar_shopping"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:ignore="MissingConstraints">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tb_shopping"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize" />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tb_shopping"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

@@ -8,7 +8,7 @@ public class Product implements Serializable {
     //private int productId;
     private String productName;
     //private String productDescription;
-    //private int productPrice;
+    private int productPrice;
     //private Date productDate;
     //private String productPicture;
     //private int productType;
@@ -16,9 +16,10 @@ public class Product implements Serializable {
     public Product() {
     }
 
-    public Product(Integer imageId, String productName) {
+    public Product(Integer imageId, String productName, int productPrice) {
         this.imageId = imageId;
         this.productName = productName;
+        this.productPrice = productPrice;
     }
 
     public Integer getImageId() {
@@ -35,6 +36,14 @@ public class Product implements Serializable {
 
     public void setProductName(String productName) {
         this.productName = productName;
+    }
+
+    public int getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(int productPrice) {
+        this.productPrice = productPrice;
     }
 }
 

@@ -136,7 +136,14 @@
         android:id="@+id/shoppingProductFragment"
         android:name="idv.example.goodposture.user.shopping.ShoppingProductFragment"
         android:label="shoppingProductFragment"
-        tools:layout="@layout/fragment_shopping_product" />
+        tools:layout="@layout/fragment_shopping_product" >
+        <action
+            android:id="@+id/action_shoppingProductFragment_to_shoppingCartFragment"
+            app:destination="@id/shoppingCartFragment" />
+        <action
+            android:id="@+id/action_shoppingProductFragment_to_shoppingOrderFragment"
+            app:destination="@id/shoppingOrderFragment" />
+    </fragment>
     <fragment
         android:id="@+id/shoppingCartFragment"
         android:name="idv.example.goodposture.user.shopping.ShoppingCartFragment"
@@ -145,6 +152,31 @@
         <action
             android:id="@+id/action_shoppingCartFragment_to_shoppingProductFragment"
             app:destination="@id/shoppingProductFragment" />
+        <action
+            android:id="@+id/action_shoppingCartFragment_to_shoppingOrderFragment"
+            app:destination="@id/shoppingOrderFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/shoppingOrderFragment"
+        android:name="idv.example.goodposture.user.shopping.ShoppingOrderFragment"
+        android:label="ShoppingOrderFragment"
+        tools:layout="@layout/fragment_shopping_order" >
+
+        <action
+            android:id="@+id/action_shoppingOrderFragment_to_shoppingPayResultFragment"
+            app:destination="@id/shoppingPayResultFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/shoppingPayResultFragment"
+        android:name="idv.example.goodposture.user.shopping.ShoppingPayResultFragment"
+        android:label="fragment_shopping_pay_result"
+        tools:layout="@layout/fragment_shopping_pay_result" >
+    <action
+        android:id="@+id/action_shoppingPayResultFragment_to_shoppingFragment"
+        app:destination="@id/fragmentShopping" />
+    <action
+        android:id="@+id/action_shoppingPayResultFragment_to_shoppingOrderFragment"
+        app:destination="@id/shoppingOrderFragment" />
     </fragment>
     <fragment
         android:id="@+id/myBodyInfoDetailFragment"

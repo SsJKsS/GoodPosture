@@ -56,6 +56,7 @@ public class ShoppingCartFragment extends Fragment {
         findViews(view);
         handleToolbar();
         handleRecyclerView();
+        checkout();
     }
 
     private void findViews(View view) {
@@ -128,6 +129,7 @@ public class ShoppingCartFragment extends Fragment {
             Product product = list.get(position);
             holder.ivCartItemProduct.setImageResource(product.getImageId());
             holder.tvProductName.setText(product.getProductName());
+            holder.tvProductPrice.setText("$" + product.getProductPrice());
             holder.ivCartItemProduct.setOnClickListener( v -> {
                 //寫帶過去的資料
                 Bundle bundle = new Bundle();
@@ -153,11 +155,33 @@ public class ShoppingCartFragment extends Fragment {
 
     }
 
+    private void checkout() {
+        btCartCheckout.setOnClickListener(v -> {
+            NavController navController = Navigation.findNavController(v);
+            navController.navigate(R.id.action_shoppingCartFragment_to_shoppingOrderFragment);
+        });
+    }
+
     private List<Product> getProductList() {
         List<Product> productsList = new ArrayList<>();
-        productsList.add(new Product(R.drawable.shopping_cat, "a貓咪一號"));
-        productsList.add(new Product(R.drawable.shopping_cat2, "b貓咪二號"));
-        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號"));
+        productsList.add(new Product(R.drawable.shopping_cat, "a貓咪一號", 200));
+        productsList.add(new Product(R.drawable.shopping_cat2, "b貓咪二號", 300));
+        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
         return productsList;
     }
 }
