@@ -1,10 +1,10 @@
 package idv.example.goodposture.user.shopping;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -14,15 +14,16 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
-
-import org.jetbrains.annotations.NotNull;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,17 @@ public class ShoppingOrderFragment extends Fragment {
     private AppCompatActivity activity;
     private Toolbar toolbar;
     private RecyclerView recyclerView;
+    private EditText etMemberName;
+    private EditText etMemberAddress;
+    private EditText etMemberPhone;
+    private EditText etCardholder;
+    private EditText etCreditCard1;
+    private EditText etCreditCard2;
+    private EditText etCreditCard3;
+    private EditText etCreditCard4;
+    private EditText etCreditCardCsv;
+    private Button btOrderSend;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,11 +64,22 @@ public class ShoppingOrderFragment extends Fragment {
         findViews(view);    //取得元件的參考
         handleToolbar();
         handleRecyclerView();
+        sendOrder();
     }
 
     private void findViews(View view) {
         toolbar = view.findViewById(R.id.tb_shopping);
         recyclerView = view.findViewById(R.id.rv_shopping_order_detail);
+        etMemberName = view.findViewById(R.id.et_member_name);
+        etMemberAddress = view.findViewById(R.id.et_member_address);
+        etMemberPhone = view.findViewById(R.id.et_member_phone);
+        etCardholder = view.findViewById(R.id.et_cardholder);
+        etCreditCard1 = view.findViewById(R.id.et_credit_card_1);
+        etCreditCard2 = view.findViewById(R.id.et_credit_card_2);
+        etCreditCard3 = view.findViewById(R.id.et_credit_card_3);
+        etCreditCard4 = view.findViewById(R.id.et_credit_card_4);
+        etCreditCardCsv = view.findViewById(R.id.et_credit_card_csv);
+        btOrderSend = view.findViewById(R.id.bt_order_send);
     }
 
     private void handleToolbar() {
@@ -85,6 +108,32 @@ public class ShoppingOrderFragment extends Fragment {
         recyclerView.setAdapter(new shoppingOrderRVAdapter(getContext(), getProductList()));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
+
+    private void sendOrder() {
+        btOrderSend.setOnClickListener(v -> {
+            final String memberName = String.valueOf(etMemberName.getText());
+            String memberAddress = String.valueOf(etMemberAddress.getText());
+            String memberPhone = String.valueOf(etMemberPhone.getText());
+            String cardholder = String.valueOf(etCardholder.getText());
+            StringBuilder creditCard = new StringBuilder(String.valueOf(etCreditCard1.getText()))
+                    .append(String.valueOf(etCreditCard2.getText()))
+                    .append(String.valueOf(etCreditCard3.getText()))
+                    .append(String.valueOf(etCreditCard4.getText()));
+            //int creditCardCsv = Integer.parseInt(String.valueOf(etCreditCardCsv.getText()));
+
+            if("s".equals(memberName)){
+                //Log.d("memberName",memberName);
+                //Toast.makeText(activity, "ssssssssssssss", Toast.LENGTH_SHORT).show();
+                NavController navController = Navigation.findNavController(btOrderSend);
+                navController.navigate(R.id.action_shoppingOrderFragment_to_shoppingPayResultFragment);
+            }
+            if(memberName.isEmpty()){
+                etMemberName.setError("請輸入名字!");
+            }
+        });
+    }
+
+
 
     private static class shoppingOrderRVAdapter extends RecyclerView.Adapter<shoppingOrderRVAdapter.shoppingOrderViewHolder>{
 

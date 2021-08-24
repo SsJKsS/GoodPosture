@@ -155,6 +155,7 @@ public class ShoppingProductFragment extends Fragment {
         btAddToCart.setOnClickListener(v -> {
             //todo
             //顯示加入購物車的動畫|改變購物車icon的圖案
+            Toast.makeText(activity, "加入購物車", Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -192,9 +193,9 @@ public class ShoppingProductFragment extends Fragment {
         btCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //NavController navController = Navigation.findNavController(v);
-                //navController.navigate(R.id.shoppingListFragment);
-                Toast.makeText(activity.getApplicationContext(), "Copy is Clicked ", Toast.LENGTH_LONG).show();
+                NavController navController = Navigation.findNavController(btBuyProduct);
+                navController.navigate(R.id.action_shoppingProductFragment_to_shoppingOrderFragment);
+                //Toast.makeText(activity.getApplicationContext(), "Copy is Clicked ", Toast.LENGTH_LONG).show();
                 bottomSheetDialog.dismiss();
                 //Log.d(TAG,"inner:"+String.valueOf(bottomSheetDialog));
             }
