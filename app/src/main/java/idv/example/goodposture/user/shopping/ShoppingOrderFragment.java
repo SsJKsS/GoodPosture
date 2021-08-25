@@ -85,7 +85,6 @@ public class ShoppingOrderFragment extends Fragment {
     private void handleToolbar() {
         activity.setSupportActionBar(toolbar);
         toolbar.setTitle("");
-        activity.setSupportActionBar(toolbar);
         ActionBar actionBar = activity.getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -133,9 +132,8 @@ public class ShoppingOrderFragment extends Fragment {
         });
     }
 
-
-
     private static class shoppingOrderRVAdapter extends RecyclerView.Adapter<shoppingOrderRVAdapter.shoppingOrderViewHolder>{
+
 
         private Context context;
         private List<Product> list;

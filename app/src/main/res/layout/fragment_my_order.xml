@@ -4,43 +4,60 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E1BEE7"
-    tools:context=".user.my.MyOrderFragment">
+    android:background="#E0F2F1"
+    tools:context=".my.MyOrderFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar_my"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".my.MyOrderFragment"
+        tools:ignore="MissingConstraints">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tb_my"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize" />
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tablayout"
-        android:layout_width="0dp"
+        android:id="@+id/tablayout_my_order"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/ViewPager2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appbar_my">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Monday" />
+            android:text="待出貨" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tuesday" />
+            android:text="已出貨" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Wednesday" />
+            android:text="已取消" />
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/ViewPager2"
-        android:layout_width="0dp"
-        android:layout_height="611dp"
+        android:id="@+id/ViewPager2_my_order"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tablayout">
+        app:layout_constraintTop_toBottomOf="@+id/tablayout_my_order">
 
     </androidx.viewpager2.widget.ViewPager2>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

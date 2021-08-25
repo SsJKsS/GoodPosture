@@ -53,7 +53,7 @@ public class ShoppingListFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         findViews(view);    //取得元件的參考
         handleToolbar();
