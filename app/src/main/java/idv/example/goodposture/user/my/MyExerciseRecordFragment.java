@@ -18,6 +18,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,6 +32,7 @@ public class MyExerciseRecordFragment extends Fragment {
     private Activity activity;
     private Button btEatRecord;
     private RecyclerView recyclerView;
+    private FloatingActionButton fabAddExerciseRecord;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,7 @@ public class MyExerciseRecordFragment extends Fragment {
     private void findViews(View view) {
         btEatRecord = view.findViewById(R.id.bt_eatRecord);
         recyclerView = view.findViewById(R.id.rv_exerciseRecord);
+        fabAddExerciseRecord = view.findViewById(R.id.fab_addExerciseRecord);
     }
 
     private void handleButton() {
@@ -62,6 +66,13 @@ public class MyExerciseRecordFragment extends Fragment {
             NavController navController = Navigation.findNavController(view);
             // 跳至頁面
             navController.navigate(R.id.action_myExerciseRecordFragment_to_myEatRecordFragment);
+        });
+
+        fabAddExerciseRecord.setOnClickListener(view -> {
+            // 取得NavController物件
+            NavController navController = Navigation.findNavController(view);
+            // 跳至頁面
+            navController.navigate(R.id.action_myExerciseRecordFragment_to_myAddRecordFragment);
         });
     }
 

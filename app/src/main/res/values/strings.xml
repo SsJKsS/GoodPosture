@@ -44,4 +44,16 @@
     <string name="text_discussWords">開始和大家熱絡地討論</string>
     <string name="text_modifyBodyInfoWords">請修改你的身體資訊</string>
     <string name="text_back">返回</string>
+
+    <string-array name="exercise_record_type">
+        <item>跑步</item>
+        <item>跳繩</item>
+        <item>游泳</item>
+        <item>羽球</item>
+    </string-array>
+    <string-array name="eat_record_type">
+        <item>白飯</item>
+        <item>雞胸肉</item>
+        <item>水煮青菜</item>
+    </string-array>
 </resources>

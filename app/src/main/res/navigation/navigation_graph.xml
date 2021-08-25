@@ -201,6 +201,9 @@
         <action
             android:id="@+id/action_myEatRecordFragment_to_myExerciseRecordFragment"
             app:destination="@id/myExerciseRecordFragment" />
+        <action
+            android:id="@+id/action_myEatRecordFragment_to_myAddRecordFragment"
+            app:destination="@id/myAddRecordFragment" />
     </fragment>
     <fragment
         android:id="@+id/myExerciseRecordFragment"
@@ -210,10 +213,18 @@
         <action
             android:id="@+id/action_myExerciseRecordFragment_to_myEatRecordFragment"
             app:destination="@id/myEatRecordFragment" />
+        <action
+            android:id="@+id/action_myExerciseRecordFragment_to_myAddRecordFragment"
+            app:destination="@id/myAddRecordFragment" />
     </fragment>
     <fragment
         android:id="@+id/myOrderFragment"
         android:name="idv.example.goodposture.user.my.MyOrderFragment"
         android:label="fragment_my_order"
         tools:layout="@layout/fragment_my_order" />
+    <fragment
+        android:id="@+id/myAddRecordFragment"
+        android:name="idv.example.goodposture.user.my.MyAddRecordFragment"
+        android:label="fragment_my_add_record"
+        tools:layout="@layout/fragment_my_add_record" />
 </navigation>
