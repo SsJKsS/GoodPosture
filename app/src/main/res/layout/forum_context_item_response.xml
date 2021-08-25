@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cv_Response"
     android:layout_width="match_parent"
-             android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="65dp">
+        android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/textView17"
+            android:id="@+id/tv_Response_User"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -20,24 +21,24 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView18"
+            android:id="@+id/tv_Response_Time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:text="2021/07/30    10:00"
             android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView17"
-            app:layout_constraintStart_toEndOf="@+id/textView17"
-            app:layout_constraintTop_toTopOf="@+id/textView17" />
+            app:layout_constraintBottom_toBottomOf="@+id/tv_Response_User"
+            app:layout_constraintStart_toEndOf="@+id/tv_Response_User"
+            app:layout_constraintTop_toTopOf="@+id/tv_Response_User" />
 
         <TextView
-            android:id="@+id/textView19"
+            android:id="@+id/tv_Response_Context"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:text="回覆內容"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView17" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_Response_User" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
