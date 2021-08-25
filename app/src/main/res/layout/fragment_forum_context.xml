@@ -173,21 +173,20 @@
                 </androidx.cardview.widget.CardView>
 
                 <EditText
-                    android:id="@+id/editTextTextPersonName4"
+                    android:id="@+id/et_response"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:ems="10"
                     android:inputType="textPersonName"
-                    android:text="回覆內容"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/imageView12"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_Response_Send"
                     app:layout_constraintStart_toEndOf="@+id/cardView2"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:id="@+id/imageView12"
+                    android:id="@+id/iv_Response_Send"
                     android:layout_width="27dp"
                     android:layout_height="27dp"
                     android:layout_marginEnd="10dp"
