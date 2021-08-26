@@ -1,66 +1,102 @@
 package idv.example.goodposture.admin.setting;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import idv.example.goodposture.R;
+import idv.example.goodposture.user.MainActivity;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AdminSettingFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class AdminSettingFragment extends Fragment {
+    private Button bt_reset_sales;
+    private Button bt_aboutus;
+    private Button bt_logout;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public AdminSettingFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AdminSettingFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AdminSettingFragment newInstance(String param1, String param2) {
-        AdminSettingFragment fragment = new AdminSettingFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_admin_setting, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        findViews(view);
+        handleBtRestSales();
+        handleBtAboutus();
+        handleBtLogout();
+    }
+
+    private void findViews(View view) {
+        bt_reset_sales = view.findViewById(R.id.bt_reset_sales);
+        bt_aboutus = view.findViewById(R.id.bt_aboutus);
+        bt_logout = view.findViewById(R.id.bt_logout);
+    }
+
+    private void handleBtRestSales() {
+        bt_reset_sales.setOnClickListener(view->{
+            // 取得NavController物件
+            NavController navController = Navigation.findNavController(view);
+            // 跳至頁面
+            navController.navigate(R.id.action_adminSettingFragment_to_adminHomeTypeSalesFragment);
+        });
+    }
+
+    private void handleBtAboutus() {
+        bt_aboutus.setOnClickListener(view->{
+            // 取得NavController物件
+            NavController navController = Navigation.findNavController(view);
+            // 跳至頁面
+            navController.navigate(R.id.action_adminSettingFragment_to_adminAboutusFragment);
+        });
+    }
+
+    private void handleBtLogout() {
+        bt_logout.setOnClickListener(view->{
+            LogoutDialog();
+        });
+    }
+
+    private void LogoutDialog(){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+        alertDialog.setMessage("是否確定登出");
+        alertDialog.setPositiveButton("否", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getActivity().getBaseContext(), "未登出", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        alertDialog.setNegativeButton("是", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                intent.putExtra("id",1);
+                startActivity(intent);
+
+            }
+        });
+        alertDialog.setCancelable(false);
+        alertDialog.show();
     }
 }

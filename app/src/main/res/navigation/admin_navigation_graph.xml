@@ -28,12 +28,23 @@
         android:id="@+id/adminSettingFragment"
         android:name="idv.example.goodposture.admin.setting.AdminSettingFragment"
         android:label="fragment_admin_setting"
-        tools:layout="@layout/fragment_admin_setting" />
+        tools:layout="@layout/fragment_admin_setting" >
+        <action
+            android:id="@+id/action_adminSettingFragment_to_adminAboutusFragment"
+            app:destination="@id/adminAboutusFragment" />
+        <action
+            android:id="@+id/action_adminSettingFragment_to_adminHomeTypeSalesFragment"
+            app:destination="@id/adminHomeTypeSalesFragment" />
+    </fragment>
     <fragment
         android:id="@+id/adminHomeTypeSalesFragment"
         android:name="idv.example.goodposture.admin.home.AdminHomeTypeSalesFragment"
         android:label="fragment_admin_home_type_sales"
-        tools:layout="@layout/fragment_admin_home_type_sales" />
+        tools:layout="@layout/fragment_admin_home_type_sales" >
+        <action
+            android:id="@+id/action_adminHomeTypeSalesFragment_to_adminHomeFragment"
+            app:destination="@id/adminHomeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/adminOrderDetailsFragment"
         android:name="idv.example.goodposture.admin.order.AdminOrderDetailsFragment"
@@ -42,5 +53,14 @@
         <action
             android:id="@+id/action_adminOrderDetailsFragment_to_adminOrderFragment"
             app:destination="@id/adminOrderFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/adminAboutusFragment"
+        android:name="idv.example.goodposture.admin.setting.AdminAboutusFragment"
+        android:label="fragment_admin_aboutus"
+        tools:layout="@layout/fragment_admin_aboutus" >
+        <action
+            android:id="@+id/action_adminAboutusFragment_to_adminSettingFragment"
+            app:destination="@id/adminSettingFragment" />
     </fragment>
 </navigation>

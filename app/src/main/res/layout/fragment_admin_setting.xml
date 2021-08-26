@@ -4,17 +4,57 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F6D3C8"
-    tools:context=".admin.setting.AdminSettingFragment">
+    android:background="#E1F5FE"
+    tools:context=".admin.setting.AdminSettingFragment" >
 
-    <TextView
-        android:id="@+id/textView25"
-        android:layout_width="wrap_content"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar9"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="設定"
-        android:textSize="60sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="#FF64B5F6"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/bt_reset_sales"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/blue_button_frame_shape"
+        android:text="修改預期銷售額"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar9" />
+
+    <Button
+        android:id="@+id/bt_logout"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/blue_button_frame_shape"
+        android:text="登出帳號"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/bt_reset_sales"
+        app:layout_constraintTop_toBottomOf="@+id/bt_aboutus" />
+
+    <Button
+        android:id="@+id/bt_aboutus"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/blue_button_frame_shape"
+        android:text="關於本 APP"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/bt_logout"
+        app:layout_constraintTop_toBottomOf="@+id/bt_reset_sales" />
 </androidx.constraintlayout.widget.ConstraintLayout>

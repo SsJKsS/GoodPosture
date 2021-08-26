@@ -1,6 +1,8 @@
 package idv.example.goodposture.admin.order;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,13 +18,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import idv.example.goodposture.R;
+import idv.example.goodposture.user.MainActivity;
 import idv.example.goodposture.user.forum.ForumContextFragment;
 import idv.example.goodposture.user.forum.ForumContextResponseList;
 
@@ -32,6 +38,7 @@ public class AdminOrderDetailsFragment extends Fragment {
     private ArrayAdapter<AdminOrderDetailsItem> adminOrderDetailsItemArrayAdapter;
     private odDetailsAdapter odDetailsAdapter;
     private CardView cv_od_details;
+    private Button bt_Cancel;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,12 +57,20 @@ public class AdminOrderDetailsFragment extends Fragment {
         findViews(view);
         handleOrderBack();
         handleOdDetailsRecyclerView();
+        handleBtCanael();
     }
 
     private void findViews(View view) {
         iv_order_back = view.findViewById(R.id.iv_order_back);
         cv_od_details = view.findViewById(R.id.cv_od_details);
         odDetailsRecyclerView = view.findViewById(R.id.rv_order_details);
+        bt_Cancel = view.findViewById(R.id.bt_Cancel);
+    }
+
+    private void handleBtCanael() {
+        bt_Cancel.setOnClickListener(view->{
+            NewDialog();
+        });
     }
 
     private void handleOrderBack() {
@@ -167,5 +182,20 @@ public class AdminOrderDetailsFragment extends Fragment {
         adminOrderDetailsItems.add(new AdminOrderDetailsItem(R.drawable.shark,"鯊鯊一號","呱呱","NT$1,000"));
         adminOrderDetailsItems.add(new AdminOrderDetailsItem(R.drawable.shark,"鯊鯊一號","呱呱","NT$1,000"));
         return adminOrderDetailsItems;
+    }
+
+    private void NewDialog(){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+        EditText editText = new EditText(getActivity());
+        alertDialog.setTitle("請輸入原因");
+        alertDialog.setView(editText);
+        alertDialog.setNegativeButton("送出", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getActivity().getBaseContext(), "已送出", Toast.LENGTH_SHORT).show();
+            }
+        });
+        alertDialog.setCancelable(false);
+        alertDialog.show();
     }
 }

@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,6 +58,11 @@ public class AdminHomeTypeSalesFragment extends Fragment {
             // 判斷帳號不可為空
             if (sales.isEmpty()) {
                 tvSales.setText("未輸入預期銷售額");
+            } else {
+                // 取得NavController物件
+                NavController navController = Navigation.findNavController(view);
+                // 跳至頁面
+                navController.navigate(R.id.action_adminHomeTypeSalesFragment_to_adminHomeFragment);
             }
         });
     }

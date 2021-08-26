@@ -1,6 +1,7 @@
 package idv.example.goodposture.user;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -12,6 +13,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import idv.example.goodposture.R;
+import idv.example.goodposture.user.home.HomeLoginFragment;
 
 
 public class PreActivity extends AppCompatActivity {
@@ -22,6 +24,7 @@ public class PreActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pre);
         findViews();
         handleButton();
+        handleIntent();
     }
 
     private void findViews() {
@@ -30,5 +33,16 @@ public class PreActivity extends AppCompatActivity {
 
     private void handleButton() {
 
+    }
+
+    private void handleIntent() {
+        int id = getIntent().getIntExtra("id",0);
+        if(id == 1){
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.homeLoginFragment,new HomeLoginFragment())
+                    .addToBackStack(null)
+                    .commit();
+        }
     }
 }

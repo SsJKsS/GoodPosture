@@ -197,11 +197,11 @@ public class AdminOrderFragment extends Fragment {
     }
     private List<AdminOrderBrowseList> getAdminOrderBrowseList() {
         List<AdminOrderBrowseList> adminOrderBrowseLists = new ArrayList<>();
-        adminOrderBrowseLists.add(new AdminOrderBrowseList("#D1234567","2021/08/25","配送中","NT,5000"));
-        adminOrderBrowseLists.add(new AdminOrderBrowseList("#D1234568","2021/08/25","配送中","NT,5000"));
-        adminOrderBrowseLists.add(new AdminOrderBrowseList("#D1234569","2021/08/25","未完成","NT,5000"));
-        adminOrderBrowseLists.add(new AdminOrderBrowseList("#D1234563","2021/08/25","已完成","NT,5000"));
-        adminOrderBrowseLists.add(new AdminOrderBrowseList("#D1234565","2021/08/25","配送中","NT,5000"));
+        adminOrderBrowseLists.add(new AdminOrderBrowseList("#D1234567","2021/08/25","  待出貨  ","NT$5,000"));
+        adminOrderBrowseLists.add(new AdminOrderBrowseList("#D1234568","2021/08/25","  已出貨  ","NT$5,000"));
+        adminOrderBrowseLists.add(new AdminOrderBrowseList("#D1234569","2021/08/25","  已取消  ","NT$5,000"));
+        adminOrderBrowseLists.add(new AdminOrderBrowseList("#D1234563","2021/08/25","  待出貨  ","NT$5,000"));
+        adminOrderBrowseLists.add(new AdminOrderBrowseList("#D1234565","2021/08/25","  已出貨  ","NT$5,000"));
         return adminOrderBrowseLists;
     }
 
