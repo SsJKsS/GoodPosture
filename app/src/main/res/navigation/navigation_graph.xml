@@ -221,10 +221,19 @@
         android:id="@+id/myOrderFragment"
         android:name="idv.example.goodposture.user.my.MyOrderFragment"
         android:label="fragment_my_order"
-        tools:layout="@layout/fragment_my_order" />
+        tools:layout="@layout/fragment_my_order" >
+        <action
+            android:id="@+id/action_myOrderFragment_to_myOrderDetailFragment"
+            app:destination="@id/myOrderDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/myAddRecordFragment"
         android:name="idv.example.goodposture.user.my.MyAddRecordFragment"
         android:label="fragment_my_add_record"
         tools:layout="@layout/fragment_my_add_record" />
+    <fragment
+        android:id="@+id/myOrderDetailFragment"
+        android:name="idv.example.goodposture.user.my.MyOrderDetailFragment"
+        android:label="fragment_my_order_detail"
+        tools:layout="@layout/fragment_my_order_detail" />
 </navigation>

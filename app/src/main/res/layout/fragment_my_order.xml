@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E0F2F1"
+    android:background="#E1F5FE"
     tools:context=".my.MyOrderFragment">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -41,6 +41,12 @@
             android:text="已出貨" />
 
         <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="已取消" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="已取消" />

@@ -5,11 +5,13 @@ import java.util.Date;
 
 public class Product implements Serializable {
     private Integer imageId;    //假資料抓imageId
-    //private int productId;
-    private String productName;
-    //private String productDescription;
-    private int productPrice;
-    //private Date productDate;
+
+    //private int productId;    //商品編號
+    private String productName;     //商品名稱
+    //private String productDescription;    //商品描述
+    private int productPrice;   //目前價錢
+    //private int productStock;   //庫存
+    //private Date productDate;     //上架日期
     //private String productPicture;
     //private int productType;
 

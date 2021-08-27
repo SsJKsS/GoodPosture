@@ -70,7 +70,6 @@ public class ShoppingCartFragment extends Fragment {
     private void handleToolbar() {
         activity.setSupportActionBar(toolbar);
         toolbar.setTitle("購物車");
-        activity.setSupportActionBar(toolbar);
         ActionBar actionBar = activity.getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
