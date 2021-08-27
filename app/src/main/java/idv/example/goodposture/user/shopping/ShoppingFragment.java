@@ -43,7 +43,6 @@ public class ShoppingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_shopping, container, false);
     }
 
@@ -68,6 +67,9 @@ public class ShoppingFragment extends Fragment {
         activity.setSupportActionBar(toolbar);
         //ToolBar的標題預設是AndroidManifest檔案中<Application/>標籤下屬性label設定的值
         toolbar.setTitle("Shopping");
+//        ////todo studying the attri!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+//        activity.getSupportActionBar().setHomeButtonEnabled(false);
     }
 
     //建立ToolBar的menu選單

@@ -1,7 +1,9 @@
 package idv.example.goodposture.user.my;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.SimpleFormatter;
 
 public class Order implements Serializable {
     private int orderId;
@@ -10,7 +12,8 @@ public class Order implements Serializable {
     private int orderState;
     static final int ORDER_STATE_READY = 1;    //待出貨
     static final int ORDER_STATE_SHIPPED = 2;  //已出貨
-    static final int ORDER_STATE_CANCEL = 3;   //已取消
+    static final int ORDER_STATE_RECEIVED = 3;  //已完成
+    static final int ORDER_STATE_CANCEL = 4;   //已取消
     private String receiverName;
     private int receiverPhone;
     private String cancel;
@@ -43,6 +46,8 @@ public class Order implements Serializable {
 
     //做測試假資料而開的建構子
     public Order(Date orderTime, int orderState, int orderAmount) {
+        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        //sdf.format(orderTime) ->會轉成string
         this.orderTime = orderTime;
         this.orderState = orderState;
         this.orderAmount = orderAmount;
@@ -110,5 +115,20 @@ public class Order implements Serializable {
 
     public void setOrderAmount(int orderAmount) {
         this.orderAmount = orderAmount;
+    }
+
+    public String getOrderStateName(int orderState) {
+        switch (orderState){
+            case ORDER_STATE_READY:
+                return "待出貨";
+            case ORDER_STATE_SHIPPED:
+                return "已出貨";
+            case ORDER_STATE_RECEIVED:
+                return "已完成";
+            case ORDER_STATE_CANCEL:
+                return "已取消";
+            default:
+                return "無此訂單狀態";
+        }
     }
 }

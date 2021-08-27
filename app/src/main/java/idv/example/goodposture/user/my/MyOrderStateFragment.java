@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,16 +42,12 @@ public class MyOrderStateFragment extends Fragment {
     }
 
     public MyOrderStateFragment(int orderState) {
-        //讀取資料庫order表格的state
-        Log.d(TAG,"MyOrderStateFragment's parameter: "+orderState);
+        //從order表格所有資料取出指定的orderState的order資料
         for(Order order : allOrder){
-            Log.d(TAG,"order.getOrderState(): "+order.getOrderState());
             if(orderState == order.getOrderState()){
-                Log.d(TAG,"orderState: "+orderState);
                 showOrderStateList.add(order);
             }
         }
-        Log.d(TAG,"new MyOrderStateFragment "+orderState);
     }
 
     @Override
@@ -69,7 +67,6 @@ public class MyOrderStateFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         findViews(view);
         showMyOrderList();
-        //Log.d(TAG,"showMyOrderList"+allOrder);
     }
 
     private void findViews(View view) {
@@ -116,8 +113,12 @@ public class MyOrderStateFragment extends Fragment {
             holder.ivMyOrder.setImageResource(R.drawable.ic_baseline_close_24);
             holder.tvMyOrderDate.setText(order.getOrderTime()+"");
             holder.tvMyOrderAmount.setText("$" + order.getOrderAmount());
-//            holder.tvMyOrderDate.setText("tvMyOrderDate");
-//            holder.tvMyOrderAmount.setText("tvMyOrderAmount");
+            holder.itemView.setOnClickListener(v -> {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("order", order);
+                NavController navController = Navigation.findNavController(v);
+                navController.navigate(R.id.action_myOrderFragment_to_myOrderDetailFragment, bundle);
+            });
         }
 
         @Override
@@ -125,7 +126,6 @@ public class MyOrderStateFragment extends Fragment {
             return list == null ? 0 : list.size();
         }
     }
-
 
     //假資料
     private List<Order> getOrderList() {
@@ -136,17 +136,13 @@ public class MyOrderStateFragment extends Fragment {
         orderList.add(new Order(1,100));
         orderList.add(new Order(1,100));
         orderList.add(new Order(1,100));
+        orderList.add(new Order(1,100));
         orderList.add(new Order(2,100));
         orderList.add(new Order(3,100));
-//        //訂單時間 orderState 數量 隨機產生資料
-//        for(int i =0; i <10; i++){
-//            Date orderDate = new Date();
-//            int state = 0;
-//            state = (int)(Math.random()*10);
-//            int amount = 0;
-//            amount = (int)(Math.random()*1000);
-//            orderList.add(new Order(orderDate, state, amount));
-//        }
+        orderList.add(new Order(2,100));
+        orderList.add(new Order(3,100));
+        orderList.add(new Order(4,100));
+        orderList.add(new Order(4,100));
         return orderList;
     }
 

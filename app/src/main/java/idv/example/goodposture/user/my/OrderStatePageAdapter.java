@@ -17,10 +17,12 @@ class OrderStatePageAdapter extends FragmentStateAdapter {
 //        //初始化orderState清單
 //        this.orderState.add("待出貨");
 //        this.orderState.add("已出貨");
+//        this.orderState.add("已完成");
 //        this.orderState.add("已取消");
         //初始化pageAdaper切換的頁面們
         this.fragmentList.add(new MyOrderStateFragment(Order.ORDER_STATE_READY));
         this.fragmentList.add(new MyOrderStateFragment(Order.ORDER_STATE_SHIPPED));
+        this.fragmentList.add(new MyOrderStateFragment(Order.ORDER_STATE_RECEIVED));
         this.fragmentList.add(new MyOrderStateFragment(Order.ORDER_STATE_CANCEL));
     }
 

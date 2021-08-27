@@ -60,7 +60,7 @@ public class MyOrderFragment extends Fragment {
     private void handleToolbar() {
         activity.setSupportActionBar(toolbar);
         //ToolBar的標題預設是AndroidManifest檔案中<Application/>標籤下屬性label設定的值
-        toolbar.setTitle("我的清單");
+        toolbar.setTitle("我的訂單");
         ActionBar actionBar = activity.getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -84,6 +84,7 @@ public class MyOrderFragment extends Fragment {
         ArrayList<String> title = new ArrayList<>();
         title.add("待出貨");
         title.add("已出貨");
+        title.add("已完成");
         title.add("已取消");
         //index 從0開始
         TabLayoutMediator tabLayoutMediator =

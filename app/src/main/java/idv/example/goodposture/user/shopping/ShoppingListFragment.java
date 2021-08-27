@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -32,7 +33,7 @@ import idv.example.goodposture.R;
 
 public class ShoppingListFragment extends Fragment {
     private AppCompatActivity activity;
-    private Bundle bundle;
+    private Bundle bundle;  //  從shoppingFragment傳過來的searchText字串
 
     private Toolbar toolbar;
     private SearchView searchView;
@@ -67,7 +68,11 @@ public class ShoppingListFragment extends Fragment {
 
     private void handleToolbar() {
         activity.setSupportActionBar(toolbar);
-        toolbar.setTitle("搜尋商品列表");
+        toolbar.setTitle("");
+        ActionBar actionBar = activity.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     //建立ToolBar的menu選單

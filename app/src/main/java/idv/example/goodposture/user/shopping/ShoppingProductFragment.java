@@ -33,9 +33,10 @@ import idv.example.goodposture.R;
 public class ShoppingProductFragment extends Fragment {
     private static final String TAG = "ShoppingProductFragment";
     private AppCompatActivity activity;
+    private Product product;    //從ShoppingList傳過來的Product物件
+
     private Toolbar toolbar;
     private SearchView searchView;
-    private Product product;
     private ImageView ivProduct;
     private TextView tvProductName;
     private TextView tvProductPrice;
