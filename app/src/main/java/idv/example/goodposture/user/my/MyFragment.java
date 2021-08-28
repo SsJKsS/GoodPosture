@@ -17,7 +17,8 @@ import idv.example.goodposture.R;
 
 public class MyFragment extends Fragment {
     private Button btMyBodyInfo, btMyCalorieRecord;
-    private Button btMyOrder;
+    private Button btMyOrder, btMyAccountData, btAbout;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +27,6 @@ public class MyFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
         return inflater.inflate(R.layout.fragment_my, container, false);
     }
@@ -42,6 +42,8 @@ public class MyFragment extends Fragment {
         btMyBodyInfo = view.findViewById(R.id.bt_myBodyInfo);
         btMyCalorieRecord = view.findViewById(R.id.bt_myCalorieRecord);
         btMyOrder = view.findViewById(R.id.bt_myOrder);
+        btMyAccountData = view.findViewById(R.id.bt_myAccountData);
+        btAbout = view.findViewById(R.id.bt_about);
     }
 
     private void handleButton() {
@@ -63,5 +65,16 @@ public class MyFragment extends Fragment {
             NavController navController = Navigation.findNavController(view);
             navController.navigate(R.id.action_fragmentMy_to_myOrderFragment);
         });
+
+        btMyAccountData.setOnClickListener(view -> {
+            NavController navController = Navigation.findNavController(view);
+            navController.navigate(R.id.action_fragmentMy_to_myAccountFragment);
+        });
+
+        btAbout.setOnClickListener(view -> {
+            NavController navController = Navigation.findNavController(view);
+            navController.navigate(R.id.action_fragmentMy_to_myAboutFragment);
+        });
+
     }
 }

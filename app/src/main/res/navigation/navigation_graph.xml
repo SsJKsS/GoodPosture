@@ -31,6 +31,12 @@
         <action
             android:id="@+id/action_fragmentMy_to_myOrderFragment"
             app:destination="@id/myOrderFragment" />
+        <action
+            android:id="@+id/action_fragmentMy_to_myAccountFragment"
+            app:destination="@id/myAccountFragment" />
+        <action
+            android:id="@+id/action_fragmentMy_to_myAboutFragment"
+            app:destination="@id/myAboutFragment" />
     </fragment>
     <fragment
         android:id="@+id/homeDisplayBodyInfoFragment"
@@ -236,4 +242,18 @@
         android:name="idv.example.goodposture.user.my.MyOrderDetailFragment"
         android:label="fragment_my_order_detail"
         tools:layout="@layout/fragment_my_order_detail" />
+    <fragment
+        android:id="@+id/myAccountFragment"
+        android:name="idv.example.goodposture.user.my.MyAccountFragment"
+        android:label="fragment_my_account"
+        tools:layout="@layout/fragment_my_account" >
+        <action
+            android:id="@+id/action_myAccountFragment_to_myResetPasswordFragment"
+            app:destination="@id/myResetPasswordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myAboutFragment"
+        android:name="idv.example.goodposture.user.my.MyAboutFragment"
+        android:label="fragment_my_aboout"
+        tools:layout="@layout/fragment_my_aboout" />
 </navigation>

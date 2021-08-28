@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E1F5FE"
@@ -12,13 +11,14 @@
         android:id="@+id/bt_myBodyInfo"
         android:layout_width="180dp"
         android:layout_height="60dp"
-        android:layout_marginTop="60dp"
-        android:textSize="18sp"
-        android:textStyle="bold"
+        android:layout_marginTop="124dp"
         android:background="@drawable/blue_button_frame_shape"
         android:text="我的身體資訊"
         android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -51,20 +51,6 @@
         app:layout_constraintTop_toBottomOf="@+id/bt_myOrder" />
 
     <Button
-        android:id="@+id/bt_aboutTheApp"
-        android:layout_width="180dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="50dp"
-        android:background="@drawable/blue_button_frame_shape"
-        android:text="關於本 APP"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bt_myAccountData" />
-
-    <Button
         android:id="@+id/bt_myAccountData"
         android:layout_width="180dp"
         android:layout_height="60dp"
@@ -77,5 +63,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bt_myCalorieRecord" />
+
+    <Button
+        android:id="@+id/bt_about"
+        android:layout_width="180dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/blue_button_frame_shape"
+        android:text="關於本 APP"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bt_myAccountData"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

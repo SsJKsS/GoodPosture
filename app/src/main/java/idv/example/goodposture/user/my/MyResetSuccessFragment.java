@@ -26,12 +26,11 @@ public class MyResetSuccessFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_my_reset_success, container, false);
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view,Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         findViews(view);
         handleButton();
@@ -43,10 +42,8 @@ public class MyResetSuccessFragment extends Fragment {
 
     private void handleButton() {
         btResetSuccess.setOnClickListener(view -> {
-            // 取得NavController物件
             NavController navController = Navigation.findNavController(view);
-            // 跳至頁面
-//            navController.navigate(R.id.actionSuccessToMy);
+            navController.popBackStack(R.id.fragmentMy, false);
         });
     }
 }
