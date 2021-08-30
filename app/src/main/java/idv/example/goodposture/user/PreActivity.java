@@ -22,8 +22,6 @@ public class PreActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pre);
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
         findViews();
         handleButton();
         handleIntent();
@@ -34,11 +32,6 @@ public class PreActivity extends AppCompatActivity {
     }
 
     private void handleButton() {
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-
     }
 
     private void handleIntent() {
