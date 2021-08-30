@@ -1,5 +1,6 @@
 package idv.example.goodposture.user.my;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,15 +14,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import idv.example.goodposture.R;
+import idv.example.goodposture.user.MainActivity;
+import idv.example.goodposture.user.PreActivity;
 
 public class MyFragment extends Fragment {
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
     private Button btMyBodyInfo, btMyCalorieRecord;
     private Button btMyOrder, btMyAccountData, btAbout;
 
+=======
+    private Button btMyBodyInfo, btMyCalorieRecord, btLogout;
+    private Button btMyOrder;
+    private FirebaseAuth auth;
+>>>>>>> Stashed changes
+=======
+    private Button btMyBodyInfo, btMyCalorieRecord, btLogout;
+    private Button btMyOrder;
+    private FirebaseAuth auth;
+>>>>>>> Stashed changes
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        auth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -42,8 +60,16 @@ public class MyFragment extends Fragment {
         btMyBodyInfo = view.findViewById(R.id.bt_myBodyInfo);
         btMyCalorieRecord = view.findViewById(R.id.bt_myCalorieRecord);
         btMyOrder = view.findViewById(R.id.bt_myOrder);
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
         btMyAccountData = view.findViewById(R.id.bt_myAccountData);
         btAbout = view.findViewById(R.id.bt_about);
+=======
+        btLogout = view.findViewById(R.id.bt_logout);
+>>>>>>> Stashed changes
+=======
+        btLogout = view.findViewById(R.id.bt_logout);
+>>>>>>> Stashed changes
     }
 
     private void handleButton() {
@@ -66,6 +92,8 @@ public class MyFragment extends Fragment {
             navController.navigate(R.id.action_fragmentMy_to_myOrderFragment);
         });
 
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
         btMyAccountData.setOnClickListener(view -> {
             NavController navController = Navigation.findNavController(view);
             navController.navigate(R.id.action_fragmentMy_to_myAccountFragment);
@@ -76,5 +104,19 @@ public class MyFragment extends Fragment {
             navController.navigate(R.id.action_fragmentMy_to_myAboutFragment);
         });
 
+=======
+=======
+>>>>>>> Stashed changes
+        btLogout.setOnClickListener(view -> {
+            // 登出
+            auth.signOut();
+            // 登出後跳轉至歡迎頁
+            Intent intent = new Intent(getActivity(), PreActivity.class);
+            startActivity(intent);
+        });
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
     }
 }

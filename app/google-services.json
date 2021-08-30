@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "888666149074",
+    "project_id": "goodposture-79e7b",
+    "storage_bucket": "goodposture-79e7b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:888666149074:android:1aaae660fcbe946057dd0b",
+        "android_client_info": {
+          "package_name": "idv.example.goodposture"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "888666149074-bi3bg6cu2sb9ba0g7suqfn7tnm1jq2v9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzWxmKImfRQVY_bv4UQ5mJjixBi8Ql7pc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "888666149074-bi3bg6cu2sb9ba0g7suqfn7tnm1jq2v9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
