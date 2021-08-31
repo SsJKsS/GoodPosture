@@ -14,7 +14,14 @@
         android:id="@+id/adminCommodityFragment"
         android:name="idv.example.goodposture.admin.commodity.AdminCommodityFragment"
         android:label="fragment_admin_commodity"
-        tools:layout="@layout/fragment_admin_commodity" />
+        tools:layout="@layout/fragment_admin_commodity" >
+        <action
+            android:id="@+id/action_adminCommodityFragment_to_adminCommodityAddFragment"
+            app:destination="@id/adminCommodityAddFragment" />
+        <action
+            android:id="@+id/action_adminCommodityFragment_to_adminCommodityContextFragment"
+            app:destination="@id/adminCommodityContextFragment" />
+    </fragment>
     <fragment
         android:id="@+id/adminOrderFragment"
         android:name="idv.example.goodposture.admin.order.AdminOrderFragment"
@@ -62,5 +69,29 @@
         <action
             android:id="@+id/action_adminAboutusFragment_to_adminSettingFragment"
             app:destination="@id/adminSettingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/adminCommodityAddFragment"
+        android:name="idv.example.goodposture.admin.commodity.AdminCommodityAddFragment"
+        android:label="fragment_admin_commodity_add"
+        tools:layout="@layout/fragment_admin_commodity_add" >
+        <action
+            android:id="@+id/action_adminCommodityAddFragment_to_adminCommodityContextFragment"
+            app:destination="@id/adminCommodityContextFragment" />
+        <action
+            android:id="@+id/action_adminCommodityAddFragment_to_adminCommodityFragment"
+            app:destination="@id/adminCommodityFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/adminCommodityContextFragment"
+        android:name="idv.example.goodposture.admin.commodity.AdminCommodityContextFragment"
+        android:label="fragment_admin_commodity_context"
+        tools:layout="@layout/fragment_admin_commodity_context" >
+        <action
+            android:id="@+id/action_adminCommodityContextFragment_to_adminCommodityAddFragment"
+            app:destination="@id/adminCommodityAddFragment" />
+        <action
+            android:id="@+id/action_adminCommodityContextFragment_to_adminCommodityFragment"
+            app:destination="@id/adminCommodityFragment" />
     </fragment>
 </navigation>
