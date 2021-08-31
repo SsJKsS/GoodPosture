@@ -250,10 +250,26 @@
         <action
             android:id="@+id/action_myAccountFragment_to_myResetPasswordFragment"
             app:destination="@id/myResetPasswordFragment" />
+        <action
+            android:id="@+id/action_myAccountFragment_to_myPersonalInfoFragment"
+            app:destination="@id/myPersonalInfoFragment" />
     </fragment>
     <fragment
         android:id="@+id/myAboutFragment"
         android:name="idv.example.goodposture.user.my.MyAboutFragment"
         android:label="fragment_my_aboout"
         tools:layout="@layout/fragment_my_aboout" />
+    <fragment
+        android:id="@+id/myPersonalInfoFragment"
+        android:name="idv.example.goodposture.user.my.MyPersonalInfoFragment"
+        android:label="MyPersonalInfoFragment"
+        tools:layout="@layout/fragment_my_personal_info" >
+        <action
+            android:id="@+id/action_myPersonalInfoFragment_to_myPersonalInfoFragmentEdit"
+            app:destination="@id/myPersonalInfoFragmentEdit" />
+    </fragment>
+    <fragment
+        android:id="@+id/myPersonalInfoFragmentEdit"
+        android:name="idv.example.goodposture.user.my.MyPersonalInfoFragmentEdit"
+        android:label="MyPersonalInfoFragmentEdit" />
 </navigation>
