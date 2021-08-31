@@ -1,5 +1,6 @@
 package idv.example.goodposture.user.my;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,15 +14,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import idv.example.goodposture.R;
+import idv.example.goodposture.user.MainActivity;
+import idv.example.goodposture.user.PreActivity;
 
 public class MyFragment extends Fragment {
     private Button btMyBodyInfo, btMyCalorieRecord;
-    private Button btMyOrder, btMyAccountData, btAbout;
+    private Button btMyOrder, btMyAccountData, btAbout, btLogout;
+    private FirebaseAuth auth;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        auth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -44,6 +51,7 @@ public class MyFragment extends Fragment {
         btMyOrder = view.findViewById(R.id.bt_myOrder);
         btMyAccountData = view.findViewById(R.id.bt_myAccountData);
         btAbout = view.findViewById(R.id.bt_about);
+        btLogout = view.findViewById(R.id.bt_logout);
     }
 
     private void handleButton() {
@@ -76,5 +84,12 @@ public class MyFragment extends Fragment {
             navController.navigate(R.id.action_fragmentMy_to_myAboutFragment);
         });
 
+        btLogout.setOnClickListener(view -> {
+            // 登出
+            auth.signOut();
+            // 登出後跳轉至歡迎頁
+            Intent intent = new Intent(getActivity(), PreActivity.class);
+            startActivity(intent);
+        });
     }
 }

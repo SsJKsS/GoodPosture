@@ -32,7 +32,6 @@ public class PreActivity extends AppCompatActivity {
     }
 
     private void handleButton() {
-
     }
 
     private void handleIntent() {

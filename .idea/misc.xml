@@ -3,21 +3,31 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_admin_home_type_sales.xml" value="0.49322916666666666" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_home_display_body_info.xml" value="0.49322916666666666" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_home_login.xml" value="0.49322916666666666" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_home_register.xml" value="0.49322916666666666" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_home_register_success.xml" value="0.49322916666666666" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_home_type_body_info.xml" value="0.49322916666666666" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_my.xml" value="0.5" />
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_my_aboout.xml" value="0.49322916666666666" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_my_account.xml" value="0.49322916666666666" />
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_my_add_record.xml" value="0.49322916666666666" />
         <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/drawable/gray_button_frame_shape.xml" value="0.28055555555555556" />
-        <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/drawable/myborder.xml" value="0.3641025641025641" />
         <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/drawable/order_status_shape.xml" value="0.28055555555555556" />
         <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/layout/activity_admin.xml" value="0.14814814814814814" />
-        <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/layout/activity_pre.xml" value="0.3536458333333333" />
         <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/layout/admin_order_browse_item.xml" value="0.353125" />
         <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/layout/admin_order_details_item.xml" value="0.353125" />
-        <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/layout/admin_product_item.xml" value="0.3536458333333333" />
         <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/layout/forum_browse_item_view.xml" value="0.353125" />
         <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/layout/forum_context_item_response.xml" value="0.3536458333333333" />
-        <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/layout/fragment_admin_aboutus.xml" value="0.3536458333333333" />
-        <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/layout/fragment_admin_commodity.xml" value="0.3536458333333333" />
         <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/layout/fragment_admin_order.xml" value="0.3536458333333333" />
         <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/layout/fragment_admin_order_details.xml" value="0.3536458333333333" />
-        <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/layout/fragment_admin_setting.xml" value="0.3536458333333333" />
         <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/layout/fragment_forum_add.xml" value="0.33" />
         <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/layout/fragment_forum_browse.xml" value="0.3536458333333333" />
         <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/layout/fragment_forum_context.xml" value="0.33" />

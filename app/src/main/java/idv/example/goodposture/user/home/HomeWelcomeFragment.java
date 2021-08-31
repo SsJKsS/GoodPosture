@@ -1,5 +1,6 @@
 package idv.example.goodposture.user.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,15 +16,21 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import idv.example.goodposture.R;
+import idv.example.goodposture.user.MainActivity;
 
 public class HomeWelcomeFragment extends Fragment {
     private Button btLogin;
     private TextView tvRegister;
+    private FirebaseAuth auth;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        auth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -65,6 +72,17 @@ public class HomeWelcomeFragment extends Fragment {
             navController.navigate(R.id.actionWelcomeToLogin);
         });
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // 檢查user是否已經登入，是則FirebaseUser物件不為null
+        FirebaseUser user = auth.getCurrentUser();
+        if (user != null) {
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            startActivity(intent);
+        }
     }
 
 }
