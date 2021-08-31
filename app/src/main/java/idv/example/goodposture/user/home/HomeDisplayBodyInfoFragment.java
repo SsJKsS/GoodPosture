@@ -104,14 +104,32 @@ public class HomeDisplayBodyInfoFragment extends Fragment {
             double bmi = weight / ((height / 100) * (height / 100));
             DecimalFormat df = new DecimalFormat("#.#");  // 設定小數點後位數
             tv333.setText(auth.getCurrentUser().getUid());
-            tvDisplayBodyStatus.append(" 適中 ( " + bodyinfo.getAge() + " 歲)");
+            // 判斷 bmi
+            if (bmi < 18.5) {
+                tvDisplayBodyStatus.append(" 過輕 ( " + bodyinfo.getAge() + " 歲)");
+            }
+            else if (18.5 <= bmi && bmi < 24) {
+                tvDisplayBodyStatus.append(" 標準 ( " + bodyinfo.getAge() + " 歲)");
+            }
+            else if (24 <= bmi && bmi < 27) {
+                tvDisplayBodyStatus.append(" 過重 ( " + bodyinfo.getAge() + " 歲)");
+            }
+            else {
+                tvDisplayBodyStatus.append(" 肥胖 ( " + bodyinfo.getAge() + " 歲)");
+            }
             tvDisplayBMI.append(" " + Double.parseDouble(df.format(bmi)));
-//        男生 = 66 + (13.7 × 體重) + (5.0 × 身高) – (6.8 × 年齡)
-//        女生 = 655 + (9.6 × 體重) + (1.8 × 身高) – (4.7 × 年齡)
+            // 判斷 bmr
+            // 男生 = 66 + (13.7 × 體重) + (5.0 × 身高) – (6.8 × 年齡)
+            // 女生 = 655 + (9.6 × 體重) + (1.8 × 身高) – (4.7 × 年齡)
+            Double age = Double.parseDouble(bodyinfo.getAge());
             if (bodyinfo.getGender().equals("male")) {
-                tvDisplayBMR.append(" 2000 (男)");
+                double bmr = 66 + (13.7 * weight) + (5.0 * height) - (6.8 * age);
+                String bmrStr = Math.round(bmr) + " (男)";
+                tvDisplayBMR.append(" " + bmrStr);
             } else {
-                tvDisplayBMR.append(" 1600 (女)");
+                double bmr = 655 + (9.6 * weight) + (1.8 * height) - (4.7 * age);
+                String bmrStr = Math.round(bmr) + " (女)";
+                tvDisplayBMR.append(" " + bmrStr);
             }
         }
     }
