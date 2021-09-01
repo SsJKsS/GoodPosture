@@ -1,5 +1,6 @@
 package idv.example.goodposture.user.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,16 +14,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Objects;
 
 import idv.example.goodposture.R;
+import idv.example.goodposture.user.MainActivity;
 
 public class HomeModifyBodyInfoFragment extends Fragment {
+    private RadioGroup rgGender;
     private EditText etModifyAge, etModifyHeight, etModifyWeight;
     private Button btModifySubmit;
+    private FirebaseAuth auth;
+    private FirebaseFirestore db;
+    private Bodyinfo bodyinfo;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        bodyinfo = new Bodyinfo();
     }
 
     @Override
@@ -41,6 +57,7 @@ public class HomeModifyBodyInfoFragment extends Fragment {
     }
 
     private void findViews(View view) {
+        rgGender = view.findViewById(R.id.rg_modifyGender);
         etModifyAge = view.findViewById(R.id.et_modifyAge);
         etModifyHeight = view.findViewById(R.id.et_modifyHeight);
         etModifyWeight = view.findViewById(R.id.et_modifyWeight);
@@ -48,6 +65,14 @@ public class HomeModifyBodyInfoFragment extends Fragment {
     }
 
     private void handleButton() {
+        // 監聽選擇的性別
+        rgGender.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.rb_male) {
+                bodyinfo.setGender("male");
+            } else {
+                bodyinfo.setGender("female");
+            }
+        });
         btModifySubmit.setOnClickListener(view -> {
             final String age = String.valueOf(etModifyAge.getText());
             final String height = String.valueOf(etModifyHeight.getText());
@@ -67,11 +92,32 @@ public class HomeModifyBodyInfoFragment extends Fragment {
             if (weight.isEmpty()) {
                 etModifyWeight.setError("請輸入體重");
             } else {
-                // 取得NavController物件
-                NavController navController = Navigation.findNavController(view);
-                // 跳至修改身體資訊頁
-                navController.navigate(R.id.action_homeModifyBodyInfoFragment_to_myBodyInfoDetailFragment);
+                // 將文件 ID (UID) 設為 ID
+                bodyinfo.setId(auth.getCurrentUser().getUid());
+                // 身體資訊
+                bodyinfo.setAge(age);
+                bodyinfo.setHeight(height);
+                bodyinfo.setWeight(weight);
+                modify(bodyinfo);
             }
         });
+    }
+
+    private void modify(Bodyinfo bodyinfo) {
+        // 修改指定 ID 的文件
+        db.collection("body_info").document(bodyinfo.getId()).set(bodyinfo)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        String message = "修改成功 with ID: " + bodyinfo.getId();
+                        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                        // 修改完畢跳轉至顯示身體資訊頁面
+                        NavController navController = Navigation.findNavController(rgGender);
+                        navController.navigate(R.id.action_homeModifyBodyInfoFragment_to_myBodyInfoDetailFragment);
+                    } else {
+                        String message = task.getException() == null ?
+                                "修改失敗" : task.getException().getMessage();
+                        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

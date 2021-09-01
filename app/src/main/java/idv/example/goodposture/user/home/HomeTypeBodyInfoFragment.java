@@ -108,21 +108,18 @@ public class HomeTypeBodyInfoFragment extends Fragment {
             if (weight.isEmpty()) {
                 etWeight.setError("請輸入體重");
             } else {
-                // 先取得插入document的ID
-                final String id = db.collection("body_info").document().getId();
-                bodyinfo.setId(id);
-                // 使用者 ID
-                bodyinfo.setUid(Objects.requireNonNull(auth.getCurrentUser()).getUid());
+                // 將文件 ID (UID) 設為 ID
+                bodyinfo.setId(auth.getCurrentUser().getUid());
                 // 身體資訊
                 bodyinfo.setAge(age);
                 bodyinfo.setHeight(height);
                 bodyinfo.setWeight(weight);
-                addOrReplace(bodyinfo);
+                add(bodyinfo);
             }
         });
     }
 
-    private void addOrReplace(Bodyinfo bodyinfo) {
+    private void add(Bodyinfo bodyinfo) {
         // 如果Firestore沒有該ID的Document就建立新的，已經有就更新內容
         db.collection("body_info").document(bodyinfo.getId()).set(bodyinfo)
                 .addOnCompleteListener(task -> {

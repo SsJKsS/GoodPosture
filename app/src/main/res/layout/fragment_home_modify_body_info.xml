@@ -28,10 +28,10 @@
         android:textColor="@color/black"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/radioGroup" />
+        app:layout_constraintTop_toTopOf="@+id/rg_modifyGender" />
 
     <RadioGroup
-        android:id="@+id/radioGroup"
+        android:id="@+id/rg_modifyGender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
@@ -46,7 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="32dp"
-            android:checked="true"
+            android:checked="false"
             android:text="@string/text_male"
             android:textColor="@color/black" />
 
@@ -79,7 +79,7 @@
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView6"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+        app:layout_constraintTop_toBottomOf="@+id/rg_modifyGender" />
 
     <TextView
         android:id="@+id/textView4"

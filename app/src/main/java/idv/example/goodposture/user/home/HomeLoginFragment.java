@@ -134,17 +134,20 @@ public class HomeLoginFragment extends Fragment {
                     // 登入成功
                     if (task.isSuccessful()) {
                         // 搜尋條件 (搜尋當下登入的 uid 在 db 裡是否有資料)
-                        Query queRef = db.collection("body_info")
-                                .whereEqualTo("uid", auth.getCurrentUser().getUid());
+//                        Query queRef = db.collection("body_info")
+//                                .whereEqualTo("uid", auth.getCurrentUser().getUid());
+                        DocumentReference queRef = db.collection("body_info")
+                                .document(auth.getCurrentUser().getUid());
                         // 搜尋條件獲取資料 & 設置監聽器
                         queRef.get().addOnCompleteListener(queryTask -> {
                             // 獲取資料成功
                             if (queryTask.isSuccessful()) {
                                 // 藉由 getResult() 將獲取到的資料塞至變數
-                                QuerySnapshot document = queryTask.getResult();
+//                                QuerySnapshot document = queryTask.getResult();
+                                DocumentSnapshot document = queryTask.getResult();
                                 // 獲取到的條件資料是空的，跳轉至輸入身體資訊頁面
                                 assert document != null;
-                                if (document.isEmpty()) {
+                                if (!document.exists()) {
                                     Navigation.findNavController(etAccount)
                                             .navigate(R.id.actionLoginToTypeBodyInfo);
                                 } else {
