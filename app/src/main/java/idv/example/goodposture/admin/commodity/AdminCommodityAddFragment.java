@@ -86,10 +86,11 @@ public class AdminCommodityAddFragment extends Fragment {
         });
 
         iv_com_add_back.setOnClickListener(view->{
-            // 取得NavController物件
-            NavController navController = Navigation.findNavController(view);
-            // 跳至頁面
-            navController.navigate(R.id.action_adminCommodityAddFragment_to_adminCommodityFragment);
+//            // 取得NavController物件
+//            NavController navController = Navigation.findNavController(view);
+//            // 跳至頁面
+//            navController.navigate(R.id.action_adminCommodityAddFragment_to_adminCommodityFragment);
+            Navigation.findNavController(iv_com_add_back).popBackStack();
         });
     }
 
