@@ -94,7 +94,7 @@ public class ShoppingListFragment extends Fragment {
             navController.navigate(R.id.action_shoppingListFragment_to_shoppingCartFragment);
             return true;
         }else if(itemId == R.id.menu_toolbar_search){
-            //通過MenuItemCompat.getActionView()方法獲取SearchView
+            //通過MenuItem.getActionView()方法獲取SearchView
             searchView = (SearchView) item.getActionView();
             handleSearchView();
             return  true;

@@ -2,12 +2,23 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 <!--    ifRoom 如果界面有位置才显示，不然就出现在菜单按钮的三个点中-->
+<!--    ifRoom searchView不能跑 沒有返回鍵-->
+<!--    always  searchView不能跑 沒有返回鍵-->
+<!--    collapseActionView|always searchView能跑 有返回鍵-->
+<!--    collapseActionView|ifRoom searchView能跑 有返回鍵-->
+<!--    android:showAsAction=["ifRoom" | "never" | "withText" | "always" | "collapseActionView"]
+(01) ifRoom - 如果有空间，则显示该按钮。
+(02) withText - 显示文本。
+(03) never - 不将该按钮显示在ActionBar上。
+(04) always - 总是将该按钮显示在ActionBar上。
+(05) collapseActionView - 将按钮组合到ActionBar中。-->
+<!--    android.support.v7.widget.SearchView-->
     <item
         android:id="@+id/menu_toolbar_search"
         android:icon="@drawable/ic_baseline_search_24"
         android:title="Search"
         app:actionViewClass="android.widget.SearchView"
-        app:showAsAction="collapseActionView|ifRoom" />
+        app:showAsAction="collapseActionView|always" />
     <item
         android:id="@+id/menu_toolbar_cart"
         android:icon="@drawable/ic_baseline_shopping_cart_24"

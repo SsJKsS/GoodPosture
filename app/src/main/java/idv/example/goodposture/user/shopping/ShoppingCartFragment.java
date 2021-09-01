@@ -24,7 +24,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import idv.example.goodposture.R;
 
@@ -35,6 +38,7 @@ public class ShoppingCartFragment extends Fragment {
     private CheckBox cbSelectAll;
     private TextView tvTotalPrice;
     private Button btCartCheckout;
+
 
 
     @Override
@@ -58,6 +62,8 @@ public class ShoppingCartFragment extends Fragment {
         handleRecyclerView();
         checkout();
     }
+
+
 
     private void findViews(View view) {
         toolbar = view.findViewById(R.id.tb_shopping);
@@ -86,18 +92,48 @@ public class ShoppingCartFragment extends Fragment {
     }
 
     private void handleRecyclerView() {
-        recyclerView.setAdapter(new CartRecyclerViewAdapter(getContext(), getProductList()));
+        CartRecyclerViewAdapter adapter = new CartRecyclerViewAdapter(getContext(), getProductList());
+        recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        cbSelectAll.setOnClickListener(v -> {
+            adapter.selectAllItemView();
+        });
     }
 
     private static class CartRecyclerViewAdapter extends RecyclerView.Adapter<CartRecyclerViewAdapter.CartViewHolder>{
 
         private Context context;
         private List<Product> list;
+        //checkbox的Hashmap集合，存放每個位置的itemView的checkbox是否被選取的資料
+        private  HashMap<Integer, Boolean> cbMap;
 
         public CartRecyclerViewAdapter(Context context, List<Product> list) {
             this.context = context;
             this.list = list;
+            this.cbMap = new HashMap<>();
+            //list有多少條資料就增加多少個checlbox的Hashmap集合
+            for (int i = 0; i < list.size(); i++) {
+                this.cbMap.put(i, false);
+            }
+        }
+
+        /**
+         * 全選
+         */
+        public void selectAllItemView() {
+            Set<Map.Entry<Integer, Boolean>> entries = cbMap.entrySet();
+            boolean ckAll = false;
+            for (Map.Entry<Integer, Boolean> entry : entries) {
+                Boolean value = entry.getValue();
+                if (!value) {
+                    ckAll = true;
+                    break;
+                }
+            }
+            for (Map.Entry<Integer, Boolean> entry : entries) {
+                entry.setValue(ckAll);
+            }
+            notifyDataSetChanged();
         }
         //定義ViewHolder
         private static class CartViewHolder extends RecyclerView.ViewHolder {
@@ -119,6 +155,7 @@ public class ShoppingCartFragment extends Fragment {
 
         @Override
         public CartRecyclerViewAdapter.CartViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            //初始化佈局檔案
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_view_shopping_cart, parent, false);
             return new CartRecyclerViewAdapter.CartViewHolder(itemView);
         }
@@ -136,14 +173,24 @@ public class ShoppingCartFragment extends Fragment {
                 NavController navController = Navigation.findNavController(v);
                 navController.navigate(R.id.action_shoppingCartFragment_to_shoppingProductFragment, bundle);
             });
-            holder.amountProduct.setGoods_storage(50);
+            holder.amountProduct.setGoods_storage(50);  //product.getStorage()
             holder.amountProduct.setOnAmountChangeListener(new AmountView.OnAmountChangeListener() {
                 @Override
                 public void onAmountChange(View view, int amount) {
-
+                    // amount：這筆訂單清單的商品數量
                 }
             });
-            //處理checkall!!!!!!!
+            //checkbox要先設定checked狀態!!!!
+            holder.cbCartItem.setChecked(cbMap.get(position));
+            //itemView的checkBox被點擊後，更新cbMap資料
+            holder.cbCartItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cbMap.put(position, !cbMap.get(position));
+                    //重新整理recyclerView
+                    notifyDataSetChanged();
+                }
+            });
         }
 
 

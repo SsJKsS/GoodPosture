@@ -1,15 +1,18 @@
 package idv.example.goodposture.user.shopping;
 
+import android.app.SearchManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -78,8 +81,9 @@ public class ShoppingFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         //載入menu
         inflater.inflate(R.menu.shopping_toolbar_menu, menu);
-        //Log.d("onCreateOptionsMenu","success");
-
+//        MenuItem searchActionMenuItem = menu.findItem(R.id.menu_toolbar_search);
+//        searchView = (SearchView) searchActionMenuItem.getActionView();
+//        searchView.setIconified(false);
     }
 
     //覆寫menu選項的監聽
@@ -93,8 +97,18 @@ public class ShoppingFragment extends Fragment {
             navController.navigate(R.id.action_fragmentShopping_to_shoppingCartFragment);
             return true;
         }else if(itemId == R.id.menu_toolbar_search){
-            //通過MenuItemCompat.getActionView()方法獲取SearchView
+
+            //通過MenuItem.getActionView()方法獲取SearchView
             searchView = (SearchView) item.getActionView();
+//            searchView.setIconified(false);
+//            searchView.setQueryHint("search");
+//            searchView.setIconifiedByDefault(true);
+//            // Get the SearchView and set the searchable configuration
+//            SearchManager searchManager = (SearchManager) activity.getSystemService(getContext().SEARCH_SERVICE);
+//            // Assumes current activity is the searchable activity
+//            searchView.setSearchableInfo(searchManager.getSearchableInfo(activity.getComponentName()));
+//            // true:icon會顯示在searchview背景
+//            searchView.setIconifiedByDefault(true);
             handleSearchView();
             return  true;
         }else{

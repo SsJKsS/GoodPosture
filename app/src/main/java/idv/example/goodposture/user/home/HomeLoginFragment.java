@@ -79,8 +79,8 @@ public class HomeLoginFragment extends Fragment {
 
     private void handleImage() {
         ivPerson.setOnClickListener(view -> {
-            etAccount.setText("s");
-            etPassword.setText("s");
+            etAccount.setText("qq@gmail.com");
+            etPassword.setText("111111");
         });
 
         ivKey.setOnClickListener(view -> {
