@@ -24,6 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.text.DecimalFormat;
+import java.util.Objects;
 
 import idv.example.goodposture.R;
 
@@ -68,37 +69,45 @@ public class HomeDisplayBodyInfoFragment extends Fragment {
     }
 
     private void handleView() {
+        /**
+         查詢指定文件內的欄位 (EX : uid)
+         .whereEqualTo("uid", auth.getCurrentUser().getUid())
+         查詢指定文件 (有給值指定，文件 ID 為當下使用者的 UID)
+         .document(auth.getCurrentUser().getUid())
+         查詢指定文件 (沒給值，系統產生一組隨機字串作為文件 ID)
+         .document()
+         */
         // 查詢指定集合
         db.collection("body_info")
-                // 查詢指定文件
-                .whereEqualTo("uid", auth.getCurrentUser().getUid())
+                .document(Objects.requireNonNull(auth.getCurrentUser()).getUid())
                 // 獲取資料
                 .get()
                 // 設置網路傳輸監聽器
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
                         // 將獲取的資料存成自定義類別
-                        for (DocumentSnapshot documentSnapshot : task.getResult()) {
-                            bodyinfo = documentSnapshot.toObject(Bodyinfo.class);
-                        }
+                        // for (DocumentSnapshot documentSnapshot : task.getResult())
+                        DocumentSnapshot documentSnapshot = task.getResult();
+                        bodyinfo = documentSnapshot.toObject(Bodyinfo.class);
                         showInfo();
-                    } else {
-                        String message = task.getException() == null ?
-                                "查無資料" :
-                                task.getException().getMessage();
-                        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                     }
-                });
-    }
+                 else{
+            String message = task.getException() == null ?
+                    "查無資料" :
+                    task.getException().getMessage();
+            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        }
+
+    });
+}
 
     private void showInfo() {
         if (bodyinfo.getHeight() == null) {
-            tv333.setText(auth.getCurrentUser().getUid());
+            tv333.setText(Objects.requireNonNull(auth.getCurrentUser()).getUid());
             tvDisplayBodyStatus.append(" 無資料");
             tvDisplayBMI.append(" 無資料");
             tvDisplayBMR.append(" 無資料");
-        }
-        else {
+        } else {
             Double height = Double.parseDouble(bodyinfo.getHeight());
             Double weight = Double.parseDouble(bodyinfo.getWeight());
             double bmi = weight / ((height / 100) * (height / 100));
@@ -106,16 +115,13 @@ public class HomeDisplayBodyInfoFragment extends Fragment {
             tv333.setText(auth.getCurrentUser().getUid());
             // 判斷 bmi
             if (bmi < 18.5) {
-                tvDisplayBodyStatus.append(" 過輕 ( " + bodyinfo.getAge() + " 歲)");
-            }
-            else if (18.5 <= bmi && bmi < 24) {
-                tvDisplayBodyStatus.append(" 標準 ( " + bodyinfo.getAge() + " 歲)");
-            }
-            else if (24 <= bmi && bmi < 27) {
-                tvDisplayBodyStatus.append(" 過重 ( " + bodyinfo.getAge() + " 歲)");
-            }
-            else {
-                tvDisplayBodyStatus.append(" 肥胖 ( " + bodyinfo.getAge() + " 歲)");
+                tvDisplayBodyStatus.append(" 過輕 ( " + bodyinfo.getAge() + " 歲 )");
+            } else if (18.5 <= bmi && bmi < 24) {
+                tvDisplayBodyStatus.append(" 標準 ( " + bodyinfo.getAge() + " 歲 )");
+            } else if (24 <= bmi && bmi < 27) {
+                tvDisplayBodyStatus.append(" 過重 ( " + bodyinfo.getAge() + " 歲 )");
+            } else {
+                tvDisplayBodyStatus.append(" 肥胖 ( " + bodyinfo.getAge() + " 歲 )");
             }
             tvDisplayBMI.append(" " + Double.parseDouble(df.format(bmi)));
             // 判斷 bmr

@@ -2,7 +2,6 @@ package idv.example.goodposture.user.home;
 
 public class Bodyinfo {
     private String id;
-    private String uid;
     private String gender;
     private String age;
     private String height;
@@ -11,9 +10,8 @@ public class Bodyinfo {
     public Bodyinfo() {
     }
 
-    public Bodyinfo(String id, String uid, String gender, String age, String height, String weight) {
+    public Bodyinfo(String id, String gender, String age, String height, String weight) {
         this.id = id;
-        this.uid = uid;
         this.gender = gender;
         this.age = age;
         this.height = height;
@@ -26,14 +24,6 @@ public class Bodyinfo {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
     }
 
     public String getGender() {
