@@ -46,11 +46,11 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
                 <ImageView
-                    android:id="@+id/iv_my_account"
+                    android:id="@+id/iv_my_avatar_info"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/shopping_cat2" />
+                    android:src="@drawable/no_image" />
             </androidx.cardview.widget.CardView>
 
             <LinearLayout
@@ -88,7 +88,6 @@
                         android:layout_marginStart="20dp"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="李姿雪"
                         android:textSize="24sp" />
                 </LinearLayout>
 
@@ -115,7 +114,6 @@
                         android:layout_marginStart="20dp"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="Tibame"
                         android:textSize="24sp" />
                 </LinearLayout>
 
@@ -142,7 +140,6 @@
                         android:layout_marginStart="20dp"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="20"
                         android:textSize="24sp" />
                 </LinearLayout>
 
@@ -169,8 +166,6 @@
                         android:layout_marginStart="20dp"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:minWidth="48dp"
-                        android:text="titi"
                         android:textSize="24sp" />
                 </LinearLayout>
 
@@ -197,7 +192,6 @@
                         android:layout_marginStart="20dp"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="女"
                         android:textSize="24sp" />
                 </LinearLayout>
 
@@ -224,7 +218,6 @@
                         android:layout_marginStart="20dp"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="0912-345-678"
                         android:textSize="24sp" />
                 </LinearLayout>
 
@@ -251,34 +244,6 @@
                         android:layout_marginStart="20dp"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="2021/07/24"
-                        android:textSize="24sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/layout_login"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="32dp"
-                    android:layout_weight="1">
-
-                    <TextView
-                        android:id="@+id/my_info_login"
-                        android:layout_width="164dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="上次登入時間"
-                        android:textSize="24sp" />
-
-                    <TextView
-                        android:id="@+id/my_info_login_content"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="2021/07/24"
                         android:textSize="24sp" />
                 </LinearLayout>
 
