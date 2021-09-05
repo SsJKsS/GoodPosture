@@ -30,6 +30,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Objects;
+
 import idv.example.goodposture.R;
 import idv.example.goodposture.admin.AdminActivity;
 import idv.example.goodposture.user.MainActivity;
@@ -42,7 +44,7 @@ public class HomeLoginFragment extends Fragment {
     private Activity activity;
     private FirebaseAuth auth;
     private FirebaseFirestore db;
-
+    private Password pass;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,7 @@ public class HomeLoginFragment extends Fragment {
         activity = getActivity();
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+        pass = new Password();
     }
 
     @Override
@@ -123,6 +126,7 @@ public class HomeLoginFragment extends Fragment {
             // 連接 firebase 登入
             else {
                 signIn(account, password);
+                pass.setPassword(password);
             }
         });
     }
@@ -157,6 +161,8 @@ public class HomeLoginFragment extends Fragment {
                                 }
                             }
                         });
+                        // 儲存登入時輸入的密碼至 db，以便重設密碼使用
+                        savePassword();
                     // 登入失敗顯示錯誤訊息
                     } else {
                         String message;
@@ -181,6 +187,12 @@ public class HomeLoginFragment extends Fragment {
                         tvError.setTextColor(Color.RED);
                     }
                 });
+    }
+
+    private void savePassword() {
+        // 修改指定 ID 的文件
+        db.collection("password")
+                .document(auth.getCurrentUser().getUid()).set(pass);
     }
 
 }
