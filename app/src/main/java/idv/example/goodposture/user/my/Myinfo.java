@@ -1,6 +1,8 @@
 package idv.example.goodposture.user.my;
 
-public class Myinfo {
+import java.io.Serializable;
+
+public class Myinfo implements Serializable {
     private String id;
     private String name;
     private String account;

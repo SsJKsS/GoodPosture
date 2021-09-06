@@ -9,6 +9,7 @@
         <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/drawable/myborder.xml" value="0.3641025641025641" />
         <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/drawable/order_status_shape.xml" value="0.28055555555555556" />
         <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/layout/activity_admin.xml" value="0.14814814814814814" />
+        <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/layout/activity_main.xml" value="0.353125" />
         <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/layout/activity_pre.xml" value="0.3536458333333333" />
         <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/layout/admin_order_browse_item.xml" value="0.353125" />
         <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/layout/admin_order_details_item.xml" value="0.353125" />
@@ -28,6 +29,7 @@
         <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/layout/fragment_forum_not_find.xml" value="0.3536458333333333" />
         <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/layout/fragment_home_display_body_info.xml" value="0.3536458333333333" />
         <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/layout/fragment_home_modify_body_info.xml" value="0.3536458333333333" />
+        <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/layout/fragment_my_personal_info.xml" value="0.1962962962962963" />
       </map>
     </option>
   </component>

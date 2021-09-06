@@ -1,6 +1,8 @@
 package idv.example.goodposture.user.forum;
 
-public class ForumBrowseList {
+import java.io.Serializable;
+
+public class ForumBrowseList implements Serializable {
     private String likes;
     private String messages;
     private Integer ivLike;
@@ -8,12 +10,14 @@ public class ForumBrowseList {
     private String title;
     private String author;
     private String time;
+    private String id;
+    private String context;
 
 
     public ForumBrowseList() {
     }
 
-    public ForumBrowseList(String title, String author, String time, Integer ivLike,String likes, Integer ivMessage, String messages) {
+    public ForumBrowseList(String title, String author, String time, Integer ivLike,String likes, Integer ivMessage, String messages,String id,String context) {
         this.likes = likes;
         this.messages = messages;
         this.ivLike = ivLike;
@@ -21,6 +25,8 @@ public class ForumBrowseList {
         this.title = title;
         this.author = author;
         this.time = time;
+        this.id = id;
+        this.context = context;
     }
 
     public String getLikes() {
@@ -77,5 +83,21 @@ public class ForumBrowseList {
 
     public void setIvMessage(Integer ivMessage) {
         this.ivMessage = ivMessage;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getContext() {
+        return context;
+    }
+
+    public void setContext(String context) {
+        this.context = context;
     }
 }

@@ -24,7 +24,7 @@ public class PreActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pre);
         findViews();
         handleButton();
-        handleIntent();
+//        handleIntent();
     }
 
     private void findViews() {
@@ -35,13 +35,15 @@ public class PreActivity extends AppCompatActivity {
     }
 
     private void handleIntent() {
+        NavController navController = Navigation.findNavController(this,R.id.fragment);
         int id = getIntent().getIntExtra("id",0);
         if(id == 1){
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.homeLoginFragment,new HomeLoginFragment())
-                    .addToBackStack(null)
-                    .commit();
+            navController.navigate(R.id.homeLoginFragment);
+//            getSupportFragmentManager()
+//                    .beginTransaction()
+//                    .replace(R.id.homeLoginFragment,new HomeLoginFragment())
+//                    .addToBackStack(null)
+//                    .commit();
         }
     }
 }

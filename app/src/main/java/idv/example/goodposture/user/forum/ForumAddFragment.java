@@ -1,29 +1,51 @@
 package idv.example.goodposture.user.forum;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Objects;
+
 import idv.example.goodposture.R;
+import idv.example.goodposture.user.home.Bodyinfo;
+import idv.example.goodposture.user.my.Myinfo;
 
 public class ForumAddFragment extends Fragment {
+    private static final String TAG = "TAG_ForumAddFragment";
+    private AppCompatActivity activity;
     private ImageView iv_back2;
     private ImageView iv_send;
     private EditText et_title;
     private EditText et_context;
+    private FirebaseFirestore db;
+    private ForumBrowseList forumBrowseList;
+    private FirebaseAuth auth;
+    private Myinfo myinfo;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = (AppCompatActivity) getActivity();
+        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
+        forumBrowseList = new ForumBrowseList();
+        myinfo = new Myinfo();
     }
 
     @Override
@@ -51,35 +73,71 @@ public class ForumAddFragment extends Fragment {
 
     private void handleback2() {
         iv_back2.setOnClickListener( view ->{
-            // 取得NavController物件
-            NavController navController = Navigation.findNavController(view);
-            // 跳至頁面
-            navController.navigate(R.id.action_forumAddFragment_to_forumBrowseFragment2);
+            Navigation.findNavController(iv_back2).popBackStack();
         });
     }
 
     private void handlesend() {
-        iv_send.setOnClickListener( view ->{
-            final String title = String.valueOf(et_title.getText());
-            final String context = String.valueOf(et_context.getText());
 
+        db.collection("my_info")
+                .document(Objects.requireNonNull(auth.getCurrentUser()).getUid())
+                // 獲取資料
+                .get()
+                // 設置網路傳輸監聽器
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        // 將獲取的資料存成自定義類別
+                        // for (DocumentSnapshot documentSnapshot : task.getResult())
+                        DocumentSnapshot documentSnapshot = task.getResult();
+                        myinfo = documentSnapshot.toObject(Myinfo.class);
+//                            forumBrowseList = documentSnapshot.toObject(ForumBrowseList.class);
+//                            assert forumBrowseList != null;
+//                            forumBrowseList.setAuthor(myinfo.getNickname());
+                    } else {
+                        String message = task.getException() == null ?
+                                "查無資料" :
+                                task.getException().getMessage();
+                        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        iv_send.setOnClickListener( view ->{
+//            final String title = String.valueOf(et_title.getText());
+//            final String context = String.valueOf(et_context.getText());
+            final String id = db.collection("forumBrowseList").document().getId();
+            forumBrowseList.setId(id);
+
+
+            String title = et_title.getText().toString().trim();
             if (title.isEmpty()){
                 et_title.setError("請輸入標題");
             }
+
+            String context = et_context.getText().toString().trim();
             if (context.isEmpty()){
                 et_context.setError("請輸入內文");
-
+            }else {
+                forumBrowseList.setTitle(title);
+                forumBrowseList.setContext(context);
+                forumBrowseList.setAuthor(myinfo.getNickname());
+                addForumBrowseList(forumBrowseList);
             }
-            if(!title.isEmpty() && !context.isEmpty()){
-                // 取得NavController物件
-                NavController navController = Navigation.findNavController(view);
-                // 跳至頁面
-                navController.navigate(R.id.action_forumAddFragment_to_forumBrowseFragment2);
-            }
-
-
-
-
         });
+    }
+
+    private void addForumBrowseList(final ForumBrowseList forumBrowseList){
+        db.collection("forumBrowseList").document().set(forumBrowseList)
+                .addOnCompleteListener(task ->{
+                    if (task.isSuccessful()){
+                        String message = "forumBrowseList is inserted" + "with ID:" +forumBrowseList.getId();
+                        Log.e(TAG,"message"+message);
+                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                        Navigation.findNavController(iv_send).popBackStack();
+                    } else {
+                        String message = task.getException() == null ? "Insert failed" : task.getException().getMessage();
+                        Log.e(TAG,"message: "+message);
+                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import idv.example.goodposture.R;
 import idv.example.goodposture.user.MainActivity;
+import idv.example.goodposture.user.PreActivity;
 
 
 public class AdminSettingFragment extends Fragment {
@@ -90,7 +91,8 @@ public class AdminSettingFragment extends Fragment {
         alertDialog.setNegativeButton("是", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(getActivity(), MainActivity.class);
+                Intent intent = new Intent(getActivity(), PreActivity.class);
+//                Intent intent = new Intent(getActivity(), MainActivity.class);
                 intent.putExtra("id",1);
                 startActivity(intent);
 

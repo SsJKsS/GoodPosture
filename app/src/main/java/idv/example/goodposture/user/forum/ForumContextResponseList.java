@@ -2,18 +2,22 @@ package idv.example.goodposture.user.forum;
 
 import android.widget.TextView;
 
-public class ForumContextResponseList {
+import java.io.Serializable;
+
+public class ForumContextResponseList implements Serializable {
     private String tv_Response_User;
     private String tv_Response_Time;
     private String tv_Response_Context;
+    private String id;
 
     public ForumContextResponseList() {
     }
 
-    public ForumContextResponseList(String tv_Response_User, String tv_Response_Time, String tv_Response_Context) {
+    public ForumContextResponseList(String tv_Response_User, String tv_Response_Time, String tv_Response_Context, String id) {
         this.tv_Response_User = tv_Response_User;
         this.tv_Response_Time = tv_Response_Time;
         this.tv_Response_Context = tv_Response_Context;
+        this.id = id;
     }
 
     public String getTv_Response_User() {
@@ -38,5 +42,13 @@ public class ForumContextResponseList {
 
     public void setTv_Response_Context(String tv_Response_Context) {
         this.tv_Response_Context = tv_Response_Context;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
