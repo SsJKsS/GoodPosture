@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_home_type_body_info.xml" value="0.49322916666666666" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_my_order_state.xml" value="0.49322916666666666" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_my_reset_password.xml" value="0.4814438230808338" />
         <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/drawable/bt_admin_product.xml" value="0.2601851851851852" />
         <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/drawable/gray_button_frame_shape.xml" value="0.28055555555555556" />
         <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/drawable/ic_baseline_camera_alt_24.xml" value="0.28425925925925927" />
