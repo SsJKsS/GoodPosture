@@ -117,7 +117,7 @@ public class Order implements Serializable {
         this.orderAmount = orderAmount;
     }
 
-    public String getOrderStateName(int orderState) {
+    public static String getOrderStateName(int orderState) {
         switch (orderState){
             case ORDER_STATE_READY:
                 return "待出貨";

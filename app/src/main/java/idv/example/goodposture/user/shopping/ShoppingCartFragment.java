@@ -59,7 +59,7 @@ public class ShoppingCartFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         findViews(view);
         handleToolbar();
-        handleRecyclerView();
+        //handleRecyclerView();
         checkout();
     }
 
@@ -84,21 +84,21 @@ public class ShoppingCartFragment extends Fragment {
     //返回鑑被視為功能選單的選項
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
-        final int itemId = item.getItemId();
+        int itemId = item.getItemId();
         if(itemId == android.R.id.home){
             Navigation.findNavController(toolbar).popBackStack();
         }
         return true;
     }
 
-    private void handleRecyclerView() {
-        CartRecyclerViewAdapter adapter = new CartRecyclerViewAdapter(getContext(), getProductList());
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        cbSelectAll.setOnClickListener(v -> {
-            adapter.selectAllItemView();
-        });
-    }
+//    private void handleRecyclerView() {
+//        CartRecyclerViewAdapter adapter = new CartRecyclerViewAdapter(getContext(), getProductList());
+//        recyclerView.setAdapter(adapter);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//        cbSelectAll.setOnClickListener(v -> {
+//            adapter.selectAllItemView();
+//        });
+//    }
 
     private static class CartRecyclerViewAdapter extends RecyclerView.Adapter<CartRecyclerViewAdapter.CartViewHolder>{
 
@@ -163,9 +163,9 @@ public class ShoppingCartFragment extends Fragment {
         @Override
         public void onBindViewHolder(CartRecyclerViewAdapter.CartViewHolder holder, int position) {
             Product product = list.get(position);
-            holder.ivCartItemProduct.setImageResource(product.getImageId());
-            holder.tvProductName.setText(product.getProductName());
-            holder.tvProductPrice.setText("$" + product.getProductPrice());
+//            holder.ivCartItemProduct.setImageResource(product.getImageId());
+//            holder.tvProductName.setText(product.getProductName());
+//            holder.tvProductPrice.setText("$" + product.getProductPrice());
             holder.ivCartItemProduct.setOnClickListener( v -> {
                 //寫帶過去的資料
                 Bundle bundle = new Bundle();
@@ -208,26 +208,27 @@ public class ShoppingCartFragment extends Fragment {
         });
     }
 
-    private List<Product> getProductList() {
-        List<Product> productsList = new ArrayList<>();
-        productsList.add(new Product(R.drawable.shopping_cat, "a貓咪一號", 200));
-        productsList.add(new Product(R.drawable.shopping_cat2, "b貓咪二號", 300));
-        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
-        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
-        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
-        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
-        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
-        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
-        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
-        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
-        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
-        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
-        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
-        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
-        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
-        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
-        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
-        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
-        return productsList;
-    }
+//    private List<Product> getProductList() {
+//        List<Product> productsList = new ArrayList<>();
+//        productsList.add(new Product(R.drawable.shopping_cat, "a貓咪一號", 200));
+//        productsList.add(new Product(R.drawable.shopping_cat2, "b貓咪二號", 300));
+//        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+//        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+//        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+//        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+//        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+//        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+//        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+//        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+//        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+//        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+//        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+//        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+//        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+//        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+//        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+//        productsList.add(new Product(R.drawable.shopping_cat3, "b貓咪三號", 400));
+//        return productsList;
+//    }
+
 }

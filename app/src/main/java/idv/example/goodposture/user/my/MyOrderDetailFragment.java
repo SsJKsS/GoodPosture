@@ -1,21 +1,7 @@
 package idv.example.goodposture.user.my;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.telecom.Call;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -25,18 +11,24 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.jetbrains.annotations.NotNull;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import idv.example.goodposture.R;
-import idv.example.goodposture.user.shopping.Product;
-import idv.example.goodposture.user.shopping.ShoppingOrderFragment;
 
 public class MyOrderDetailFragment extends Fragment {
-    private static final String TAG = "MyOrderDetailFragment";
+    private static final String TAG = "TAG_MyOrderDetailFragment";
     private AppCompatActivity activity;
     private Order order;     //從MyOrderStateFragment傳來的Order物件
 
@@ -55,12 +47,14 @@ public class MyOrderDetailFragment extends Fragment {
         activity = (AppCompatActivity) getActivity();
         setHasOptionsMenu(true);
         order = (Order) (getArguments() != null ? getArguments().getSerializable("order") : null);
+        Log.d(TAG, "onCreate ");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_my_order_detail, container, false);
+
     }
 
     @Override
@@ -70,6 +64,41 @@ public class MyOrderDetailFragment extends Fragment {
         handleToolbar();
         showOrderData(order);
         handleRecyclerView();
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart ");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume ");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause  ");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop  ");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d(TAG, "onDestroyView ");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy ");
     }
 
     private void findViews(View view) {
@@ -133,6 +162,8 @@ public class MyOrderDetailFragment extends Fragment {
                     })
                     .setNegativeButton("取消", (dialog, which) -> { })
                     .show();
+            order.setOrderState(Order.ORDER_STATE_RECEIVED);
+            order.setOrderAmount(12);
         });
         //TODO 要再想一下資料庫更新資料的順序
     }
