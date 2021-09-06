@@ -81,6 +81,7 @@ public class ShoppingFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         //載入menu
         inflater.inflate(R.menu.shopping_toolbar_menu, menu);
+
 //        MenuItem searchActionMenuItem = menu.findItem(R.id.menu_toolbar_search);
 //        searchView = (SearchView) searchActionMenuItem.getActionView();
 //        searchView.setIconified(false);
@@ -98,8 +99,10 @@ public class ShoppingFragment extends Fragment {
             return true;
         }else if(itemId == R.id.menu_toolbar_search){
 
-            //通過MenuItem.getActionView()方法獲取SearchView
-            searchView = (SearchView) item.getActionView();
+//            //通過MenuItem.getActionView()方法獲取SearchView
+//            searchView = (SearchView) item.getActionView();
+//            //item.expandActionView();
+//            searchView.setQueryHint("商品名");
 //            searchView.setIconified(false);
 //            searchView.setQueryHint("search");
 //            searchView.setIconifiedByDefault(true);
@@ -109,34 +112,38 @@ public class ShoppingFragment extends Fragment {
 //            searchView.setSearchableInfo(searchManager.getSearchableInfo(activity.getComponentName()));
 //            // true:icon會顯示在searchview背景
 //            searchView.setIconifiedByDefault(true);
-            handleSearchView();
+            //handleSearchView();
+            //建立navController
+            NavController navController = Navigation.findNavController(toolbar);
+            // 跳至shoppingCart頁面
+            navController.navigate(R.id.action_fragmentShopping_to_shoppingListFragment);
             return  true;
         }else{
             return super.onOptionsItemSelected(item);
         }
     }
 
-    private void handleSearchView() {
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            // // 提交文字時呼叫
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                //搜尋文字
-                Bundle bundle = new Bundle();
-                bundle.putString("searchText",query);
-                //建立navController
-                NavController navController = Navigation.findNavController(toolbar);
-                // 跳至頁面
-                navController.navigate(R.id.action_fragmentShopping_to_shoppingListFragment,bundle);
-                return false;
-            }
-            // 文字搜尋框發生變化時呼叫
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-    }
+//    private void handleSearchView() {
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            // // 提交文字時呼叫
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                //搜尋文字
+//                Bundle bundle = new Bundle();
+//                bundle.putString("searchText",query);
+//                //建立navController
+//                NavController navController = Navigation.findNavController(toolbar);
+//                // 跳至頁面
+//                navController.navigate(R.id.action_fragmentShopping_to_shoppingListFragment,bundle);
+//                return true;
+//            }
+//            // 文字搜尋框發生變化時呼叫
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                return false;
+//            }
+//        });
+//    }
 
 
     private void handleViewFlipper(int[] images) {
@@ -151,6 +158,13 @@ public class ShoppingFragment extends Fragment {
         vfAd.setInAnimation(getContext(), android.R.anim.slide_in_left );
         vfAd.setOutAnimation(getContext(),android.R.anim.slide_out_right);
 
+//        vfAd.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                NavController navController = Navigation.findNavController(vfAd);
+//                navController.navigate(R.id.action_fragmentShopping_to_shoppingSearchFragment);
+//            }
+//        });
     }
     //顯示食物類型商品
     private void handleIbFood() {

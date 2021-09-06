@@ -63,7 +63,7 @@ public class ShoppingProductFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         findViews(view);
         handleToolbar();
-        showProduct(product);
+        //showProduct(product);
         addToCart();
         buyProduct();
     }
@@ -96,7 +96,7 @@ public class ShoppingProductFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         //載入menu
-        inflater.inflate(R.menu.shopping_toolbar_menu, menu);
+        inflater.inflate(R.menu.shopping_list_toolbar_menu, menu);
         //Log.d("onCreateOptionsMenu","success");
     }
     //返回鑑被視為功能選單的選項
@@ -142,14 +142,14 @@ public class ShoppingProductFragment extends Fragment {
     }
 
     //顯示商品畫面
-    private void showProduct(Product product) {
-        int imageId = product.getImageId();
-        String productName = product.getProductName();
-        int productPrice = product.getProductPrice();
-        ivProduct.setImageResource(imageId);
-        tvProductName.setText(productName);
-        tvProductPrice.setText("$" + productPrice);
-    }
+//    private void showProduct(Product product) {
+//        int imageId = product.getImageId();
+//        String productName = product.getProductName();
+//        int productPrice = product.getProductPrice();
+//        ivProduct.setImageResource(imageId);
+//        tvProductName.setText(productName);
+//        tvProductPrice.setText("$" + productPrice);
+//    }
 
     //加入購物車，顯示加入的動畫|改變購物車icon的圖案
     private void addToCart() {

@@ -32,28 +32,32 @@ import idv.example.goodposture.user.shopping.ShoppingOrderFragment;
 
 public class MyOrderStateFragment extends Fragment {
     private static final String TAG = "TAG_MyOrderStateFragment";
+    int orderState;
     private AppCompatActivity activity;
     private RecyclerView rvMyOrder;
-    private List<Order> allOrder =  getOrderList();
-    private List<Order> showOrderStateList = new ArrayList<>();
+    private final List<Order> allOrderList = TestData.allOrderList;
+    //private final List<Order> statedOrderList = new ArrayList<>();
 
     public MyOrderStateFragment() {
         // Required empty public constructor
     }
 
     public MyOrderStateFragment(int orderState) {
-        //從order表格所有資料取出指定的orderState的order資料
-        for(Order order : allOrder){
-            if(orderState == order.getOrderState()){
-                showOrderStateList.add(order);
-            }
-        }
+        this.orderState = orderState;
+//        List<Order> statedOrderList = new ArrayList<>();
+//        //從order表格所有資料取出指定的orderState的order資料
+//        for (Order order : allOrderList) {
+//            if (orderState == order.getOrderState()) {
+//                statedOrderList.add(order);
+//            }
+//        }
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = (AppCompatActivity) getActivity();
+        Log.d(TAG, "onCreate " + Order.getOrderStateName(orderState));
     }
 
     @Override
@@ -66,7 +70,54 @@ public class MyOrderStateFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         findViews(view);
+
+        //showMyOrderList();
+        Log.d(TAG, "onViewCreated " + Order.getOrderStateName(orderState));
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart " + Order.getOrderStateName(orderState));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume " + Order.getOrderStateName(orderState));
+//        //rvMyOrder.getAdapter().notifyDataSetChanged();
+//
+//        //從order表格所有資料取出指定的orderState的order資料
+//        for (Order order : allOrderList) {
+//            if (orderState == order.getOrderState()) {
+//                statedOrderList.add(order);
+//            }
+//        }
         showMyOrderList();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause  " + Order.getOrderStateName(orderState));
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop  " + Order.getOrderStateName(orderState));
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d(TAG, "onDestroyView " + Order.getOrderStateName(orderState));
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy " + Order.getOrderStateName(orderState));
     }
 
     private void findViews(View view) {
@@ -74,19 +125,28 @@ public class MyOrderStateFragment extends Fragment {
     }
 
     private void showMyOrderList() {
-        rvMyOrder.setAdapter(new MyOrderRVAdapter(getContext(), showOrderStateList));
+        List<Order> statedOrderList = new ArrayList<>();
+        //從order表格所有資料取出指定的orderState的order資料
+        for (Order order : allOrderList) {
+            if (orderState == order.getOrderState()) {
+                statedOrderList.add(order);
+            }
+        }
+        rvMyOrder.setAdapter(new MyOrderRVAdapter(getContext(), statedOrderList));
         rvMyOrder.setLayoutManager(new LinearLayoutManager(getContext()));
+        //Log.d(TAG, "showMyOrderList");
     }
 
-    private static class MyOrderRVAdapter extends RecyclerView.Adapter<MyOrderRVAdapter.MyOrderViewHolder>{
+    private static class MyOrderRVAdapter extends RecyclerView.Adapter<MyOrderRVAdapter.MyOrderViewHolder> {
 
-        private Context context;
-        private List<Order> list;
+        private final Context context;
+        private final List<Order> list;
 
         public MyOrderRVAdapter(Context context, List<Order> list) {
             this.context = context;
             this.list = list;
         }
+
         private static class MyOrderViewHolder extends RecyclerView.ViewHolder {
             ImageView ivMyOrder;
             TextView tvMyOrderDate;
@@ -111,7 +171,7 @@ public class MyOrderStateFragment extends Fragment {
         public void onBindViewHolder(MyOrderRVAdapter.MyOrderViewHolder holder, int position) {
             Order order = list.get(position);
             holder.ivMyOrder.setImageResource(R.drawable.ic_baseline_close_24);
-            holder.tvMyOrderDate.setText(order.getOrderTime()+"");
+            holder.tvMyOrderDate.setText(order.getOrderTime() + "");
             holder.tvMyOrderAmount.setText("$" + order.getOrderAmount());
             holder.itemView.setOnClickListener(v -> {
                 Bundle bundle = new Bundle();
@@ -119,6 +179,7 @@ public class MyOrderStateFragment extends Fragment {
                 NavController navController = Navigation.findNavController(v);
                 navController.navigate(R.id.action_myOrderFragment_to_myOrderDetailFragment, bundle);
             });
+            //Log.d(TAG, Order.getOrderStateName(order.getOrderState()));
         }
 
         @Override
@@ -127,23 +188,24 @@ public class MyOrderStateFragment extends Fragment {
         }
     }
 
-    //假資料
-    private List<Order> getOrderList() {
-        List<Order> orderList = new ArrayList<>();
-        orderList.add(new Order(1,100));
-        orderList.add(new Order(1,100));
-        orderList.add(new Order(1,100));
-        orderList.add(new Order(1,100));
-        orderList.add(new Order(1,100));
-        orderList.add(new Order(1,100));
-        orderList.add(new Order(1,100));
-        orderList.add(new Order(2,100));
-        orderList.add(new Order(3,100));
-        orderList.add(new Order(2,100));
-        orderList.add(new Order(3,100));
-        orderList.add(new Order(4,100));
-        orderList.add(new Order(4,100));
-        return orderList;
-    }
+//    //假資料
+//    private List<Order> getOrderList() {
+////        List<Order> orderList = new ArrayList<>();
+////        orderList.add(new Order(1,100));
+////        orderList.add(new Order(1,100));
+////        orderList.add(new Order(1,100));
+////        orderList.add(new Order(1,100));
+////        orderList.add(new Order(1,100));
+////        orderList.add(new Order(1,100));
+////        orderList.add(new Order(1,100));
+////        orderList.add(new Order(2,100));
+////        orderList.add(new Order(3,100));
+////        orderList.add(new Order(2,100));
+////        orderList.add(new Order(3,100));
+////        orderList.add(new Order(4,100));
+////        orderList.add(new Order(4,100));
+////        return orderList;
+//        return TestData.showOrderStateList;
+//    }
 
 }

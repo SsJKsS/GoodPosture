@@ -98,6 +98,7 @@ public class MyOrderFragment extends Fragment {
                                 tab.setText(title.get(position));
                             }
                         });
+        //
         tabLayoutMediator.attach();
     }
 }
