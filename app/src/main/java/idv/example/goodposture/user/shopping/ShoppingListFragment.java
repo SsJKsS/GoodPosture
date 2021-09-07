@@ -123,7 +123,7 @@ public class ShoppingListFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         //載入menu
-        inflater.inflate(R.menu.shopping_list_toolbar_menu, menu);
+        inflater.inflate(R.menu.shopping_cart_toolbar_menu, menu);
     }
 
     //覆寫menu選項的監聽 //返回鑑被視為功能選單的選項

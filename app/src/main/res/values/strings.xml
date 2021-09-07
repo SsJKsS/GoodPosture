@@ -45,6 +45,7 @@
     <string name="text_modifyBodyInfoWords">請修改你的身體資訊</string>
     <string name="text_back">返回</string>
     <string name="text_iKnow">我知道了</string>
+    <string name="textImageDownloadFail">Image download Failed</string>
 
     <string-array name="exercise_record_type">
         <item>跑步</item>
