@@ -57,8 +57,8 @@
 
                 <idv.example.goodposture.user.shopping.AmountView
                     android:id="@+id/amountview_product"
-                    android:layout_width="143dp"
-                    android:layout_height="30dp"
+                    android:layout_width="127dp"
+                    android:layout_height="24dp"
                     android:layout_marginStart="24dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/iv_cart_item_delete"

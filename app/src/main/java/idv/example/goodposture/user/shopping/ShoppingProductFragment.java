@@ -48,7 +48,6 @@ public class ShoppingProductFragment extends Fragment {
     private AppCompatActivity activity;
     //資料
     private Product product;    //從ShoppingList傳過來的Product物件
-    private File file;      //抓圖
     private CartDetail cartDetail;
     //元件
     private Toolbar toolbar;

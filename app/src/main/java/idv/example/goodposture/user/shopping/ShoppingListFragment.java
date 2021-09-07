@@ -80,7 +80,6 @@ public class ShoppingListFragment extends Fragment {
         findViews(view);    //取得元件的參考
         handleToolbar();
         handleSearchView();
-        //handleRecyclerView(bundle.getString("searchText"));
     }
 
     //希望重新回到這個頁面可以重新更新資料
