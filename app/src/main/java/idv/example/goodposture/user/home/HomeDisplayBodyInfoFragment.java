@@ -29,7 +29,7 @@ import java.util.Objects;
 import idv.example.goodposture.R;
 
 public class HomeDisplayBodyInfoFragment extends Fragment {
-    private TextView tvDisplayBodyStatus, tvDisplayBMI, tvDisplayBMR, tv333;
+    private TextView tvDisplayBodyStatus, tvDisplayBMI, tvDisplayBMR;
     private Button btBuyNow, btDiscussNow;
     private FirebaseAuth auth;
     private FirebaseFirestore db;
@@ -65,7 +65,6 @@ public class HomeDisplayBodyInfoFragment extends Fragment {
         tvDisplayBMR = view.findViewById(R.id.tv_displayBMR);
         btBuyNow = view.findViewById(R.id.bt_buyNow);
         btDiscussNow = view.findViewById(R.id.bt_discussNow);
-        tv333 = view.findViewById(R.id.tv333);
     }
 
     private void handleView() {
@@ -103,7 +102,6 @@ public class HomeDisplayBodyInfoFragment extends Fragment {
 
     private void showInfo() {
         if (bodyinfo.getHeight() == null) {
-            tv333.setText(Objects.requireNonNull(auth.getCurrentUser()).getUid());
             tvDisplayBodyStatus.append(" 無資料");
             tvDisplayBMI.append(" 無資料");
             tvDisplayBMR.append(" 無資料");
@@ -112,7 +110,6 @@ public class HomeDisplayBodyInfoFragment extends Fragment {
             Double weight = Double.parseDouble(bodyinfo.getWeight());
             double bmi = weight / ((height / 100) * (height / 100));
             DecimalFormat df = new DecimalFormat("#.#");  // 設定小數點後位數
-            tv333.setText(auth.getCurrentUser().getUid());
             // 判斷 bmi
             if (bmi < 18.5) {
                 tvDisplayBodyStatus.append(" 過輕 ( " + bodyinfo.getAge() + " 歲 )");

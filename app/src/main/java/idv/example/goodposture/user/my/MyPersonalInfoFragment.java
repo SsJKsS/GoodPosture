@@ -90,7 +90,6 @@ public class MyPersonalInfoFragment extends Fragment {
         ivMyAvatar = view.findViewById(R.id.iv_my_avatar_info);
         tvMyInfoNameContent = view.findViewById(R.id.my_info_name_content);
         tvMyInfoAccountContent = view.findViewById(R.id.my_info_account_content);
-        tvMyInfoAgeContent = view.findViewById(R.id.my_info_age_content);
         tvMyInfoNicknameContent = view.findViewById(R.id.my_info_nickname_content);
         tvMyInfoGenderContent = view.findViewById(R.id.my_info_gender_content);
         tvMyInfoPhoneContent = view.findViewById(R.id.my_info_telephone_content);
@@ -139,7 +138,6 @@ public class MyPersonalInfoFragment extends Fragment {
                         DocumentSnapshot documentSnapshot = bodyInfoTask.getResult();
                         bodyinfo = documentSnapshot.toObject(Bodyinfo.class);
                         assert bodyinfo != null;
-                        tvMyInfoAgeContent.setText(bodyinfo.getAge());
                         if (bodyinfo.getGender().equals("male")) {
                             tvMyInfoGenderContent.setText("男");
                         } else {

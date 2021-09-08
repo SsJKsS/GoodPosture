@@ -26,9 +26,6 @@
             android:id="@+id/action_fragmentMy_to_myBodyInfoDetailFragment"
             app:destination="@id/myBodyInfoDetailFragment" />
         <action
-            android:id="@+id/action_fragmentMy_to_myExerciseRecordFragment"
-            app:destination="@id/myExerciseRecordFragment" />
-        <action
             android:id="@+id/action_fragmentMy_to_myOrderFragment"
             app:destination="@id/myOrderFragment" />
         <action
@@ -37,6 +34,9 @@
         <action
             android:id="@+id/action_fragmentMy_to_myAboutFragment"
             app:destination="@id/myAboutFragment" />
+        <action
+            android:id="@+id/action_fragmentMy_to_myRecordIndexFragment"
+            app:destination="@id/myRecordIndexFragment" />
     </fragment>
     <fragment
         android:id="@+id/homeDisplayBodyInfoFragment"
@@ -203,26 +203,12 @@
         android:id="@+id/myEatRecordFragment"
         android:name="idv.example.goodposture.user.my.MyEatRecordFragment"
         android:label="fragment_my_eat_record"
-        tools:layout="@layout/fragment_my_eat_record" >
-        <action
-            android:id="@+id/action_myEatRecordFragment_to_myExerciseRecordFragment"
-            app:destination="@id/myExerciseRecordFragment" />
-        <action
-            android:id="@+id/action_myEatRecordFragment_to_myAddRecordFragment"
-            app:destination="@id/myAddRecordFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_my_eat_record" />
     <fragment
         android:id="@+id/myExerciseRecordFragment"
         android:name="idv.example.goodposture.user.my.MyExerciseRecordFragment"
         android:label="fragment_my_exercise_record"
-        tools:layout="@layout/fragment_my_exercise_record" >
-        <action
-            android:id="@+id/action_myExerciseRecordFragment_to_myEatRecordFragment"
-            app:destination="@id/myEatRecordFragment" />
-        <action
-            android:id="@+id/action_myExerciseRecordFragment_to_myAddRecordFragment"
-            app:destination="@id/myAddRecordFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_my_exercise_record" />
     <fragment
         android:id="@+id/myOrderFragment"
         android:name="idv.example.goodposture.user.my.MyOrderFragment"
@@ -236,7 +222,11 @@
         android:id="@+id/myAddRecordFragment"
         android:name="idv.example.goodposture.user.my.MyAddRecordFragment"
         android:label="fragment_my_add_record"
-        tools:layout="@layout/fragment_my_add_record" />
+        tools:layout="@layout/fragment_my_add_record" >
+        <action
+            android:id="@+id/action_myAddRecordFragment_to_myRecordIndexFragment"
+            app:destination="@id/myRecordIndexFragment" />
+    </fragment>
     <fragment
         android:id="@+id/myOrderDetailFragment"
         android:name="idv.example.goodposture.user.my.MyOrderDetailFragment"
@@ -272,4 +262,13 @@
         android:id="@+id/myPersonalInfoFragmentEdit"
         android:name="idv.example.goodposture.user.my.MyPersonalInfoFragmentEdit"
         android:label="MyPersonalInfoFragmentEdit" />
+    <fragment
+        android:id="@+id/myRecordIndexFragment"
+        android:name="idv.example.goodposture.user.my.MyRecordIndexFragment"
+        android:label="fragment_my_record_index"
+        tools:layout="@layout/fragment_my_record_index" >
+        <action
+            android:id="@+id/action_myRecordIndexFragment_to_myAddRecordFragment"
+            app:destination="@id/myAddRecordFragment" />
+    </fragment>
 </navigation>
