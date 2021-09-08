@@ -197,7 +197,7 @@ public class ShoppingListFragment extends Fragment {
         String queryStr = searchView.getQuery().toString();
         if (queryStr.isEmpty()) {
             productRvAdapter.setProducts(products);
-            Log.d(TAG,"query.isEmpty()");
+            //Log.d(TAG,"query.isEmpty()");
         } else {
             List<Product> searchProducts = new ArrayList<>();
             // 搜尋原始資料內有無包含關鍵字(不區別大小寫)

@@ -52,10 +52,10 @@ public class ShoppingCartFragment extends Fragment {
     private AppCompatActivity activity;
     //資料
     private List<CartDetail> cartDetailList;
-    private Product product = new Product();
     //元件
     private Toolbar toolbar;
     private RecyclerView recyclerView;
+    private CartDetailRvAdapter cartDetailRvAdapter;
     private CheckBox cbSelectAll;
     private TextView tvTotalPrice;
     private Button btCartCheckout;
@@ -150,10 +150,13 @@ public class ShoppingCartFragment extends Fragment {
                             //Log.d(TAG, "cartDetailLis有東西，先清空");
                             cartDetailList.clear();
                         }
-
                         //把每個document轉成object物件
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            cartDetailList.add(document.toObject(CartDetail.class));
+                            //字串 == 字串 => 比對兩者的記憶體位址
+                            CartDetail cartDetail = document.toObject(CartDetail.class);
+                            if (cartDetail.getUid().equals(auth.getCurrentUser().getUid())) {
+                                cartDetailList.add(cartDetail);
+                            }
                         }
                         showCartDetails();
                     } else {
@@ -167,12 +170,18 @@ public class ShoppingCartFragment extends Fragment {
     }
 
     private void showCartDetails() {
-        CartDetailRvAdapter cartDetailRvAdapter = (CartDetailRvAdapter) recyclerView.getAdapter();
+        //CartDetailRvAdapter cartDetailRvAdapter = (CartDetailRvAdapter) recyclerView.getAdapter();
+        cartDetailRvAdapter = (CartDetailRvAdapter) recyclerView.getAdapter();
         if (cartDetailRvAdapter == null) {
-            Log.d(TAG,"cartDetailRvAdapter is null");
+            Log.d(TAG, "cartDetailRvAdapter is null");
             cartDetailRvAdapter = new CartDetailRvAdapter();
             recyclerView.setAdapter(cartDetailRvAdapter);
         }
+
+        //點擊最下面的checkbox，會全選所有itemView的checkbox
+        cbSelectAll.setOnClickListener(v -> {
+            cartDetailRvAdapter.selectAllItemView();
+        });
 
         cartDetailRvAdapter.setCartDetailList(cartDetailList);
         cartDetailRvAdapter.notifyDataSetChanged();
@@ -180,26 +189,67 @@ public class ShoppingCartFragment extends Fragment {
 
     private class CartDetailRvAdapter extends RecyclerView.Adapter<CartDetailRvAdapter.CartDetailViewHolder> {
         private List<CartDetail> cartDetailList;
+        //checkbox的Hashmap集合，存放每個位置的itemView的checkbox是否被選取的資料
+        private  HashMap<Integer, Boolean> cbMap;
+//        //紀錄要購買的商品資訊
+//        private List<Product> buyProduct;
 
         public CartDetailRvAdapter() {
         }
 
         public void setCartDetailList(List<CartDetail> cartDetailList) {
             this.cartDetailList = cartDetailList;
-//            if(cartDetailList == null){
-//                Log.d(TAG, "cartDetailList is null");
-//            }
+            this.cbMap = new HashMap<>();
+            //list有多少條資料就增加多少個checlbox的Hashmap集合
+            for (int i = 0; i < cartDetailList.size(); i++) {
+                this.cbMap.put(i, false);
+            }
+            //商品資訊
+            //buyProduct = new ArrayList<>();
+
         }
 
+        //全選所有itemView的checkBox
+        public void selectAllItemView() {
+            Set<Map.Entry<Integer, Boolean>> entries = cbMap.entrySet();
+            boolean ckAll = false;
+            for (Map.Entry<Integer, Boolean> entry : entries) {
+                Boolean value = entry.getValue();
+                if (!value) {
+                    ckAll = true;
+                    break;
+                }
+            }
+            for (Map.Entry<Integer, Boolean> entry : entries) {
+                entry.setValue(ckAll);
+            }
+            notifyDataSetChanged();
+        }
+
+//        public double getTotalPrice(){
+//            double totalPrice = 0;
+//            Set<Map.Entry<Integer, Boolean>> entries = cbMap.entrySet();
+//            for(Map.Entry<Integer, Boolean> entry : entries){
+//                Boolean value = entry.getValue();
+//                if(value){
+//                    cartDetailList.get(entry.getKey());
+//                }
+//            }
+//            return 0;
+//        }
+
         private class CartDetailViewHolder extends RecyclerView.ViewHolder {
+            CheckBox cbCartItem;
             ImageView ivProduct;
             TextView tvProductName;
             TextView tvProductPrice;
             AmountView amountViewProduct;
             ImageView ivItemDelete;
 
+
             public CartDetailViewHolder(@NonNull View itemView) {
                 super(itemView);
+                cbCartItem = itemView.findViewById(R.id.cb_cart_item);
                 ivProduct = itemView.findViewById(R.id.iv_cart_item_product);
                 tvProductName = itemView.findViewById(R.id.tv_product_name);
                 tvProductPrice = itemView.findViewById(R.id.tv_product_price);
@@ -218,26 +268,7 @@ public class ShoppingCartFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull CartDetailRvAdapter.CartDetailViewHolder holder, int position) {
             final CartDetail cartDetail = cartDetailList.get(position);
-            product = getProduct(cartDetail);
-            String name = product.getName();
-            Log.d(TAG,name);
-//            //product圖片路徑為空值 -> 給default圖片
-//            if (product.getPicturePath() == null) {
-//                holder.ivProduct.setImageResource(R.drawable.no_product_image);
-//            } else {
-//                showImage(holder.ivProduct, product.getPicturePath());
-//            }
-//            //holder.ivProduct.setImageResource(R.drawable.shopping_cat3);
-//            holder.tvProductName.setText(product.getName());
-//            holder.tvProductPrice.setText("$" + product.getPrice());
-        }
 
-        @Override
-        public int getItemCount() {
-            return cartDetailList == null ? 0 : cartDetailList.size();
-        }
-
-        private Product getProduct(CartDetail cartDetail) {
             db.collection("product")
                     .document(Objects.requireNonNull(cartDetail.getProductId()))
                     .get()
@@ -245,9 +276,27 @@ public class ShoppingCartFragment extends Fragment {
                         if (task.isSuccessful() && task.getResult() != null) {
                             // 將獲取的資料存成自定義類別
                             DocumentSnapshot documentSnapshot = task.getResult();
-                            product = documentSnapshot.toObject(Product.class);
-                            assert  product != null;
-                            Log.d(TAG,product.getName());
+                            Product product = documentSnapshot.toObject(Product.class);
+                            holder.tvProductName.setText(product.getName());
+                            holder.tvProductPrice.setText("$" + product.getPrice());
+                            holder.amountViewProduct.setGoods_storage(product.getStock());
+                            holder.amountViewProduct.setAmount(cartDetail.getProductAmount());
+                            //點擊itemView會跳轉到商品頁
+                            holder.itemView.setOnClickListener( v -> {
+                                //寫帶過去的資料
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable("product", product);
+                                NavController navController = Navigation.findNavController(v);
+                                navController.navigate(R.id.action_shoppingCartFragment_to_shoppingProductFragment, bundle);
+                            });
+
+                            //product圖片路徑為空值 -> 給default圖片
+                            if (product.getPicturePath() == null) {
+                                holder.ivProduct.setImageResource(R.drawable.no_product_image);
+                            } else {
+                                showImage(holder.ivProduct, product.getPicturePath());
+                            }
+
                         } else {
                             String message = task.getException() == null ?
                                     "No cartDetail found" :
@@ -256,8 +305,40 @@ public class ShoppingCartFragment extends Fragment {
                             Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                         }
                     });
-            return product;
+            //amountViewProduct的數量
+            holder.amountViewProduct.setOnAmountChangeListener((view, amount) -> {
+                //拿到AmountView的顯示數字
+            });
+            //checkbox要先設定checked狀態!!!!
+            holder.cbCartItem.setChecked(cbMap.get(position));
+            //itemView的checkBox被點擊後，更新cbMap資料
+            holder.cbCartItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cbMap.put(position, !cbMap.get(position));
+                    //重新整理recyclerView
+                    notifyDataSetChanged();
+                }
+            });
+            //刪除購物車的一筆資料
+            holder.ivItemDelete.setOnClickListener(v -> {
+                db.collection("cartDetail").document(cartDetail.getId()).delete()
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                showCartDetails();
+                                Toast.makeText(activity, "cartDetail is delete ", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(activity,"cartDetail is delete fail", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            });
         }
+
+        @Override
+        public int getItemCount() {
+            return cartDetailList == null ? 0 : cartDetailList.size();
+        }
+
     }
 
     // 下載Firebase storage的照片並顯示在ivProduct上
@@ -391,6 +472,8 @@ public class ShoppingCartFragment extends Fragment {
         });
     }
 
+
+
     /**
      * 監聽資料是否發生異動，有則同步更新。
      * 開啟2台模擬器，一台新增/修改/刪除；另一台畫面會同步更新
@@ -426,11 +509,11 @@ public class ShoppingCartFragment extends Fragment {
                             cartDetailList.add(document.toObject(CartDetail.class));
                         }
                         this.cartDetailList = cartDetailList;
-                        if(cartDetailList.size() <= 0){
-                            Log.d(TAG, "cartDetailList is empty");
-                        }else{
-                            Log.d(TAG, "cartDetailList is not empty");
-                        }
+//                        if (cartDetailList.size() <= 0) {
+//                            Log.d(TAG, "cartDetailList is empty");
+//                        } else {
+//                            Log.d(TAG, "cartDetailList is not empty");
+//                        }
 
                         showMyCartDetails();
                     }

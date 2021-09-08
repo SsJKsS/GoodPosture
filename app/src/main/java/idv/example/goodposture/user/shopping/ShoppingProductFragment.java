@@ -35,6 +35,7 @@ import androidx.navigation.Navigation;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -44,7 +45,7 @@ import idv.example.goodposture.R;
 
 
 public class ShoppingProductFragment extends Fragment {
-    private static final String TAG = "ShoppingProductFragment";
+    private static final String TAG = "TAG_ShoppingProductFragment";
     private AppCompatActivity activity;
     //資料
     private Product product;    //從ShoppingList傳過來的Product物件
@@ -181,13 +182,64 @@ public class ShoppingProductFragment extends Fragment {
             //todo
             //顯示加入購物車的動畫|改變購物車icon的圖案
             playAnim(btAddToCart);
-            setCartDetailDate();
-            insertCartDetail();
-
+            //get()會抓db所有資料
+            db.collection("cartDetail").get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()){
+                            //task有結果表示cartDetail有文件
+                            if(task.getResult() != null){
+                                //把每個document轉成object物件
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    CartDetail cartDetailInDb = document.toObject(CartDetail.class);
+                                    //當前使用者的cartDetail && 這個商品已經存在購物車 ==> 更新這筆資料
+                                    if (cartDetailInDb.getUid().equals(auth.getCurrentUser().getUid()) &&
+                                            cartDetailInDb.getProductId().equals(product.getId())) {
+                                        Log.d(TAG,"當前使用者的cartDetail && 這個商品已經存在購物車");
+                                        updateCartDetail(cartDetailInDb);
+                                        return;
+                                    }
+                                }
+                                //當前使用者從沒有新增此商品到資料庫時，就可以直接insert一筆cartDetail進去資料庫
+                                Log.d(TAG,"當前使用者從沒有新增此商品到資料庫時，就可以直接insert");
+                                insertCartDetail();
+                            }else{
+                                //task無結果表示cartDetail還沒有文件，
+                                //所以不用判斷就直接新增cardDetail
+                                Log.d(TAG,"task無結果表示cartDetail還沒有文件");
+                                insertCartDetail();
+                            }
+                        } else {
+                            String message = task.getException() == null ?
+                                    "No cartDetail found" :
+                                    task.getException().getMessage();
+                            Log.e(TAG, "exception message: " + message);
+                            Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                        }
+                    });
         });
     }
 
-    private void setCartDetailDate() {
+    //todo
+    private void updateCartDetail(CartDetail cartDetail) {
+        cartDetail.setProductAmount(cartDetail.getProductAmount()+1);
+        db.collection("cartDetail").document(cartDetail.getId()).set(cartDetail)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        String message = "Update "
+                                + " with ID: " + cartDetail.getId();
+                        Log.d(TAG, message);
+                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                    } else {
+                        String message = task.getException() == null ?
+                                "Insert Fail ":
+                                task.getException().getMessage();
+                        Log.e(TAG, "message: " + message);
+                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void insertCartDetail() {
         String id = db.collection("cartDetail").document().getId(); //隨機產生一個id給cartDetail
         cartDetail.setId(id);
         String uid =  auth.getCurrentUser().getUid();
@@ -195,10 +247,7 @@ public class ShoppingProductFragment extends Fragment {
         cartDetail.setProductId(product.getId());
         cartDetail.setProductPrice(product.getPrice());
         cartDetail.setProductAmount(1);
-    }
-
-    private void insertCartDetail() {
-        db.collection("cartDetail").document().set(cartDetail)
+        db.collection("cartDetail").document(cartDetail.getId()).set(cartDetail)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         String message = "cartDetail is inserted"

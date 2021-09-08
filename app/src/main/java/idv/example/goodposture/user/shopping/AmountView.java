@@ -22,7 +22,7 @@ import idv.example.goodposture.R;
 
 public class AmountView extends LinearLayout implements View.OnClickListener, TextWatcher {
     private static final String TAG = "AmountView";
-    private int amount = 1; //購買數量
+    private int amount =1; //購買數量
     private int goods_storage = 1; //商品庫存
     private OnAmountChangeListener mListener;
     private EditText etAmount;
@@ -73,6 +73,11 @@ public class AmountView extends LinearLayout implements View.OnClickListener, Te
 
     public void setGoods_storage(int goods_storage){
         this.goods_storage = goods_storage;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+        etAmount.setText(amount+"");
     }
 
     @Override
