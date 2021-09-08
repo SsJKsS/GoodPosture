@@ -52,6 +52,7 @@ public class ShoppingCartFragment extends Fragment {
     private AppCompatActivity activity;
     //資料
     private List<CartDetail> cartDetailList;
+    private List<Product> productList;
     //元件
     private Toolbar toolbar;
     private RecyclerView recyclerView;
@@ -74,6 +75,7 @@ public class ShoppingCartFragment extends Fragment {
         storage = FirebaseStorage.getInstance();
         auth = FirebaseAuth.getInstance();
         cartDetailList = new ArrayList<>();
+        productList = new ArrayList<>();
         listenToCartDetail();   //todo 是否需要做全程監聽
     }
 
@@ -116,7 +118,7 @@ public class ShoppingCartFragment extends Fragment {
         recyclerView = view.findViewById(R.id.rv_shopping_cart);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         cbSelectAll = view.findViewById(R.id.cb_selectAll);
-        tvTotalPrice = view.findViewById(R.id.tv_total);
+        tvTotalPrice = view.findViewById(R.id.tv_total_price);
         btCartCheckout = view.findViewById(R.id.bt_cart_checkout);
     }
 
@@ -149,6 +151,7 @@ public class ShoppingCartFragment extends Fragment {
                         if (!cartDetailList.isEmpty()) {
                             //Log.d(TAG, "cartDetailLis有東西，先清空");
                             cartDetailList.clear();
+                            productList.clear();
                         }
                         //把每個document轉成object物件
                         for (QueryDocumentSnapshot document : task.getResult()) {
@@ -182,17 +185,19 @@ public class ShoppingCartFragment extends Fragment {
         cbSelectAll.setOnClickListener(v -> {
             cartDetailRvAdapter.selectAllItemView();
         });
-
         cartDetailRvAdapter.setCartDetailList(cartDetailList);
+        cartDetailRvAdapter.setProductList(productList);
         cartDetailRvAdapter.notifyDataSetChanged();
     }
 
     private class CartDetailRvAdapter extends RecyclerView.Adapter<CartDetailRvAdapter.CartDetailViewHolder> {
         private List<CartDetail> cartDetailList;
+        private List<Product> productList;
         //checkbox的Hashmap集合，存放每個位置的itemView的checkbox是否被選取的資料
-        private  HashMap<Integer, Boolean> cbMap;
-//        //紀錄要購買的商品資訊
-//        private List<Product> buyProduct;
+        private HashMap<Integer, Boolean> cbMap;
+        //amountView的Hashmap集合，存放每個位置的itemView的amount數量
+        private HashMap<Integer, Integer> amMap;
+
 
         public CartDetailRvAdapter() {
         }
@@ -200,13 +205,18 @@ public class ShoppingCartFragment extends Fragment {
         public void setCartDetailList(List<CartDetail> cartDetailList) {
             this.cartDetailList = cartDetailList;
             this.cbMap = new HashMap<>();
+            this.amMap = new HashMap<>();
             //list有多少條資料就增加多少個checlbox的Hashmap集合
             for (int i = 0; i < cartDetailList.size(); i++) {
                 this.cbMap.put(i, false);
+                this.amMap.put(i, 1);
             }
             //商品資訊
             //buyProduct = new ArrayList<>();
+        }
 
+        public void setProductList(List<Product> productList) {
+            this.productList = productList;
         }
 
         //全選所有itemView的checkBox
@@ -223,20 +233,34 @@ public class ShoppingCartFragment extends Fragment {
             for (Map.Entry<Integer, Boolean> entry : entries) {
                 entry.setValue(ckAll);
             }
+            showTotal();
             notifyDataSetChanged();
         }
 
-//        public double getTotalPrice(){
-//            double totalPrice = 0;
-//            Set<Map.Entry<Integer, Boolean>> entries = cbMap.entrySet();
-//            for(Map.Entry<Integer, Boolean> entry : entries){
-//                Boolean value = entry.getValue();
-//                if(value){
-//                    cartDetailList.get(entry.getKey());
-//                }
-//            }
-//            return 0;
-//        }
+        //算出被勾選的itemView的金額
+        public void showTotal() {
+            Set<Map.Entry<Integer, Boolean>> cbEntries = cbMap.entrySet();
+            Set<Map.Entry<Integer, Integer>> amEntries = amMap.entrySet();
+            Set<Integer> positions = amMap.keySet();
+            double total = 0;
+            for (Map.Entry<Integer, Boolean> entry : cbEntries) {
+                int amount = 0;
+                double price = 0;
+                if (entry.getValue()) {
+                    CartDetail cartDetail = cartDetailList.get(entry.getKey());
+                    price = cartDetail.getProductPrice();
+                    for (Integer position : positions) {
+                        if (entry.getKey() == position) {
+                            amount = amMap.get(position);
+                            break;
+                        }
+                    }
+                }
+                total += (double) amount * price;
+            }
+            tvTotalPrice.setText("$" + total);
+        }
+
 
         private class CartDetailViewHolder extends RecyclerView.ViewHolder {
             CheckBox cbCartItem;
@@ -277,12 +301,13 @@ public class ShoppingCartFragment extends Fragment {
                             // 將獲取的資料存成自定義類別
                             DocumentSnapshot documentSnapshot = task.getResult();
                             Product product = documentSnapshot.toObject(Product.class);
+                            productList.add(product);
                             holder.tvProductName.setText(product.getName());
                             holder.tvProductPrice.setText("$" + product.getPrice());
                             holder.amountViewProduct.setGoods_storage(product.getStock());
                             holder.amountViewProduct.setAmount(cartDetail.getProductAmount());
                             //點擊itemView會跳轉到商品頁
-                            holder.itemView.setOnClickListener( v -> {
+                            holder.itemView.setOnClickListener(v -> {
                                 //寫帶過去的資料
                                 Bundle bundle = new Bundle();
                                 bundle.putSerializable("product", product);
@@ -308,6 +333,8 @@ public class ShoppingCartFragment extends Fragment {
             //amountViewProduct的數量
             holder.amountViewProduct.setOnAmountChangeListener((view, amount) -> {
                 //拿到AmountView的顯示數字
+                amMap.put(position, amount);
+                showTotal();
             });
             //checkbox要先設定checked狀態!!!!
             holder.cbCartItem.setChecked(cbMap.get(position));
@@ -316,6 +343,8 @@ public class ShoppingCartFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     cbMap.put(position, !cbMap.get(position));
+                    //tvTotalPrice.setText(position+"");
+                    showTotal();
                     //重新整理recyclerView
                     notifyDataSetChanged();
                 }
@@ -328,7 +357,7 @@ public class ShoppingCartFragment extends Fragment {
                                 showCartDetails();
                                 Toast.makeText(activity, "cartDetail is delete ", Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(activity,"cartDetail is delete fail", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(activity, "cartDetail is delete fail", Toast.LENGTH_SHORT).show();
                             }
                         });
             });
@@ -339,30 +368,29 @@ public class ShoppingCartFragment extends Fragment {
             return cartDetailList == null ? 0 : cartDetailList.size();
         }
 
+
+        // 下載Firebase storage的照片並顯示在ivProduct上
+        private void showImage(final ImageView imageView, final String path) {
+            final int ONE_MEGABYTE = 1024 * 1024;
+            StorageReference imageRef = storage.getReference().child(path);
+            //byte[]轉成bitmap，貼上bitmap
+            imageRef.getBytes(ONE_MEGABYTE)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            byte[] bytes = task.getResult();
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                            imageView.setImageBitmap(bitmap);
+                        } else {
+                            String message = task.getException() == null ?
+                                    "Image download Failed" + ": " + path :
+                                    task.getException().getMessage() + ": " + path;
+                            Log.e(TAG, message);
+                            Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+        }
     }
-
-    // 下載Firebase storage的照片並顯示在ivProduct上
-    private void showImage(final ImageView imageView, final String path) {
-        final int ONE_MEGABYTE = 1024 * 1024;
-        StorageReference imageRef = storage.getReference().child(path);
-        //byte[]轉成bitmap，貼上bitmap
-        imageRef.getBytes(ONE_MEGABYTE)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && task.getResult() != null) {
-                        byte[] bytes = task.getResult();
-                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                        imageView.setImageBitmap(bitmap);
-                    } else {
-                        String message = task.getException() == null ?
-                                "Image download Failed" + ": " + path :
-                                task.getException().getMessage() + ": " + path;
-                        Log.e(TAG, message);
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-    }
-
 
 //    private static class CartRecyclerViewAdapter extends RecyclerView.Adapter<CartRecyclerViewAdapter.CartViewHolder>{
 //
@@ -471,7 +499,6 @@ public class ShoppingCartFragment extends Fragment {
             navController.navigate(R.id.action_shoppingCartFragment_to_shoppingOrderFragment);
         });
     }
-
 
 
     /**
