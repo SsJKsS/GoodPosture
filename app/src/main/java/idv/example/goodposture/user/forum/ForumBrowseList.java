@@ -13,12 +13,14 @@ public class ForumBrowseList implements Serializable {
     private String time;
     private String id;
     private String context;
+    private String imagePath;
+    private String authorUid;
 
 
     public ForumBrowseList() {
     }
 
-    public ForumBrowseList(String title, String author, String time, Integer ivLike,String likes, Integer ivMessage, String messages,String id,String context) {
+    public ForumBrowseList(String title, String author, String time, Integer ivLike,String likes, Integer ivMessage, String messages,String id,String context,String imagePath,String authorUid) {
         this.likes = likes;
         this.messages = messages;
         this.ivLike = ivLike;
@@ -28,7 +30,8 @@ public class ForumBrowseList implements Serializable {
         this.time = time;
         this.id = id;
         this.context = context;
-
+        this.imagePath = imagePath;
+        this.authorUid = authorUid;
     }
 
     public String getLikes() {
@@ -101,5 +104,21 @@ public class ForumBrowseList implements Serializable {
 
     public void setContext(String context) {
         this.context = context;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public String getAuthorUid() {
+        return authorUid;
+    }
+
+    public void setAuthorUid(String authorUid) {
+        this.authorUid = authorUid;
     }
 }

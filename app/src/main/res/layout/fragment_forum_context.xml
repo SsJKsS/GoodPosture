@@ -71,7 +71,7 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
-                        android:id="@+id/imageView9"
+                        android:id="@+id/iv_context_author"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         app:srcCompat="@drawable/shark2"
@@ -167,7 +167,7 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
-                        android:id="@+id/imageView11"
+                        android:id="@+id/iv_context_me"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         app:srcCompat="@drawable/shark2"

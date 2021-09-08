@@ -1,6 +1,8 @@
 package idv.example.goodposture.user.forum;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -28,7 +30,10 @@ import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -55,11 +60,14 @@ public class ForumContextFragment extends Fragment {
     private ListenerRegistration registration;
     private List<ForumContextResponseList> forumContextResponseLists;
     private ForumContextResponseList forumContextResponseList;
+    private FirebaseStorage storage;
 
     private TextView tv_context_title;
     private TextView tv_context_nickname;
     private TextView tv_context;
     private TextView tv_context_time;
+    private ImageView iv_context_author;
+    private ImageView iv_context_me;
 
 
 
@@ -68,6 +76,7 @@ public class ForumContextFragment extends Fragment {
         super.onCreate(savedInstanceState);
         activity = (AppCompatActivity) getActivity();
         db = FirebaseFirestore.getInstance();
+        storage = FirebaseStorage.getInstance();
         auth = FirebaseAuth.getInstance();
         myinfo = new Myinfo();
         forumBrowseList = new ForumBrowseList();
@@ -86,6 +95,22 @@ public class ForumContextFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         findViews(view);
+
+        db.collection("my_info").document(auth.getCurrentUser().getUid())
+                .get()
+                .addOnCompleteListener(myTask ->{
+                    if (myTask.isSuccessful()) {
+                        // 藉由 getResult() 將獲取到的資料塞至變數
+                        DocumentSnapshot document = myTask.getResult();
+                        myinfo = document.toObject(Myinfo.class);
+                        assert myinfo != null;
+                        if ((myinfo.getImagePath() != null)) {
+                            showImage(iv_context_me, myinfo.getImagePath());
+                        }
+                    }
+                });
+
+
         if (getArguments() != null){
             forumBrowseList = (ForumBrowseList) getArguments().getSerializable("forumBrowseList");
             if (forumBrowseList != null){
@@ -94,26 +119,19 @@ public class ForumContextFragment extends Fragment {
                 tv_context_time.setText(forumBrowseList.getTime());
                 tv_context_nickname.setText(forumBrowseList.getAuthor());
                 forumContextResponseList.setBr_id(forumBrowseList.getId());
+                showAuthorImage(iv_context_author, forumBrowseList.getImagePath());
             }
 
         handleback();
         handlethumb();
         handleResRecycleView();
         handleResponseSend();
-
-
-
-//            myinfo = (Myinfo) getArguments().getSerializable("my_info");
-//            if (myinfo != null){
-//                tv_context_nickname.setText(myinfo.getNickname());
-//            }
         }
     }
 
     @Override
     public void onStart() {
         super.onStart();
-//        handleResRecycleView();
     }
 
     @Override
@@ -135,6 +153,8 @@ public class ForumContextFragment extends Fragment {
         tv_context_nickname = view.findViewById(R.id.tv_context_nickname);
         tv_context = view.findViewById(R.id.tv_context);
         tv_context_time = view.findViewById(R.id.tv_context_time);
+        iv_context_author = view.findViewById(R.id.iv_context_author);
+        iv_context_me = view.findViewById(R.id.iv_context_me);
     }
 
     /**
@@ -160,8 +180,6 @@ public class ForumContextFragment extends Fragment {
                 });
 
         iv_Response_Send.setOnClickListener(view-> {
-//            final String response = String.valueOf(et_response.getText());
-
             final String id = db.collection("forumContextRes").document().getId();
             forumContextResponseList.setId(id);
 
@@ -177,6 +195,7 @@ public class ForumContextFragment extends Fragment {
                 forumContextResponseList.setTv_Response_Time(time);
                 addForumContextRes(forumContextResponseList);
             }
+            et_response.setText("");
         });
 //        resAdapter.notifyDataSetChanged();
     }
@@ -188,7 +207,6 @@ public class ForumContextFragment extends Fragment {
                         String message = "forumContextRes is inserted" + "with ID:" +forumContextResponseList.getId();
                         Log.e(TAG,"message"+message);
                         Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
-//                        Navigation.findNavController(iv_send).popBackStack();
                     } else {
                         String message = task.getException() == null ? "Insert failed" : task.getException().getMessage();
                         Log.e(TAG,"message: "+message);
@@ -217,42 +235,13 @@ public class ForumContextFragment extends Fragment {
                 }
             }
         });
-
-
     }
 
     private void handleResRecycleView() {
-//        db.collection("forumContextRes").get()
-//                .addOnCompleteListener(resTask->{
-//                    if (resTask.isSuccessful() && resTask.getResult() != null){
-//                        if (!forumContextResponseLists.isEmpty()){
-//                            forumContextResponseLists.clear();
-//                        }
-//                        for (QueryDocumentSnapshot documentSnapshot : resTask.getResult()){
-//                            forumContextResponseLists.add(documentSnapshot.toObject(ForumContextResponseList.class));
-//                        }
-//
-//                        resAdapter adapter = (resAdapter) resRecyclerView.getAdapter();
-//                        if (adapter == null){
-//                            adapter = new resAdapter();
-//                            resRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
-//                            resRecyclerView.setAdapter(adapter);
-//                        }
-//                        List<ForumContextResponseList> resultList = new ArrayList<>();
-//                        adapter.setForumContextList(resultList);
-//
-//                    } else {
-//                        String message = resTask.getException() == null ? "not found" : resTask.getException().getMessage();
-//                        Log.e(TAG,"exception message: "+ message);
-//                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-
-
-
 
         db.collection("forumContextRes")
                 .whereEqualTo("br_id",forumBrowseList.getId())
+                .orderBy("tv_Response_Time", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(resTask ->{
                     if (resTask.isSuccessful() && resTask.getResult() != null) {
@@ -337,51 +326,47 @@ public class ForumContextFragment extends Fragment {
         public void onBindViewHolder(@NonNull MyResViewHolder holder, int position) {
             final ForumContextResponseList forumContextResponseList = forumContextResponseLists.get(position);
 
-            /*db.collection("forumContextRes").whereEqualTo("Br_id",forumBrowseList.getId())
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful() && task.getResult() != null){
-                            if (!forumContextResponseLists.isEmpty()){
-                                forumContextResponseLists.clear();
-                            }
-                            for (QueryDocumentSnapshot document : task.getResult()){
-                                forumContextResponseLists.add(document.toObject(ForumContextResponseList.class));
-                            }
-                        }else {
-                            String message = task.getException() == null ?
-                                    "查無資料" :
-                                    task.getException().getMessage();
-                            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                        }
-                    });*/
-
-
-//            db.collection("forumContextRes")
-//                    .get()
-//                    .addOnCompleteListener(task -> {
-//                        if (task.isSuccessful() && task.getResult() != null){
-//                            if (!forumContextResponseLists.isEmpty()){
-//                                forumContextResponseLists.clear();
-//                            }
-//                            for (QueryDocumentSnapshot document : task.getResult()){
-////                                forumContextResponseLists.add(document.toObject(ForumContextResponseList.class));
-//                                if (forumBrowseList.getId().equals(forumContextResponseList.getBr_id())){
-//                                    forumContextResponseLists.add(document.toObject(ForumContextResponseList.class));
-//                                }
-//                            }
-//                        }else {
-//                            String message = task.getException() == null ?
-//                                    "查無資料" :
-//                                    task.getException().getMessage();
-//                            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-
             holder.tv_Response_User.setText(forumContextResponseList.getTv_Response_User());
             holder.tv_Response_Time.setText(forumContextResponseList.getTv_Response_Time());
             holder.tv_Response_Context.setText(forumContextResponseList.getTv_Response_Context());
 
         }
+    }
+
+    private void showImage(ImageView iv_context_me, String imagePath) {
+        final int ONE_MEGABYTE = 1024 * 1024;
+        StorageReference imageRef = storage.getReference().child(imagePath);
+        imageRef.getBytes(ONE_MEGABYTE)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        byte[] bytes = task.getResult();
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        iv_context_me.setImageBitmap(bitmap);
+                    } else {
+                        String message = task.getException() == null ?
+                                "Download fail" + " : " + imagePath :
+                                task.getException().getMessage() + " : " + imagePath;
+                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void showAuthorImage(ImageView iv_context_author, String imagePath) {
+        final int ONE_MEGABYTE = 1024 * 1024;
+        StorageReference imageRef = storage.getReference().child(imagePath);
+        imageRef.getBytes(ONE_MEGABYTE)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        byte[] bytes = task.getResult();
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        iv_context_author.setImageBitmap(bitmap);
+                    } else {
+                        String message = task.getException() == null ?
+                                "Download fail" + " : " + imagePath :
+                                task.getException().getMessage() + " : " + imagePath;
+                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
 

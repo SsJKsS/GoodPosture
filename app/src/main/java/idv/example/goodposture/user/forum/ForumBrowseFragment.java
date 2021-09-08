@@ -22,11 +22,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -137,7 +139,7 @@ public class ForumBrowseFragment extends Fragment {
             }
             adapter.setForumBrowseLists(resultList);
         }
-        adapter.notifyDataSetChanged();
+//        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -156,7 +158,7 @@ public class ForumBrowseFragment extends Fragment {
     }
 
     private void showAllForumBrowseList() {
-        db.collection("forumBrowseList").get()
+        db.collection("forumBrowseList").orderBy("time", Query.Direction.DESCENDING).get()
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful() && task.getResult() != null){
                         if(!forumBrowseLists.isEmpty()){
@@ -187,6 +189,7 @@ public class ForumBrowseFragment extends Fragment {
 
         public void setForumBrowseLists(List<ForumBrowseList> forumBrowseLists){
             this.list = forumBrowseLists;
+            notifyDataSetChanged();
         }
         // 3.4 內部類別: 自定義ViewHolder類別
         // 3.4.1 繼承RecyclerView.ViewHolder

@@ -126,6 +126,8 @@ public class ForumAddFragment extends Fragment {
                 forumBrowseList.setTitle(title);
                 forumBrowseList.setContext(context);
                 forumBrowseList.setAuthor(myinfo.getNickname());
+                forumBrowseList.setImagePath(myinfo.getImagePath());
+                forumBrowseList.setAuthorUid(auth.getCurrentUser().getUid());
                 forumBrowseList.setTime(time);
                 addForumBrowseList(forumBrowseList);
             }
