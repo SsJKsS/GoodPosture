@@ -30,6 +30,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -43,9 +45,6 @@ public class ForumContextFragment extends Fragment {
     private ImageView iv_thumb_black;
     private boolean click = false;
     private RecyclerView resRecyclerView;
-    private ArrayAdapter<ForumContextResponseList> forumContextResponseListArrayAdapter;
-    private resAdapter resAdapter;
-    private CardView cv_Response;
     private EditText et_response;
     private ImageView iv_Response_Send;
     private AppCompatActivity activity;
@@ -60,6 +59,7 @@ public class ForumContextFragment extends Fragment {
     private TextView tv_context_title;
     private TextView tv_context_nickname;
     private TextView tv_context;
+    private TextView tv_context_time;
 
 
 
@@ -72,7 +72,8 @@ public class ForumContextFragment extends Fragment {
         myinfo = new Myinfo();
         forumBrowseList = new ForumBrowseList();
         forumContextResponseList = new ForumContextResponseList();
-//        listenToSpot();
+        forumContextResponseLists = new ArrayList<>();
+        listenToRes();
     }
 
     @Override
@@ -85,32 +86,34 @@ public class ForumContextFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         findViews(view);
-        handleback();
-        handlethumb();
-        handleResRecycleView();
-        handleResponseSend();
-
         if (getArguments() != null){
             forumBrowseList = (ForumBrowseList) getArguments().getSerializable("forumBrowseList");
             if (forumBrowseList != null){
                 tv_context_title.setText(forumBrowseList.getTitle());
                 tv_context.setText(forumBrowseList.getContext());
-//                tv_context_nickname.setText(forumBrowseList.getAuthor());
-
+                tv_context_time.setText(forumBrowseList.getTime());
+                tv_context_nickname.setText(forumBrowseList.getAuthor());
+                forumContextResponseList.setBr_id(forumBrowseList.getId());
             }
 
-            myinfo = (Myinfo) getArguments().getSerializable("my_info");
-            if (myinfo != null){
-                tv_context_nickname.setText(myinfo.getNickname());
-            }
+        handleback();
+        handlethumb();
+        handleResRecycleView();
+        handleResponseSend();
+
+
+
+//            myinfo = (Myinfo) getArguments().getSerializable("my_info");
+//            if (myinfo != null){
+//                tv_context_nickname.setText(myinfo.getNickname());
+//            }
         }
-
     }
 
     @Override
     public void onStart() {
         super.onStart();
-//        showResponse();
+//        handleResRecycleView();
     }
 
     @Override
@@ -126,12 +129,12 @@ public class ForumContextFragment extends Fragment {
         iv_back = view.findViewById(R.id.iv_back);
         iv_thumb_black = view.findViewById(R.id.iv_thumb_black);
         resRecyclerView = view.findViewById(R.id.recyclerView2);
-        cv_Response = view.findViewById(R.id.cv_Response);
         et_response = view.findViewById(R.id.et_response);
         iv_Response_Send = view.findViewById(R.id.iv_Response_Send);
         tv_context_title = view.findViewById(R.id.tv_context_title);
         tv_context_nickname = view.findViewById(R.id.tv_context_nickname);
         tv_context = view.findViewById(R.id.tv_context);
+        tv_context_time = view.findViewById(R.id.tv_context_time);
     }
 
     /**
@@ -139,21 +142,43 @@ public class ForumContextFragment extends Fragment {
      * 3.1 繼承RecyclerView.Adapter
      */
     private void handleResponseSend() {
+
+        db.collection("my_info")
+                .document(Objects.requireNonNull(auth.getCurrentUser()).getUid())
+                .get()
+                .addOnCompleteListener(resTask->{
+                    if (resTask.isSuccessful() && resTask.getResult() != null) {
+                        // 將獲取的資料存成自定義類別
+                        DocumentSnapshot documentSnapshot = resTask.getResult();
+                        myinfo = documentSnapshot.toObject(Myinfo.class);
+                    } else {
+                        String message = resTask.getException() == null ?
+                                "查無資料" :
+                                resTask.getException().getMessage();
+                        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
         iv_Response_Send.setOnClickListener(view-> {
 //            final String response = String.valueOf(et_response.getText());
 
             final String id = db.collection("forumContextRes").document().getId();
             forumContextResponseList.setId(id);
 
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+            String time = dtf.format(LocalDateTime.now());
+
             String response = et_response.getText().toString().trim();
             if(response.isEmpty()){
                 et_response.setError("請輸入回覆");
             }else {
                 forumContextResponseList.setTv_Response_Context(response);
-//                forumContextResponseList.setTv_Response_User(myinfo.getNickname());
+                forumContextResponseList.setTv_Response_User(myinfo.getNickname());
+                forumContextResponseList.setTv_Response_Time(time);
                 addForumContextRes(forumContextResponseList);
             }
         });
+//        resAdapter.notifyDataSetChanged();
     }
 
     private void addForumContextRes(final ForumContextResponseList forumContextResponseList){
@@ -197,63 +222,103 @@ public class ForumContextFragment extends Fragment {
     }
 
     private void handleResRecycleView() {
-        resAdapter = new resAdapter();
-        // 4.2 設定Adapter
-        resRecyclerView.setAdapter(resAdapter);
-        // 4.3 設定LayoutManager
-        resRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        // 4.3 設定LayoutManager
+//        db.collection("forumContextRes").get()
+//                .addOnCompleteListener(resTask->{
+//                    if (resTask.isSuccessful() && resTask.getResult() != null){
+//                        if (!forumContextResponseLists.isEmpty()){
+//                            forumContextResponseLists.clear();
+//                        }
+//                        for (QueryDocumentSnapshot documentSnapshot : resTask.getResult()){
+//                            forumContextResponseLists.add(documentSnapshot.toObject(ForumContextResponseList.class));
+//                        }
+//
+//                        resAdapter adapter = (resAdapter) resRecyclerView.getAdapter();
+//                        if (adapter == null){
+//                            adapter = new resAdapter();
+//                            resRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
+//                            resRecyclerView.setAdapter(adapter);
+//                        }
+//                        List<ForumContextResponseList> resultList = new ArrayList<>();
+//                        adapter.setForumContextList(resultList);
+//
+//                    } else {
+//                        String message = resTask.getException() == null ? "not found" : resTask.getException().getMessage();
+//                        Log.e(TAG,"exception message: "+ message);
+//                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+//                    }
+//                });
 
 
-        /** 可試試以下2種LayoutManager! */
-//        recyclerView.setLayoutManager(new GridLayoutManager(this, 4, RecyclerView.HORIZONTAL, false));
-//        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, RecyclerView.HORIZONTAL));
-
-//        cardView.setOnClickListener(view -> {
-//            NavController navController = Navigation.findNavController(view);
-//            navController.navigate(R.id.action_forumBrowseFragment_to_forumContextFragment);
-//        });
 
 
+        db.collection("forumContextRes")
+                .whereEqualTo("br_id",forumBrowseList.getId())
+                .get()
+                .addOnCompleteListener(resTask ->{
+                    if (resTask.isSuccessful() && resTask.getResult() != null) {
+                        // 先清除舊資料後再儲存新資料
+                        if (!forumContextResponseLists.isEmpty()) {
+                            forumContextResponseLists.clear();
+                        }
+                        for (QueryDocumentSnapshot document : resTask.getResult()) {
+                            forumContextResponseLists.add(document.toObject(ForumContextResponseList.class));
+                        }
+                        Log.e(TAG, "list = " +forumContextResponseLists.toString());
+                        Log.e(TAG, "list = " +forumContextResponseLists.size());
+                        if (forumContextResponseLists.size() != 0){
+                        Log.e(TAG, "list = " +forumContextResponseLists.get(0).getTv_Response_Context());
+                        }
+
+                        showRecyclerView();
+                    } else {
+                        String message = resTask.getException() == null ?
+                                "forumContextRes is not found" :
+                                resTask.getException().getMessage();
+                        Log.e(TAG, "exception message: " + message);
+                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
-    private  class resAdapter extends RecyclerView.Adapter<resAdapter.MyResViewHolder> {
+    private void showRecyclerView() {
+        resAdapter adapter = (resAdapter) resRecyclerView.getAdapter();
+        if(adapter == null) {
+            adapter = new resAdapter();
+            resRecyclerView.setAdapter(adapter);
+        }
+        resRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
+        adapter.setForumContextList(forumContextResponseLists);
+    }
 
-        private List<ForumContextResponseList> list;
+    private class resAdapter extends RecyclerView.Adapter<resAdapter.MyResViewHolder> {
+        List<ForumContextResponseList> forumContextResponseLists = new ArrayList<>();
         resAdapter(){
         }
 
-        public resAdapter(List<ForumContextResponseList> list) {
-            this.list = list;
+        public void setForumContextList(List<ForumContextResponseList> forumContextResponseLists){
+            this.forumContextResponseLists = forumContextResponseLists;
         }
-
         // 3.4 內部類別: 自定義ViewHolder類別
         // 3.4.1 繼承RecyclerView.ViewHolder
         class MyResViewHolder extends RecyclerView.ViewHolder {
-
-
             // 3.4.2 欄位: 對應選項容器元件，之內的所有元件
             TextView tv_Response_User;
             TextView tv_Response_Time;
             TextView tv_Response_Context;
 
-
-
             // 3.4.3 建構子: 1個參數(View型態)，該參數就是選項容器元件，用來取得各容器元件的參考
-            public MyResViewHolder(@NonNull View forumContextResponseItemView) {
+            MyResViewHolder(View forumContextResponseItemView) {
                 super(forumContextResponseItemView);
                 tv_Response_User = forumContextResponseItemView.findViewById(R.id.tv_Response_User);
                 tv_Response_Time = forumContextResponseItemView.findViewById(R.id.tv_Response_Time);
                 tv_Response_Context = forumContextResponseItemView.findViewById(R.id.tv_Response_Context);
-
             }
-
         }
         // 3.5 方法(MyAdapter): 覆寫以下3方法
         // 3.5.1 getItemCount(): 回傳選項數量
         @Override
         public int getItemCount() {
-            return list == null ? 0 : list.size();
+            return  forumContextResponseLists.size();
         }
 
         // 3.5.2 onCreateViewHolder()
@@ -263,92 +328,81 @@ public class ForumContextFragment extends Fragment {
         @Override
         public MyResViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View forumContextResponseItemView = LayoutInflater.from(activity).inflate(R.layout.forum_context_item_response, parent, false);
-            return new resAdapter.MyResViewHolder(forumContextResponseItemView);
-
+            return new MyResViewHolder(forumContextResponseItemView);
         }
-
         // 3.5.3 onBindViewHolder()
         //  透過ViewHolder物件，將 資料 綁定 至 各元件上
         //  各元件的其他處理，EX.註冊/實作監聽器
         @Override
-        public void onBindViewHolder(@NonNull resAdapter.MyResViewHolder holder, int position) {
-            final ForumContextResponseList forumContextResponseList = list.get(position);
+        public void onBindViewHolder(@NonNull MyResViewHolder holder, int position) {
+            final ForumContextResponseList forumContextResponseList = forumContextResponseLists.get(position);
 
-
-            db.collection("my_info").document(Objects.requireNonNull(auth.getCurrentUser()).getUid())
+            /*db.collection("forumContextRes").whereEqualTo("Br_id",forumBrowseList.getId())
                     .get()
-                    .addOnCompleteListener(myTask -> {
-                        if (myTask.isSuccessful() && myTask.getResult() != null){
-                            DocumentSnapshot documentSnapshot = myTask.getResult();
-                            myinfo = documentSnapshot.toObject(Myinfo.class);
-                            assert  myinfo != null;
-                            if ((myinfo.getName() != null)){
-//                                holder.tv_Response_User.setText(myinfo.getNickname());
-
-                            }else {
-                                //holder.tv_Response_User.setText("匿名");
-                                myinfo.setNickname("匿名");
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful() && task.getResult() != null){
+                            if (!forumContextResponseLists.isEmpty()){
+                                forumContextResponseLists.clear();
+                            }
+                            for (QueryDocumentSnapshot document : task.getResult()){
+                                forumContextResponseLists.add(document.toObject(ForumContextResponseList.class));
                             }
                         }else {
-                            String message = myTask.getException() == null ?
+                            String message = task.getException() == null ?
                                     "查無資料" :
-                                    myTask.getException().getMessage();
+                                    task.getException().getMessage();
                             Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                         }
+                    });*/
 
-                    });
 
-            holder.tv_Response_User.setText(myinfo.getNickname());
-//            holder.tv_Response_User.setText(forumContextResponseList.getTv_Response_User());
+//            db.collection("forumContextRes")
+//                    .get()
+//                    .addOnCompleteListener(task -> {
+//                        if (task.isSuccessful() && task.getResult() != null){
+//                            if (!forumContextResponseLists.isEmpty()){
+//                                forumContextResponseLists.clear();
+//                            }
+//                            for (QueryDocumentSnapshot document : task.getResult()){
+////                                forumContextResponseLists.add(document.toObject(ForumContextResponseList.class));
+//                                if (forumBrowseList.getId().equals(forumContextResponseList.getBr_id())){
+//                                    forumContextResponseLists.add(document.toObject(ForumContextResponseList.class));
+//                                }
+//                            }
+//                        }else {
+//                            String message = task.getException() == null ?
+//                                    "查無資料" :
+//                                    task.getException().getMessage();
+//                            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+
+            holder.tv_Response_User.setText(forumContextResponseList.getTv_Response_User());
             holder.tv_Response_Time.setText(forumContextResponseList.getTv_Response_Time());
             holder.tv_Response_Context.setText(forumContextResponseList.getTv_Response_Context());
 
-
-
-
-//            final String text = position + 1 + ": " + forumBrowseLists.getTitle() ;
-//            holder.itemView.setOnClickListener(view -> Toast.makeText(context, text, Toast.LENGTH_SHORT).show());
-
         }
-
     }
 
-    private void showResponse() {
-        db.collection("forumContextRes").get()
-                .addOnCompleteListener(task->{
-                    if (task.isSuccessful() && task.getResult() != null){
-                        if (!forumContextResponseLists.isEmpty()){
-                            forumContextResponseLists.clear();
-                        }
-                        for(QueryDocumentSnapshot document : task.getResult()){
-                            forumContextResponseLists.add(document.toObject(ForumContextResponseList.class));
-                        }
-                        handleResRecycleView();
-                    } else {
-                        String message = task.getException() == null ? "No forumContextRes found" : task.getException().getMessage();
-                        Log.e(TAG, "exception message:" + message);
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-    private void listenToSpot() {
+
+    private void listenToRes() {
         if (registration == null) {
             registration = db.collection("forumContextRes").addSnapshotListener((snapshots, e) -> {
                 Log.d(TAG, "event happened");
                 if (e == null) {
-                    List<ForumBrowseList> forumBrowseLists = new ArrayList<>();
+                    List<ForumContextResponseList> forumContextResponseLists = new ArrayList<>();
                     if (snapshots != null) {
                         for (DocumentChange dc : snapshots.getDocumentChanges()) {
-                            ForumBrowseList forumBrowseList = dc.getDocument().toObject(ForumBrowseList.class);
+                            ForumContextResponseList forumContextResponseList = dc.getDocument().toObject(ForumContextResponseList.class);
                             switch (dc.getType()) {
                                 case ADDED:
-                                    Log.d(TAG, "Added forumBrowse: " + forumBrowseList.getTitle());
+                                    Log.d(TAG, "Added forumContextRes: " + forumContextResponseList.getTv_Response_User());
                                     break;
                                 case MODIFIED:
-                                    Log.d(TAG, "Modified forumBrowse: " + forumBrowseList.getTitle());
+                                    Log.d(TAG, "Modified forumContextRes: " + forumContextResponseList.getTv_Response_User());
                                     break;
                                 case REMOVED:
-                                    Log.d(TAG, "Removed forumBrowse: " + forumBrowseList.getTitle());
+                                    Log.d(TAG, "Removed forumContextRes: " + forumContextResponseList.getTv_Response_User());
                                     break;
                                 default:
                                     break;

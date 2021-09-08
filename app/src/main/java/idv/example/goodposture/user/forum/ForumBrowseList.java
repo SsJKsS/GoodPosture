@@ -1,6 +1,7 @@
 package idv.example.goodposture.user.forum;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class ForumBrowseList implements Serializable {
     private String likes;
@@ -27,6 +28,7 @@ public class ForumBrowseList implements Serializable {
         this.time = time;
         this.id = id;
         this.context = context;
+
     }
 
     public String getLikes() {

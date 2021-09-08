@@ -183,8 +183,8 @@ public class ForumBrowseFragment extends Fragment {
     private  class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         private List<ForumBrowseList> list;
         MyAdapter(){
-
         }
+
         public void setForumBrowseLists(List<ForumBrowseList> forumBrowseLists){
             this.list = forumBrowseLists;
         }
@@ -201,7 +201,6 @@ public class ForumBrowseFragment extends Fragment {
             TextView tvMessages;
 
             // 3.4.3 建構子: 1個參數(View型態)，該參數就是選項容器元件，用來取得各容器元件的參考
-
             public MyViewHolder(@NonNull View forumBrowseItemView) {
                 super(forumBrowseItemView);
                 tvTitle = forumBrowseItemView.findViewById(R.id.tvTitle);
@@ -211,7 +210,6 @@ public class ForumBrowseFragment extends Fragment {
                 tvLikes = forumBrowseItemView.findViewById(R.id.tvLikes);
                 ivMessage = forumBrowseItemView.findViewById(R.id.ivMessage);
                 tvMessages = forumBrowseItemView.findViewById(R.id.tvMessages);
-
             }
         }
         // 3.5 方法(MyAdapter): 覆寫以下3方法
@@ -230,12 +228,10 @@ public class ForumBrowseFragment extends Fragment {
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View forumBrowseItemView = LayoutInflater.from(activity).inflate(R.layout.forum_browse_item_view, parent, false);
             return new MyViewHolder(forumBrowseItemView);
-
         }
         // 3.5.3 onBindViewHolder()
         //  透過ViewHolder物件，將 資料 綁定 至 各元件上
         //  各元件的其他處理，EX.註冊/實作監聽器
-
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
             final ForumBrowseList forumBrowseList = list.get(position);
@@ -256,14 +252,13 @@ public class ForumBrowseFragment extends Fragment {
                                     myTask.getException().getMessage();
                             Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                         }
-
                     });
 
 
 
             holder.tvTitle.setText(forumBrowseList.getTitle());
             holder.tvAuthor.setText(forumBrowseList.getAuthor());
-            holder.tvTime.setText("2021/09/04");
+            holder.tvTime.setText(forumBrowseList.getTime());
             holder.ivLike.setImageResource(R.drawable.ic_outline_thumb_up_black_48);
             holder.tvLikes.setText("20");
             holder.ivMessage.setImageResource(R.drawable.ic_baseline_forum_black_48);

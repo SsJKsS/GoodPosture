@@ -20,6 +20,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Objects;
 
 import idv.example.goodposture.R;
@@ -87,12 +93,8 @@ public class ForumAddFragment extends Fragment {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
                         // 將獲取的資料存成自定義類別
-                        // for (DocumentSnapshot documentSnapshot : task.getResult())
                         DocumentSnapshot documentSnapshot = task.getResult();
                         myinfo = documentSnapshot.toObject(Myinfo.class);
-//                            forumBrowseList = documentSnapshot.toObject(ForumBrowseList.class);
-//                            assert forumBrowseList != null;
-//                            forumBrowseList.setAuthor(myinfo.getNickname());
                     } else {
                         String message = task.getException() == null ?
                                 "查無資料" :
@@ -113,6 +115,10 @@ public class ForumAddFragment extends Fragment {
                 et_title.setError("請輸入標題");
             }
 
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+            String time = dtf.format(LocalDateTime.now());
+
+
             String context = et_context.getText().toString().trim();
             if (context.isEmpty()){
                 et_context.setError("請輸入內文");
@@ -120,6 +126,7 @@ public class ForumAddFragment extends Fragment {
                 forumBrowseList.setTitle(title);
                 forumBrowseList.setContext(context);
                 forumBrowseList.setAuthor(myinfo.getNickname());
+                forumBrowseList.setTime(time);
                 addForumBrowseList(forumBrowseList);
             }
         });
