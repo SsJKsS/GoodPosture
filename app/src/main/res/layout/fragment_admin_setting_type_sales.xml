@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E1F5FE"
-    tools:context=".admin.home.AdminHomeTypeSalesFragment" >
+    tools:context=".admin.setting.AdminSettingTypeSalesFragment" >
 
     <TextView
         android:id="@+id/textView26"

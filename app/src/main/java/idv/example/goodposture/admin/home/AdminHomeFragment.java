@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
@@ -23,27 +24,34 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import idv.example.goodposture.R;
+import idv.example.goodposture.admin.setting.ExpectedSales;
+import idv.example.goodposture.user.home.Bodyinfo;
 
 public class AdminHomeFragment extends Fragment {
     private TextView tvExpectedSales, tvWeeklySales, tvCompleteRate,
             tvNo1Sales, tvNo2Sales, tvNo3Sales, tvNo1, tvNo2, tvNo3;
     private LineChart lineChart;
+    private FirebaseFirestore db;
+    private ExpectedSales expectedSales;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        db = FirebaseFirestore.getInstance();
+        expectedSales = new ExpectedSales();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-
         return inflater.inflate(R.layout.fragment_admin_home, container, false);
     }
 
@@ -69,19 +77,69 @@ public class AdminHomeFragment extends Fragment {
     }
 
     private void handleSales() {
+        // 查詢指定集合
+        db.collection("expected_sales")
+                .document("JegPOdvDoarQExD8cu00")
+                // 獲取資料
+                .get()
+                // 設置網路傳輸監聽器
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        // 將獲取的資料存成自定義類別
+                        DocumentSnapshot documentSnapshot = task.getResult();
+                        expectedSales = documentSnapshot.toObject(ExpectedSales.class);
+                        showInfo();
+                    }
+                    else{
+                        String message = task.getException() == null ?
+                                "查無資料" :
+                                task.getException().getMessage();
+                        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                    }
+
+                });
+    }
+
+    private void showInfo() {
         // 銷售額
-        int expectedSales, weeklySales, completeRate;
-        expectedSales = 20000;
-        weeklySales = 40000;
-        completeRate = (weeklySales / expectedSales) * 100;
-        String expectedSalesStr = "$" + String.format("%,d", expectedSales);
-        String weeklySalesStr = "$" + String.format("%,d", weeklySales);
-        String completeRateStr = completeRate + "%";
-        tvExpectedSales.setText(expectedSalesStr);
-        tvWeeklySales.setText(weeklySalesStr);
-        tvCompleteRate.setText(completeRateStr);
-        if (completeRate >= 100) {
+        int expected, weekly;
+        double completeRate;
+        expected = expectedSales.getExpectedSales();
+        weekly = 0;
+        if (expected == 0 && weekly != 0) {
+            String expectedSalesStr = "$" + String.format("%,d", expected);
+            String weeklySalesStr = "$" + String.format("%,d", weekly);
+            tvExpectedSales.setText(expectedSalesStr);
+            tvWeeklySales.setText(weeklySalesStr);
+            tvCompleteRate.setText("未設定銷售額");
             tvCompleteRate.setTextColor(Color.RED);
+        }
+        else if (expected != 0 && weekly == 0) {
+            String expectedSalesStr = "$" + String.format("%,d", expected);
+            String weeklySalesStr = "$" + String.format("%,d", weekly);
+            tvExpectedSales.setText(expectedSalesStr);
+            tvWeeklySales.setText(weeklySalesStr);
+            tvCompleteRate.setText("目前尚無銷售額");
+            tvCompleteRate.setTextColor(Color.RED);
+        }
+        else if (expected == 0 && weekly == 0) {
+            String expectedSalesStr = "$" + String.format("%,d", expected);
+            String weeklySalesStr = "$" + String.format("%,d", weekly);
+            tvExpectedSales.setText(expectedSalesStr);
+            tvWeeklySales.setText(weeklySalesStr);
+            tvCompleteRate.setText("0%");
+        }
+        else {
+            completeRate = ((double) weekly / (double) expected) * 100;
+            String expectedSalesStr = "$" + String.format("%,d", expected);
+            String weeklySalesStr = "$" + String.format("%,d", weekly);
+            String completeRateStr = (int)completeRate + "%";
+            tvExpectedSales.setText(expectedSalesStr);
+            tvWeeklySales.setText(weeklySalesStr);
+            tvCompleteRate.setText(completeRateStr);
+            if (completeRate >= 100) {
+                tvCompleteRate.setTextColor(Color.RED);
+            }
         }
 
         // 排行榜

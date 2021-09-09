@@ -87,8 +87,8 @@ public class HomeLoginFragment extends Fragment {
         });
 
         ivKey.setOnClickListener(view -> {
-            etAccount.setText("a");
-            etPassword.setText("a");
+            etAccount.setText("admin");
+            etPassword.setText("admin");
         });
     }
 
@@ -101,17 +101,10 @@ public class HomeLoginFragment extends Fragment {
             final String account = String.valueOf(etAccount.getText());
             final String password = String.valueOf(etPassword.getText());
 
-            if ("a".equals(account) && "a".equals(password)) {
+            if ("admin".equals(account) && "admin".equals(password)) {
                 // 跳轉至廠商首頁
                 Intent intent = new Intent(getActivity(), AdminActivity.class);
                 startActivity(intent);
-            }
-
-            if ("s".equals(account) && "s".equals(password)) {
-                // 取得NavController物件
-                NavController navController = Navigation.findNavController(view);
-                // 跳至頁面
-                navController.navigate(R.id.actionLoginToTypeBodyInfo);
             }
 
             // 判斷帳號不可為空

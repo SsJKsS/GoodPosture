@@ -13,28 +13,22 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import idv.example.goodposture.R;
 import idv.example.goodposture.user.my.Myinfo;
@@ -42,7 +36,6 @@ import idv.example.goodposture.user.my.Myinfo;
 public class ForumBrowseFragment extends Fragment {
     private static  final  String TAG = "TAG_ForumBrowseFragment";
     private RecyclerView recyclerView;
-//    private ForumBrowseList forumBrowseList;
     private SearchView searchView;
     private ImageView ivAdd;
     private FirebaseFirestore db;
@@ -52,8 +45,6 @@ public class ForumBrowseFragment extends Fragment {
     private FirebaseAuth auth;
     private Myinfo myinfo;
     private ForumBrowseList forumList;
-//    private List<ForumBrowseList> forum;
-
 
 
     @Override
@@ -66,7 +57,6 @@ public class ForumBrowseFragment extends Fragment {
         myinfo = new Myinfo();
         forumList = new ForumBrowseList();
         listenToSpot();
-
     }
 
     @Override
@@ -86,7 +76,6 @@ public class ForumBrowseFragment extends Fragment {
 
     private void findViews(View view) {
         recyclerView = view.findViewById(R.id.recyclerView);
-//        cardView = view.findViewById(R.id.cardView);
         searchView = view.findViewById(R.id.searchView);
         ivAdd = view.findViewById(R.id.ivAdd);
 
@@ -101,9 +90,7 @@ public class ForumBrowseFragment extends Fragment {
         });
     }
 
-
     private void handleSearchView() {
-
         // 註冊/實作 查詢文字監聽器
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             // 當點擊提交鍵(虛擬鍵盤)時，自動被呼叫
@@ -121,6 +108,7 @@ public class ForumBrowseFragment extends Fragment {
         });
     }
     private void showForumBrowseList(){
+        Log.e(TAG,"showForumBrowseList()");
         MyAdapter adapter = (MyAdapter) recyclerView.getAdapter();
         if (adapter == null) {
             adapter = new MyAdapter();
@@ -128,11 +116,14 @@ public class ForumBrowseFragment extends Fragment {
             recyclerView.setAdapter(adapter);
         }
         String queryStr = searchView.getQuery().toString();
+        Log.e(TAG,"queryStr : " + queryStr);
+        Log.e(TAG,"forumBrowseLists.size(): " + forumBrowseLists.size());
+        Log.e(TAG,"forumBrowseLists: " + forumBrowseLists);
         if (queryStr.isEmpty()) {
             adapter.setForumBrowseLists(forumBrowseLists);
         } else {
             List<ForumBrowseList> resultList = new ArrayList<>();
-            for (ForumBrowseList forumBrowseList : adapter.list) {
+            for (ForumBrowseList forumBrowseList : forumBrowseLists) {
                 if (forumBrowseList.getTitle().toLowerCase().contains(queryStr.toLowerCase())) {
                     resultList.add(forumBrowseList);
                 }
@@ -175,8 +166,6 @@ public class ForumBrowseFragment extends Fragment {
                     }
                 });
     }
-
-
 
     /**
      * 3. 自定義Adapter類別
@@ -239,26 +228,6 @@ public class ForumBrowseFragment extends Fragment {
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
             final ForumBrowseList forumBrowseList = list.get(position);
 
-            db.collection("my_info").whereEqualTo("id",forumBrowseList.getAuthor())
-                    .get()
-                    .addOnCompleteListener(myTask -> {
-                        if (myTask.isSuccessful() && myTask.getResult() != null){
-                            if (!forumBrowseLists.isEmpty()){
-                                forumBrowseLists.clear();
-                            }
-                            for (QueryDocumentSnapshot document : myTask.getResult()){
-                                forumBrowseLists.add(document.toObject(ForumBrowseList.class));
-                            }
-                        }else {
-                            String message = myTask.getException() == null ?
-                                    "查無資料" :
-                                    myTask.getException().getMessage();
-                            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-
-
             holder.tvTitle.setText(forumBrowseList.getTitle());
             holder.tvAuthor.setText(forumBrowseList.getAuthor());
             holder.tvTime.setText(forumBrowseList.getTime());
@@ -266,8 +235,6 @@ public class ForumBrowseFragment extends Fragment {
             holder.tvLikes.setText("20");
             holder.ivMessage.setImageResource(R.drawable.ic_baseline_forum_black_48);
             holder.tvMessages.setText("20");
-
-
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -281,11 +248,6 @@ public class ForumBrowseFragment extends Fragment {
                     navController.navigate(R.id.action_forumBrowseFragment_to_forumContextFragment, bundle);
                 }
             });
-
-
-//            final String text = position + 1 + ": " + forumBrowseLists.getTitle() ;
-//            holder.itemView.setOnClickListener(view -> Toast.makeText(context, text, Toast.LENGTH_SHORT).show());
-
         }
     }
 
@@ -312,7 +274,6 @@ public class ForumBrowseFragment extends Fragment {
                                     break;
                             }
                         }
-
                         for (DocumentSnapshot document : snapshots.getDocuments()) {
                             forumBrowseLists.add(document.toObject(ForumBrowseList.class));
                         }

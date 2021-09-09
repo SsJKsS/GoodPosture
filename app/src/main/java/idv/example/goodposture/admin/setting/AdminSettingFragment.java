@@ -59,7 +59,7 @@ public class AdminSettingFragment extends Fragment {
             // 取得NavController物件
             NavController navController = Navigation.findNavController(view);
             // 跳至頁面
-            navController.navigate(R.id.action_adminSettingFragment_to_adminHomeTypeSalesFragment);
+            navController.navigate(R.id.action_adminSettingFragment_to_adminSettingTypeSalesFragment);
         });
     }
 
