@@ -1,15 +1,12 @@
 package idv.example.goodposture.user.forum;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,9 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,29 +41,28 @@ import idv.example.goodposture.user.my.Myinfo;
 
 public class ForumContextFragment extends Fragment {
     private static final String TAG = "TAG_ForumContextFragment";
-    private ImageView iv_back;
-    private ImageView iv_thumb_black;
     private boolean click = false;
-    private RecyclerView resRecyclerView;
-    private EditText et_response;
-    private ImageView iv_Response_Send;
     private AppCompatActivity activity;
     private FirebaseAuth auth;
     private FirebaseFirestore db;
+    private FirebaseStorage storage;
     private Myinfo myinfo;
     private ForumBrowseList forumBrowseList;
     private ListenerRegistration registration;
     private List<ForumContextResponseList> forumContextResponseLists;
     private ForumContextResponseList forumContextResponseList;
-    private FirebaseStorage storage;
 
+    private RecyclerView resRecyclerView;
+    private EditText et_response;
     private TextView tv_context_title;
     private TextView tv_context_nickname;
     private TextView tv_context;
     private TextView tv_context_time;
+    private ImageView iv_back;
+    private ImageView iv_thumb_black;
+    private ImageView iv_Response_Send;
     private ImageView iv_context_author;
     private ImageView iv_context_me;
-
 
 
     @Override
@@ -109,7 +103,6 @@ public class ForumContextFragment extends Fragment {
                         }
                     }
                 });
-
 
         if (getArguments() != null){
             forumBrowseList = (ForumBrowseList) getArguments().getSerializable("forumBrowseList");
