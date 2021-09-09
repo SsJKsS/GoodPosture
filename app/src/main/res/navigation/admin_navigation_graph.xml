@@ -40,17 +40,8 @@
             android:id="@+id/action_adminSettingFragment_to_adminAboutusFragment"
             app:destination="@id/adminAboutusFragment" />
         <action
-            android:id="@+id/action_adminSettingFragment_to_adminHomeTypeSalesFragment"
-            app:destination="@id/adminHomeTypeSalesFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/adminHomeTypeSalesFragment"
-        android:name="idv.example.goodposture.admin.home.AdminHomeTypeSalesFragment"
-        android:label="fragment_admin_home_type_sales"
-        tools:layout="@layout/fragment_admin_home_type_sales" >
-        <action
-            android:id="@+id/action_adminHomeTypeSalesFragment_to_adminHomeFragment"
-            app:destination="@id/adminHomeFragment" />
+            android:id="@+id/action_adminSettingFragment_to_adminSettingTypeSalesFragment"
+            app:destination="@id/adminSettingTypeSalesFragment" />
     </fragment>
     <fragment
         android:id="@+id/adminOrderDetailsFragment"
@@ -93,5 +84,14 @@
         <action
             android:id="@+id/action_adminCommodityContextFragment_to_adminCommodityFragment"
             app:destination="@id/adminCommodityFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/adminSettingTypeSalesFragment"
+        android:name="idv.example.goodposture.admin.setting.AdminSettingTypeSalesFragment"
+        android:label="fragment_admin_setting_type_sales"
+        tools:layout="@layout/fragment_admin_setting_type_sales" >
+        <action
+            android:id="@+id/action_adminSettingTypeSalesFragment_to_adminHomeFragment"
+            app:destination="@id/adminHomeFragment" />
     </fragment>
 </navigation>

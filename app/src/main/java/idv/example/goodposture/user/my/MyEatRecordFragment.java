@@ -217,7 +217,7 @@ public class MyEatRecordFragment extends Fragment {
         values.add(new Entry(21, totalCalorie[21]));
         values.add(new Entry(22, totalCalorie[22]));
         values.add(new Entry(23, totalCalorie[23]));
-        LineDataSet lineDataSet = new LineDataSet(values, "今日運動紀錄");
+        LineDataSet lineDataSet = new LineDataSet(values, "今日飲食紀錄");
         lineDataSet.setMode(LineDataSet.Mode.LINEAR);
         lineDataSet.setLineWidth(4);
         lineDataSet.setCircleRadius(4);
