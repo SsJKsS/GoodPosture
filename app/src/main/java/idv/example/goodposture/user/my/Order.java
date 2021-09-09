@@ -6,8 +6,8 @@ import java.util.Date;
 import java.util.logging.SimpleFormatter;
 
 public class Order implements Serializable {
-    private int orderId;
-    private int memberId;
+    private String id;
+    private String uid;
     private Date orderTime;
     private int orderState;
     static final int ORDER_STATE_READY = 1;    //待出貨
@@ -15,23 +15,16 @@ public class Order implements Serializable {
     static final int ORDER_STATE_RECEIVED = 3;  //已完成
     static final int ORDER_STATE_CANCEL = 4;   //已取消
     private String receiverName;
-    private int receiverPhone;
+    private String receiverPhone;
     private String cancel;
-    private int orderAmount;
+    private double orderAmount;
 
     public Order() {
     }
 
-    public Order(int orderId,
-                 int memberId,
-                 Date orderTime,
-                 int orderState,
-                 String receiverName,
-                 int receiverPhone,
-                 String cancel,
-                 int orderAmount) {
-        this.orderId = orderId;
-        this.memberId = memberId;
+    public Order(String id, String uid, Date orderTime, int orderState, String receiverName, String receiverPhone, String cancel, double orderAmount) {
+        this.id = id;
+        this.uid = uid;
         this.orderTime = orderTime;
         this.orderState = orderState;
         this.receiverName = receiverName;
@@ -53,20 +46,20 @@ public class Order implements Serializable {
         this.orderAmount = orderAmount;
     }
 
-    public int getOrderId() {
-        return orderId;
+    public String getId() {
+        return id;
     }
 
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public int getMemberId() {
-        return memberId;
+    public String getUid() {
+        return uid;
     }
 
-    public void setMemberId(int memberId) {
-        this.memberId = memberId;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public Date getOrderTime() {
@@ -85,6 +78,22 @@ public class Order implements Serializable {
         this.orderState = orderState;
     }
 
+    public static int getOrderStateReady() {
+        return ORDER_STATE_READY;
+    }
+
+    public static int getOrderStateShipped() {
+        return ORDER_STATE_SHIPPED;
+    }
+
+    public static int getOrderStateReceived() {
+        return ORDER_STATE_RECEIVED;
+    }
+
+    public static int getOrderStateCancel() {
+        return ORDER_STATE_CANCEL;
+    }
+
     public String getReceiverName() {
         return receiverName;
     }
@@ -93,11 +102,11 @@ public class Order implements Serializable {
         this.receiverName = receiverName;
     }
 
-    public int getReceiverPhone() {
+    public String getReceiverPhone() {
         return receiverPhone;
     }
 
-    public void setReceiverPhone(int receiverPhone) {
+    public void setReceiverPhone(String receiverPhone) {
         this.receiverPhone = receiverPhone;
     }
 
@@ -109,11 +118,11 @@ public class Order implements Serializable {
         this.cancel = cancel;
     }
 
-    public int getOrderAmount() {
+    public double getOrderAmount() {
         return orderAmount;
     }
 
-    public void setOrderAmount(int orderAmount) {
+    public void setOrderAmount(double orderAmount) {
         this.orderAmount = orderAmount;
     }
 

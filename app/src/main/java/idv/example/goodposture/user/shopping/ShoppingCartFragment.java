@@ -376,9 +376,9 @@ public class ShoppingCartFragment extends Fragment {
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
                                 showCartDetails();
-                                Toast.makeText(activity, "cartDetail is delete ", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(activity, "cartDetail is delete ", Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(activity, "cartDetail is delete fail", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(activity, "cartDetail is delete fail", Toast.LENGTH_SHORT).show();
                             }
                         });
             });
@@ -416,8 +416,8 @@ public class ShoppingCartFragment extends Fragment {
     //點擊結帳後跳轉到訂單詳情&結帳頁面
     private void checkout() {
         btCartCheckout.setOnClickListener(v -> {
+
             //將List存到靜態變數裡面
-            //dfhshfkshfkjds
             ShoppingOrderData.orderProductListFromCart = cartDetailRvAdapter.storeOrderData();
             NavController navController = Navigation.findNavController(v);
             navController.navigate(R.id.action_shoppingCartFragment_to_shoppingOrderFragment);
