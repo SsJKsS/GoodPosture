@@ -19,6 +19,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -28,18 +38,21 @@ import java.util.Random;
 
 import idv.example.goodposture.R;
 import idv.example.goodposture.user.shopping.Product;
+import idv.example.goodposture.user.shopping.ShoppingListFragment;
 import idv.example.goodposture.user.shopping.ShoppingOrderFragment;
 
 public class MyOrderStateFragment extends Fragment {
     private static final String TAG = "TAG_MyOrderStateFragment";
-    int orderState;
     private AppCompatActivity activity;
     private RecyclerView rvMyOrder;
-    private final List<Order> allOrderList = TestData.allOrderList;
-    //private final List<Order> statedOrderList = new ArrayList<>();
+    int orderState;
+    private FirebaseFirestore db;
+    private FirebaseAuth auth;
+    private ListenerRegistration registration;  //全程監控db的資料，所以db一變動就會更新資料
+    private List<Order> orders;
+    //private final List<Order> allOrderList = TestData.allOrderList;
 
     public MyOrderStateFragment() {
-        // Required empty public constructor
     }
 
     public MyOrderStateFragment(int orderState) {
@@ -56,8 +69,12 @@ public class MyOrderStateFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activity = (AppCompatActivity) getActivity();
         Log.d(TAG, "onCreate " + Order.getOrderStateName(orderState));
+        activity = (AppCompatActivity) getActivity();
+        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
+        orders = new ArrayList<>();
+        listenToOrders();   // 加上異動監聽器
     }
 
     @Override
@@ -79,21 +96,13 @@ public class MyOrderStateFragment extends Fragment {
     public void onStart() {
         super.onStart();
         Log.d(TAG, "onStart " + Order.getOrderStateName(orderState));
+        reloadOrders();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume " + Order.getOrderStateName(orderState));
-//        //rvMyOrder.getAdapter().notifyDataSetChanged();
-//
-//        //從order表格所有資料取出指定的orderState的order資料
-//        for (Order order : allOrderList) {
-//            if (orderState == order.getOrderState()) {
-//                statedOrderList.add(order);
-//            }
-//        }
-        showMyOrderList();
     }
 
     @Override
@@ -122,37 +131,65 @@ public class MyOrderStateFragment extends Fragment {
 
     private void findViews(View view) {
         rvMyOrder = view.findViewById(R.id.rv_my_order);
+        rvMyOrder.setLayoutManager(new LinearLayoutManager(activity));
     }
 
-    private void showMyOrderList() {
-        List<Order> statedOrderList = new ArrayList<>();
-        //從order表格所有資料取出指定的orderState的order資料
-        for (Order order : allOrderList) {
-            if (orderState == order.getOrderState()) {
-                statedOrderList.add(order);
-            }
-        }
-        rvMyOrder.setAdapter(new MyOrderRVAdapter(getContext(), statedOrderList));
-        rvMyOrder.setLayoutManager(new LinearLayoutManager(getContext()));
-        //Log.d(TAG, "showMyOrderList");
+    //重新載入清單
+    private void reloadOrders(){
+        db.collection("order")
+                .whereEqualTo("uid", auth.getCurrentUser().getUid())
+                .whereEqualTo("orderState", orderState)
+                .get()
+                .addOnCompleteListener(task -> {
+                            if (task.isSuccessful() && task.getResult() != null) {
+                                // 先清除舊資料後再儲存新資料
+                                if (!orders.isEmpty()) {
+                                    orders.clear();
+                                }
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    orders.add(document.toObject(Order.class));
+                                }
+                                showOrders();
+                            }else{
+                                String message = task.getException() == null ?
+                                        "No Product found" :
+                                        task.getException().getMessage();
+                                Log.e(TAG, "exception message: " + message);
+                            }
+                });
     }
 
-    private static class MyOrderRVAdapter extends RecyclerView.Adapter<MyOrderRVAdapter.MyOrderViewHolder> {
+    //顯示訂單列表
+    //設定rv的adapter和吃的list
+    private void showOrders() {
+        OrderAdapter orderAdapter = (OrderAdapter) rvMyOrder.getAdapter();
+        if(orderAdapter == null){
+            orderAdapter = new OrderAdapter();
+            rvMyOrder.setAdapter(orderAdapter);
+        }
+        Log.d(TAG,"showOrder 的 orders 大小："+orders.size());
+        orderAdapter.setOrders(orders);
+        orderAdapter.notifyDataSetChanged();
+    }
 
-        private final Context context;
-        private final List<Order> list;
 
-        public MyOrderRVAdapter(Context context, List<Order> list) {
-            this.context = context;
-            this.list = list;
+
+    private class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
+        private List<Order> orders;
+
+        public OrderAdapter() {
         }
 
-        private static class MyOrderViewHolder extends RecyclerView.ViewHolder {
+        public void setOrders(List<Order> orders){
+            this.orders = orders;
+        }
+
+        private class OrderViewHolder extends RecyclerView.ViewHolder {
             ImageView ivMyOrder;
             TextView tvMyOrderDate;
             TextView tvMyOrderAmount;
 
-            public MyOrderViewHolder(View itemView) {
+            public OrderViewHolder(View itemView) {
                 super(itemView);
                 ivMyOrder = itemView.findViewById(R.id.iv_my_order);
                 tvMyOrderDate = itemView.findViewById(R.id.tv_my_order_date);
@@ -160,16 +197,15 @@ public class MyOrderStateFragment extends Fragment {
             }
         }
 
-        @NotNull
         @Override
-        public MyOrderRVAdapter.MyOrderViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public OrderViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_view_my_order, parent, false);
-            return new MyOrderRVAdapter.MyOrderViewHolder(itemView);
+            return new OrderViewHolder(itemView);
         }
 
         @Override
-        public void onBindViewHolder(MyOrderRVAdapter.MyOrderViewHolder holder, int position) {
-            Order order = list.get(position);
+        public void onBindViewHolder(OrderViewHolder holder, int position) {
+            Order order = orders.get(position);
             holder.ivMyOrder.setImageResource(R.drawable.ic_baseline_close_24);
             holder.tvMyOrderDate.setText(order.getOrderTime() + "");
             holder.tvMyOrderAmount.setText("$" + order.getOrderAmount());
@@ -184,28 +220,59 @@ public class MyOrderStateFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return list == null ? 0 : list.size();
+            return orders == null ? 0 : orders.size();
         }
     }
 
-//    //假資料
-//    private List<Order> getOrderList() {
-////        List<Order> orderList = new ArrayList<>();
-////        orderList.add(new Order(1,100));
-////        orderList.add(new Order(1,100));
-////        orderList.add(new Order(1,100));
-////        orderList.add(new Order(1,100));
-////        orderList.add(new Order(1,100));
-////        orderList.add(new Order(1,100));
-////        orderList.add(new Order(1,100));
-////        orderList.add(new Order(2,100));
-////        orderList.add(new Order(3,100));
-////        orderList.add(new Order(2,100));
-////        orderList.add(new Order(3,100));
-////        orderList.add(new Order(4,100));
-////        orderList.add(new Order(4,100));
-////        return orderList;
-//        return TestData.showOrderStateList;
-//    }
+    /**
+     * 監聽資料是否發生異動，有則同步更新。
+     * 開啟2台模擬器，一台新增/修改/刪除；另一台畫面會同步更新
+     * 但自己做資料異動也會觸發監聽器
+     */
+    private void listenToOrders() {
+        if (registration == null) {
+            //監聽到這個表有異動
+            registration = db.collection("order").addSnapshotListener((snapshots, e) -> {
+                Log.d(TAG, "event happened");
+                if (e == null) {
+                    List<Order> orders = new ArrayList<>();
+                    if (snapshots != null) {
+                        //取得發生異動的資料
+                        for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                            Order order = dc.getDocument().toObject(Order.class);
+                            switch (dc.getType()) {
+                                case ADDED:
+                                    Log.d(TAG, "Added order: " + order.getId());
+                                    break;
+                                case MODIFIED:
+                                    Log.d(TAG, "Modified order: " + order.getId());
+                                    break;
+                                case REMOVED:
+                                    Log.d(TAG, "Removed order: " + order.getId());
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+
+                        for (DocumentSnapshot document : snapshots.getDocuments()) {
+                            Order o = document.toObject(Order.class);
+                            assert o != null;
+                            if(o.getUid().equals(auth.getCurrentUser().getUid())){
+                                if(o.getOrderState() == orderState){
+                                    orders.add(o);
+                                }
+                            }
+
+                        }
+                        this.orders = orders;
+                        showOrders();
+                    }
+                } else {
+                    Log.e(TAG, e.getMessage(), e);
+                }
+            });
+        }
+    }
 
 }

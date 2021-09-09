@@ -182,26 +182,26 @@ public class ShoppingOrderFragment extends Fragment {
             //判斷購買區域的資料不為空
             if (receiverName.isEmpty()) {
                 etReceiverName.setError("請輸入名字!");
-                return;
+                //return;
             }
 
             if (receiverAddress.isEmpty()) {
                 etReceiverAddress.setError("請輸入地址");
-                return;
+                //return;
             }
 
             if (receiverPhone.isEmpty()) {
                 etReceiverPhone.setError("請輸入電話");
-                return;
+                //return;
             }
             if (cardholder.isEmpty()) {
                 etCardholder.setError("請輸入持卡者");
-                return;
+                //return;
             }
             //bug-如果有打其中一格就會判定通過
             if (creditCard.toString().isEmpty()) {
                 etCreditCard4.setError("請輸入卡號");
-                return;
+                //return;
             }
             if (creditCardCsv.isEmpty()) {
                 etCreditCardCsv.setError("請輸入卡號的csv");

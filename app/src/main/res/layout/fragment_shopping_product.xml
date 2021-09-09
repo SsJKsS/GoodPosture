@@ -32,6 +32,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <TextView
+                android:id="@+id/tv_stock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="商品數量："
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/tv_product_description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_product_name" />
+
             <ImageView
                 android:id="@+id/iv_product"
                 android:layout_width="200dp"

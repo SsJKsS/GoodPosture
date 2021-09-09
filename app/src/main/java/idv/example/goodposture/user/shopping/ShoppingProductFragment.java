@@ -57,6 +57,7 @@ public class ShoppingProductFragment extends Fragment {
     private TextView tvProductName;
     private TextView tvProductPrice;
     private TextView tvProductDesc;
+    private TextView tvStock;
     private Button btAddToCart;
     private Button btBuyProduct;
     private ViewGroup mRootView;    //為了動畫建立的
@@ -101,7 +102,7 @@ public class ShoppingProductFragment extends Fragment {
         tvProductDesc = view.findViewById(R.id.tv_product_description);
         btAddToCart = view.findViewById(R.id.bt_add_to_Cart);
         btBuyProduct = view.findViewById(R.id.bt_buy_product);
-
+        tvStock = view.findViewById(R.id.tv_stock);
         mRootView = (ViewGroup) activity.getWindow().getDecorView();
     }
 
@@ -149,6 +150,7 @@ public class ShoppingProductFragment extends Fragment {
             tvProductName.setText(product.getName());
             tvProductPrice.setText(String.format("$%s", product.getPrice()));
             tvProductDesc.setText(product.getDescription());
+            tvStock.append(product.getStock()+"");
         }
         if(product.getPicturePath() != null){
             showImage(ivProduct, product.getPicturePath());

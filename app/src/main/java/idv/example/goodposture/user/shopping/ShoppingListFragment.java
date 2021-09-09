@@ -179,7 +179,7 @@ public class ShoppingListFragment extends Fragment {
                                 "No Product found" :
                                 task.getException().getMessage();
                         Log.e(TAG, "exception message: " + message);
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -209,10 +209,10 @@ public class ShoppingListFragment extends Fragment {
             //setSpots是在Adapter類別內自定義的一個方法
             //searchSpots指要放在rv的東西
             productRvAdapter.setProducts(searchProducts);
-            Log.d(TAG,"query is not empty");
-            if(searchProducts == null){
-                Log.d(TAG,"searchProducts is empty");
-            }
+//            Log.d(TAG,"query is not empty");
+//            if(searchProducts == null){
+//                Log.d(TAG,"searchProducts is empty");
+//            }
         }
 
         productRvAdapter.notifyDataSetChanged();
