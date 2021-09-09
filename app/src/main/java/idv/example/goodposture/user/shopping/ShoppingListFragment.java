@@ -80,7 +80,6 @@ public class ShoppingListFragment extends Fragment {
         findViews(view);    //取得元件的參考
         handleToolbar();
         handleSearchView();
-        //handleRecyclerView(bundle.getString("searchText"));
     }
 
     //希望重新回到這個頁面可以重新更新資料
@@ -123,7 +122,7 @@ public class ShoppingListFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         //載入menu
-        inflater.inflate(R.menu.shopping_list_toolbar_menu, menu);
+        inflater.inflate(R.menu.shopping_cart_toolbar_menu, menu);
     }
 
     //覆寫menu選項的監聽 //返回鑑被視為功能選單的選項
@@ -198,7 +197,7 @@ public class ShoppingListFragment extends Fragment {
         String queryStr = searchView.getQuery().toString();
         if (queryStr.isEmpty()) {
             productRvAdapter.setProducts(products);
-            Log.d(TAG,"query.isEmpty()");
+            //Log.d(TAG,"query.isEmpty()");
         } else {
             List<Product> searchProducts = new ArrayList<>();
             // 搜尋原始資料內有無包含關鍵字(不區別大小寫)
