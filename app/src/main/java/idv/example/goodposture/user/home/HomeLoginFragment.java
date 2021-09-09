@@ -117,7 +117,7 @@ public class HomeLoginFragment extends Fragment {
                 etPassword.setError("請輸入密碼");
             }
             // 連接 firebase 登入
-            else {
+            else if (!"admin".equals(account) && !"admin".equals(password)){
                 signIn(account, password);
                 pass.setPassword(password);
             }
