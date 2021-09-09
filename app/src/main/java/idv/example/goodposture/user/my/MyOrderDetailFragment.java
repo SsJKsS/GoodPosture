@@ -132,9 +132,9 @@ public class MyOrderDetailFragment extends Fragment {
     }
 
     private void showOrderData(Order order) {
-        //還沒定義訂單編號所以先不顯示
-        tvOrderId.setText("訂單編號：" + "order.getOrderId()");
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        //將訂單顯示在畫面上
+        tvOrderId.setText("訂單編號：" + order.getId());
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         tvOrderDate.setText("訂購日期：" + sdf.format(order.getOrderTime()));
         tvOrderAmount.setText("訂購總額：$" + order.getOrderAmount());
         tvOrderState.setText("訂單狀態：" + order.getOrderStateName(order.getOrderState()));

@@ -31,6 +31,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -135,27 +136,27 @@ public class MyOrderStateFragment extends Fragment {
     }
 
     //重新載入清單
-    private void reloadOrders(){
+    private void reloadOrders() {
         db.collection("order")
                 .whereEqualTo("uid", auth.getCurrentUser().getUid())
                 .whereEqualTo("orderState", orderState)
                 .get()
                 .addOnCompleteListener(task -> {
-                            if (task.isSuccessful() && task.getResult() != null) {
-                                // 先清除舊資料後再儲存新資料
-                                if (!orders.isEmpty()) {
-                                    orders.clear();
-                                }
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    orders.add(document.toObject(Order.class));
-                                }
-                                showOrders();
-                            }else{
-                                String message = task.getException() == null ?
-                                        "No Product found" :
-                                        task.getException().getMessage();
-                                Log.e(TAG, "exception message: " + message);
-                            }
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        // 先清除舊資料後再儲存新資料
+                        if (!orders.isEmpty()) {
+                            orders.clear();
+                        }
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            orders.add(document.toObject(Order.class));
+                        }
+                        showOrders();
+                    } else {
+                        String message = task.getException() == null ?
+                                "No Product found" :
+                                task.getException().getMessage();
+                        Log.e(TAG, "exception message: " + message);
+                    }
                 });
     }
 
@@ -163,15 +164,14 @@ public class MyOrderStateFragment extends Fragment {
     //設定rv的adapter和吃的list
     private void showOrders() {
         OrderAdapter orderAdapter = (OrderAdapter) rvMyOrder.getAdapter();
-        if(orderAdapter == null){
+        if (orderAdapter == null) {
             orderAdapter = new OrderAdapter();
             rvMyOrder.setAdapter(orderAdapter);
         }
-        Log.d(TAG,"showOrder 的 orders 大小："+orders.size());
+        Log.d(TAG, "showOrder 的 orders 大小：" + orders.size());
         orderAdapter.setOrders(orders);
         orderAdapter.notifyDataSetChanged();
     }
-
 
 
     private class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
@@ -180,7 +180,7 @@ public class MyOrderStateFragment extends Fragment {
         public OrderAdapter() {
         }
 
-        public void setOrders(List<Order> orders){
+        public void setOrders(List<Order> orders) {
             this.orders = orders;
         }
 
@@ -206,8 +206,9 @@ public class MyOrderStateFragment extends Fragment {
         @Override
         public void onBindViewHolder(OrderViewHolder holder, int position) {
             Order order = orders.get(position);
-            holder.ivMyOrder.setImageResource(R.drawable.ic_baseline_close_24);
-            holder.tvMyOrderDate.setText(order.getOrderTime() + "");
+            holder.ivMyOrder.setImageResource(R.drawable.ic_baseline_receipt_long_black_48);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            holder.tvMyOrderDate.setText(sdf.format(order.getOrderTime()));
             holder.tvMyOrderAmount.setText("$" + order.getOrderAmount());
             holder.itemView.setOnClickListener(v -> {
                 Bundle bundle = new Bundle();
@@ -258,8 +259,8 @@ public class MyOrderStateFragment extends Fragment {
                         for (DocumentSnapshot document : snapshots.getDocuments()) {
                             Order o = document.toObject(Order.class);
                             assert o != null;
-                            if(o.getUid().equals(auth.getCurrentUser().getUid())){
-                                if(o.getOrderState() == orderState){
+                            if (o.getUid().equals(auth.getCurrentUser().getUid())) {
+                                if (o.getOrderState() == orderState) {
                                     orders.add(o);
                                 }
                             }

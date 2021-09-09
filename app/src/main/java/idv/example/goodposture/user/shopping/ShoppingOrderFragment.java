@@ -27,6 +27,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -36,6 +38,7 @@ import java.util.List;
 
 import idv.example.goodposture.R;
 import idv.example.goodposture.user.my.Order;
+import idv.example.goodposture.user.my.OrderDetail;
 
 public class ShoppingOrderFragment extends Fragment {
     private static final String TAG = "TAG_ShoppingOrderFragment";
@@ -223,8 +226,25 @@ public class ShoppingOrderFragment extends Fragment {
             order.setReceiverPhone(receiverPhone);
             order.setOrderAmount(orderAmount);
             //!!沒有給cancel值
+            //未來做金流，就判斷金流成功 = > 執行 addOrderToDb
+            //加入一筆訂單進入資料庫
             addOrderToDb(order);
-
+            //加入多筆訂單詳情進入資料庫
+            for(Product product : products){
+                OrderDetail orderDetail = new OrderDetail();
+                final  String orderDetailId = db.collection("orderDetail").document().getId();
+                orderDetail.setId(orderDetailId);
+                orderDetail.setOrderId(order.getId());
+                orderDetail.setProductId(product.getId());
+                orderDetail.setProductNumber(product.getStock());   //這邊product的stock指的是這個商品的購買數量
+                orderDetail.setProductPrice(product.getPrice());
+                addOrderDetailToDb(orderDetail);
+            }
+            //刪除購買的購物車明細
+            deleteCartDetailList();
+            //Log.d(TAG,"跑完後cartDetailsDelete 的大小：" + cartDetailsDelete.size());
+            NavController navController = Navigation.findNavController(btOrderSend);
+            navController.navigate(R.id.action_shoppingOrderFragment_to_shoppingPayResultFragment);
         });
 
     }
@@ -239,14 +259,71 @@ public class ShoppingOrderFragment extends Fragment {
                         Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                         // 訂單新增完畢回訂單成功頁面
                         //todo 新增成功 return; delete OrderDetail和update product stock and sellAmount
-                        NavController navController = Navigation.findNavController(btOrderSend);
-                        navController.navigate(R.id.action_shoppingOrderFragment_to_shoppingPayResultFragment);
+
                     } else {
                         String message = task.getException() == null ?
                                 "Insert order failed" :
                                 task.getException().getMessage();
                         Log.e(TAG, "message: " + message);
                         Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void addOrderDetailToDb(OrderDetail orderDetail) {
+        db.collection("orderDetail").document(orderDetail.getId()).set(orderDetail)
+                .addOnCompleteListener(task -> {
+                   if(task.isSuccessful()){
+                       String message = "OrderDetail is inserted"
+                               + " with ID: " + orderDetail.getId();
+                       Log.d(TAG, message);
+                       //Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                   } else{
+                       String message = task.getException() == null ?
+                               "Insert order failed" :
+                               task.getException().getMessage();
+                       Log.e(TAG, "message: " + message);
+                   }
+                });
+    }
+
+    private void deleteCartDetailList() {
+        //List<CartDetail> cartDetailsDelete = new ArrayList<>();
+        db.collection("cartDetail")
+                .whereEqualTo("uid", auth.getCurrentUser().getUid())
+                .get()
+                .addOnCompleteListener(task -> {
+                    List<CartDetail> cartDetailsDelete = new ArrayList<>();
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            CartDetail cartDetail = document.toObject(CartDetail.class);
+                            //Log.d(TAG, cartDetail.getId());
+                            for (Product product : products) {
+                                if (product.getId().equals(cartDetail.getProductId())) {
+                                    cartDetailsDelete.add(cartDetail);
+                                }
+                            }
+                        }
+                        for(CartDetail cartDetail : cartDetailsDelete){
+                            deleteCartDetail(cartDetail);
+                        }
+                    } else {
+                        //如果錯誤，則印出錯誤訊息
+                        String message = task.getException() == null ?
+                                "No CartDetail found" :
+                                task.getException().getMessage();
+                        Log.e(TAG, "exception message: " + message);
+                    }
+                });
+    }
+
+    private void deleteCartDetail(CartDetail cartDetail) {
+        db.collection("cartDetail").document(cartDetail.getId()).delete()
+                .addOnCompleteListener(task ->{
+                    if(task.isSuccessful()){
+                        Log.d(TAG,"delete cartDetails：" + cartDetail.getId());
+                    }else {
+                        Log.d(TAG, "delete failed");
                     }
                 });
     }

@@ -1,39 +1,44 @@
 package idv.example.goodposture.user.my;
 
 public class OrderDetail {
-    private int orderDetailId;
-    //private int orderId;
-    private int productId;
+    private String id;
+    private String orderId;
+    private String productId;
     private int productNumber;
-    private int productPrice;   //不是商品現在的售價，是當初購買的價錢
+    private double productPrice;   //不是商品現在的售價，是當初購買的價錢
 
     public OrderDetail() {
-        this.orderDetailId = 1234;
-        this.productId = 1234;
-        this.productNumber = 10;
-        this.productPrice = 100;
     }
 
-    public OrderDetail(int orderDetailId, int productId, int productNumber, int productPrice) {
-        this.orderDetailId = orderDetailId;
+    public OrderDetail(String id, String orderId, String productId, int productNumber, double productPrice) {
+        this.id = id;
+        this.orderId = orderId;
         this.productId = productId;
         this.productNumber = productNumber;
         this.productPrice = productPrice;
     }
 
-    public int getOrderDetailId() {
-        return orderDetailId;
+    public String getId() {
+        return id;
     }
 
-    public void setOrderDetailId(int orderDetailId) {
-        this.orderDetailId = orderDetailId;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public int getProductId() {
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getProductId() {
         return productId;
     }
 
-    public void setProductId(int productId) {
+    public void setProductId(String productId) {
         this.productId = productId;
     }
 
@@ -45,11 +50,11 @@ public class OrderDetail {
         this.productNumber = productNumber;
     }
 
-    public int getProductPrice() {
+    public double getProductPrice() {
         return productPrice;
     }
 
-    public void setProductPrice(int productPrice) {
+    public void setProductPrice(double productPrice) {
         this.productPrice = productPrice;
     }
 }

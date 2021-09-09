@@ -197,7 +197,8 @@ public class ShoppingCartFragment extends Fragment {
         private HashMap<Integer, Boolean> cbMap;
         //amountView的Hashmap集合，存放每個位置的itemView的amount數量
         private HashMap<Integer, Integer> amMap;
-
+        //productMap，存放每個位置的product
+        private HashMap<Integer, Product> productMap;
 
         public CartDetailRvAdapter() {
         }
@@ -206,6 +207,7 @@ public class ShoppingCartFragment extends Fragment {
             this.cartDetailList = cartDetailList;
             this.cbMap = new HashMap<>();
             this.amMap = new HashMap<>();
+            this.productMap = new HashMap<>();
             //list有多少條資料就增加多少個checlbox的Hashmap集合
             for (int i = 0; i < cartDetailList.size(); i++) {
                 this.cbMap.put(i, false);
@@ -222,14 +224,6 @@ public class ShoppingCartFragment extends Fragment {
         //全選所有itemView的checkBox
         public void selectAllItemView() {
             Set<Map.Entry<Integer, Boolean>> entries = cbMap.entrySet();
-//            boolean ckAll = false;
-//            for (Map.Entry<Integer, Boolean> entry : entries) {
-//                Boolean value = entry.getValue();
-//                if (!value) {
-//                    ckAll = true;
-//                    break;
-//                }
-//            }
             for (Map.Entry<Integer, Boolean> entry : entries) {
                 entry.setValue(cbSelectAll.isChecked());
             }
@@ -269,7 +263,9 @@ public class ShoppingCartFragment extends Fragment {
             List<Product> orderProductList = new ArrayList<>();
             for (Map.Entry<Integer, Boolean> entry : cbEntries) {
                 if (entry.getValue()) {
-                    Product product = productList.get(entry.getKey());
+                    //bug-productlist不一定會對齊 =>解決
+                    //Product product = productList.get(entry.getKey());
+                    Product product = productMap.get(entry.getKey());
                     for (Integer position : positions) {
                         if (entry.getKey() == position) {
                             product.setStock(amMap.get(position));
@@ -323,6 +319,7 @@ public class ShoppingCartFragment extends Fragment {
                             DocumentSnapshot documentSnapshot = task.getResult();
                             Product product = documentSnapshot.toObject(Product.class);
                             productList.add(product);
+                            productMap.put(position,product);
                             holder.tvProductName.setText(product.getName());
                             holder.tvProductPrice.setText("$" + product.getPrice());
                             holder.amountViewProduct.setGoods_storage(product.getStock());
