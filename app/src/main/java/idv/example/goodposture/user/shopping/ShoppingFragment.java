@@ -31,7 +31,7 @@ public class ShoppingFragment extends Fragment {
     private Toolbar toolbar;
     private ViewFlipper vfAd;
     private SearchView searchView;
-    int images[] = {R.drawable.shopping_cat, R.drawable.shopping_cat2, R.drawable.shopping_cat3};
+    int slideshow[] = {R.drawable.shopping_slideshow1, R.drawable.shopping_slideshow2, R.drawable.shopping_slideshow3};
     private ImageButton ibFood, ibEquipment;
 
     @Override
@@ -54,7 +54,7 @@ public class ShoppingFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         findViews(view);
         handleToolbar();
-        handleViewFlipper(images);
+        handleViewFlipper(slideshow);
         handleIbFood();
         handleIbEquipment();
     }
@@ -152,7 +152,7 @@ public class ShoppingFragment extends Fragment {
             imageView.setImageResource(img);
             vfAd.addView(imageView);
         }
-        vfAd.setFlipInterval(2000);
+        vfAd.setFlipInterval(3000);
         vfAd.setAutoStart(true);
         //animation
         vfAd.setInAnimation(getContext(), android.R.anim.slide_in_left );

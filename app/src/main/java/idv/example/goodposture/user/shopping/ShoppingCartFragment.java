@@ -222,25 +222,24 @@ public class ShoppingCartFragment extends Fragment {
         //全選所有itemView的checkBox
         public void selectAllItemView() {
             Set<Map.Entry<Integer, Boolean>> entries = cbMap.entrySet();
-            boolean ckAll = false;
+//            boolean ckAll = false;
+//            for (Map.Entry<Integer, Boolean> entry : entries) {
+//                Boolean value = entry.getValue();
+//                if (!value) {
+//                    ckAll = true;
+//                    break;
+//                }
+//            }
             for (Map.Entry<Integer, Boolean> entry : entries) {
-                Boolean value = entry.getValue();
-                if (!value) {
-                    ckAll = true;
-                    break;
-                }
-            }
-            for (Map.Entry<Integer, Boolean> entry : entries) {
-                entry.setValue(ckAll);
+                entry.setValue(cbSelectAll.isChecked());
             }
             showTotal();
             notifyDataSetChanged();
         }
 
-        //算出被勾選的itemView的金額
+        //計算被勾選的itemView的金額
         public void showTotal() {
             Set<Map.Entry<Integer, Boolean>> cbEntries = cbMap.entrySet();
-            Set<Map.Entry<Integer, Integer>> amEntries = amMap.entrySet();
             Set<Integer> positions = amMap.keySet();
             double total = 0;
             for (Map.Entry<Integer, Boolean> entry : cbEntries) {
@@ -259,6 +258,28 @@ public class ShoppingCartFragment extends Fragment {
                 total += (double) amount * price;
             }
             tvTotalPrice.setText("$" + total);
+        }
+
+        //被選取的item的product存在一個陣列
+        public List<Product> storeOrderData(){
+            //cbMap:<index, checkBox is checked?>
+            //amMap:<index, amount of amountView>
+            Set<Map.Entry<Integer, Boolean>> cbEntries = cbMap.entrySet();
+            Set<Integer> positions = amMap.keySet();
+            List<Product> orderProductList = new ArrayList<>();
+            for (Map.Entry<Integer, Boolean> entry : cbEntries) {
+                if (entry.getValue()) {
+                    Product product = productList.get(entry.getKey());
+                    for (Integer position : positions) {
+                        if (entry.getKey() == position) {
+                            product.setStock(amMap.get(position));
+                            break;
+                        }
+                    }
+                    orderProductList.add(product);
+                }
+            }
+            return orderProductList;
         }
 
 
@@ -392,109 +413,12 @@ public class ShoppingCartFragment extends Fragment {
         }
     }
 
-//    private static class CartRecyclerViewAdapter extends RecyclerView.Adapter<CartRecyclerViewAdapter.CartViewHolder>{
-//
-//        private Context context;
-//        private List<Product> list;
-//        //checkbox的Hashmap集合，存放每個位置的itemView的checkbox是否被選取的資料
-//        private  HashMap<Integer, Boolean> cbMap;
-//
-//        public CartRecyclerViewAdapter(Context context, List<Product> list) {
-//            this.context = context;
-//            this.list = list;
-//            this.cbMap = new HashMap<>();
-//            //list有多少條資料就增加多少個checlbox的Hashmap集合
-//            for (int i = 0; i < list.size(); i++) {
-//                this.cbMap.put(i, false);
-//            }
-//        }
-//
-//        /**
-//         * 全選
-//         */
-//        public void selectAllItemView() {
-//            Set<Map.Entry<Integer, Boolean>> entries = cbMap.entrySet();
-//            boolean ckAll = false;
-//            for (Map.Entry<Integer, Boolean> entry : entries) {
-//                Boolean value = entry.getValue();
-//                if (!value) {
-//                    ckAll = true;
-//                    break;
-//                }
-//            }
-//            for (Map.Entry<Integer, Boolean> entry : entries) {
-//                entry.setValue(ckAll);
-//            }
-//            notifyDataSetChanged();
-//        }
-//        //定義ViewHolder
-//        private static class CartViewHolder extends RecyclerView.ViewHolder {
-//            CheckBox cbCartItem;
-//            ImageView ivCartItemProduct;
-//            TextView tvProductName;
-//            TextView tvProductPrice;
-//            AmountView amountProduct;
-//
-//            public CartViewHolder(View itemView) {
-//                super(itemView);
-//                cbCartItem = itemView.findViewById(R.id.cb_cart_item);
-//                ivCartItemProduct = itemView.findViewById(R.id.iv_cart_item_product);
-//                tvProductName = itemView.findViewById(R.id.tv_product_name);
-//                tvProductPrice = itemView.findViewById(R.id.tv_product_price);
-//                amountProduct = itemView.findViewById(R.id.amountview_product);
-//            }
-//        }
-//
-//        @Override
-//        public CartRecyclerViewAdapter.CartViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//            //初始化佈局檔案
-//            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_view_shopping_cart, parent, false);
-//            return new CartRecyclerViewAdapter.CartViewHolder(itemView);
-//        }
-//
-//        @Override
-//        public void onBindViewHolder(CartRecyclerViewAdapter.CartViewHolder holder, int position) {
-//            Product product = list.get(position);
-////            holder.ivCartItemProduct.setImageResource(product.getImageId());
-////            holder.tvProductName.setText(product.getProductName());
-////            holder.tvProductPrice.setText("$" + product.getProductPrice());
-//            holder.ivCartItemProduct.setOnClickListener( v -> {
-//                //寫帶過去的資料
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("product", product);
-//                NavController navController = Navigation.findNavController(v);
-//                navController.navigate(R.id.action_shoppingCartFragment_to_shoppingProductFragment, bundle);
-//            });
-//            holder.amountProduct.setGoods_storage(50);  //product.getStorage()
-//            holder.amountProduct.setOnAmountChangeListener(new AmountView.OnAmountChangeListener() {
-//                @Override
-//                public void onAmountChange(View view, int amount) {
-//                    // amount：這筆訂單清單的商品數量
-//                }
-//            });
-//            //checkbox要先設定checked狀態!!!!
-//            holder.cbCartItem.setChecked(cbMap.get(position));
-//            //itemView的checkBox被點擊後，更新cbMap資料
-//            holder.cbCartItem.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    cbMap.put(position, !cbMap.get(position));
-//                    //重新整理recyclerView
-//                    notifyDataSetChanged();
-//                }
-//            });
-//        }
-//
-//
-//        @Override
-//        public int getItemCount() {
-//            return list == null ? 0 : list.size();
-//        }
-//
-//    }
-
+    //點擊結帳後跳轉到訂單詳情&結帳頁面
     private void checkout() {
         btCartCheckout.setOnClickListener(v -> {
+            //將List存到靜態變數裡面
+            //dfhshfkshfkjds
+            ShoppingOrderData.orderProductListFromCart = cartDetailRvAdapter.storeOrderData();
             NavController navController = Navigation.findNavController(v);
             navController.navigate(R.id.action_shoppingCartFragment_to_shoppingOrderFragment);
         });

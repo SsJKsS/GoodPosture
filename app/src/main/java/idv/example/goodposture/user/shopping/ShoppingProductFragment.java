@@ -40,6 +40,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
+import java.util.List;
 
 import idv.example.goodposture.R;
 
@@ -267,14 +268,11 @@ public class ShoppingProductFragment extends Fragment {
 
     //購買商品，跳出bottomSheet確認數量並結帳
     private void buyProduct() {
-        btBuyProduct.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showBottomSheetDialog();
-            }
-        });
+        btBuyProduct.setOnClickListener(v -> showBottomSheetDialog());
+
     }
-    //todo
+
+    //點擊直接購買會跳出bottomSheet
     private void showBottomSheetDialog(){
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(activity);
         bottomSheetDialog.setContentView(R.layout.shopping_bottom_sheet_checkout);
@@ -284,6 +282,7 @@ public class ShoppingProductFragment extends Fragment {
         TextView tvProductStock = bottomSheetDialog.findViewById(R.id.tv_product_stock);
         AmountView amountView = bottomSheetDialog.findViewById(R.id.amountView_bottomSheet);
         Button btCheckout = bottomSheetDialog.findViewById(R.id.bt_checkout);
+        ImageView tvClose = bottomSheetDialog.findViewById(R.id.iv_close);
 
         tvProductPrice.append(String.format("$%s", product.getPrice()));
         tvProductStock.append(String.valueOf(product.getStock()));
@@ -307,11 +306,18 @@ public class ShoppingProductFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(activity.getApplicationContext(), "checkout ", Toast.LENGTH_LONG).show();
+                //處理帶到結帳頁面的product
+                Bundle bundle = new Bundle();
+                Product p = product;
+                p.setStock(amountView.getAmount());     //這裡的stock指的是購買數量
+                bundle.putSerializable("product", p);
                 NavController navController = Navigation.findNavController(btBuyProduct);
-                navController.navigate(R.id.action_shoppingProductFragment_to_shoppingOrderFragment);
+                navController.navigate(R.id.action_shoppingProductFragment_to_shoppingOrderFragment,bundle);
                 bottomSheetDialog.dismiss();
             }
         });
+
+        tvClose.setOnClickListener(v -> bottomSheetDialog.dismiss());
         bottomSheetDialog.show();
 
     }
