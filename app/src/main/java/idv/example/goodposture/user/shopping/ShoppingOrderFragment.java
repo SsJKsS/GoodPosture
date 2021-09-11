@@ -211,7 +211,7 @@ public class ShoppingOrderFragment extends Fragment {
                 return;
             }
 
-            //資料不為空後，開始設定訂單
+            //購買資料不為空後，開始設定訂單資訊
             final String id = db.collection("order").document().getId();
             final String uid = auth.getCurrentUser().getUid();
             //DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
@@ -236,6 +236,8 @@ public class ShoppingOrderFragment extends Fragment {
                 orderDetail.setId(orderDetailId);
                 orderDetail.setOrderId(order.getId());
                 orderDetail.setProductId(product.getId());
+                orderDetail.setProductName(product.getName());
+                orderDetail.setProductPicturePath(product.getPicturePath());
                 orderDetail.setProductNumber(product.getStock());   //這邊product的stock指的是這個商品的購買數量
                 orderDetail.setProductPrice(product.getPrice());
                 addOrderDetailToDb(orderDetail);
