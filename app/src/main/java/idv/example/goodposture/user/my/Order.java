@@ -10,10 +10,10 @@ public class Order implements Serializable {
     private String uid;
     private Date orderTime;
     private int orderState;
-    static final int ORDER_STATE_READY = 1;    //待出貨
-    static final int ORDER_STATE_SHIPPED = 2;  //已出貨
-    static final int ORDER_STATE_RECEIVED = 3;  //已完成
-    static final int ORDER_STATE_CANCEL = 4;   //已取消
+    public static final int ORDER_STATE_READY = 1;    //待出貨
+    public static final int ORDER_STATE_SHIPPED = 2;  //已出貨
+    public static final int ORDER_STATE_RECEIVED = 3;  //已完成
+    public static final int ORDER_STATE_CANCEL = 4;   //已取消
     private String receiverName;
     private String receiverPhone;
     private String cancel;

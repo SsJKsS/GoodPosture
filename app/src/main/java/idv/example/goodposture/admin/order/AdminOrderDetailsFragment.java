@@ -3,46 +3,79 @@ package idv.example.goodposture.admin.order;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.internal.Storage;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import idv.example.goodposture.R;
-import idv.example.goodposture.user.MainActivity;
-import idv.example.goodposture.user.forum.ForumContextFragment;
-import idv.example.goodposture.user.forum.ForumContextResponseList;
+import idv.example.goodposture.user.my.MyOrderDetailFragment;
+import idv.example.goodposture.user.my.Order;
+import idv.example.goodposture.user.my.OrderDetail;
+import idv.example.goodposture.user.shopping.Product;
 
 public class AdminOrderDetailsFragment extends Fragment {
-    private ImageView iv_order_back;
-    private RecyclerView odDetailsRecyclerView;
-    private ArrayAdapter<AdminOrderDetailsItem> adminOrderDetailsItemArrayAdapter;
-    private odDetailsAdapter odDetailsAdapter;
-    private CardView cv_od_details;
+    private static final String TAG = "TAG_AdminOrderDetailsFragment";
+    private AppCompatActivity activity;
+    private Order order;
+    private FirebaseFirestore db;
+    private ListenerRegistration registration;
+    private FirebaseAuth auth;
+    private List<OrderDetail> orderDetails;
+    private FirebaseStorage storage;
+
+    private TextView tv_admin_order_detail_id;
+    private TextView tv_admin_order_detail_date;
+    private TextView tv_admin_order_detail_amount;
+    private TextView tv_admin_order_detail_state;
+    private TextView tv_admin_order_detail_receiver;
+    private TextView tv_admin_order_detail_phone;
+    private RecyclerView rv_admin_order_details;
+    private Button bt_OK;
     private Button bt_Cancel;
+    private ImageView iv_order_back;
+
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = (AppCompatActivity) getActivity();
+        order = (Order) (getArguments() != null ? getArguments().getSerializable("order") : null);
+        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
+        storage = FirebaseStorage.getInstance();
+        orderDetails = new ArrayList<>();
+        Log.d(TAG,"onCreate");
     }
 
     @Override
@@ -54,135 +87,148 @@ public class AdminOrderDetailsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        Log.d(TAG,"onViewCreated");
         findViews(view);
+        showOrderData(order);
+        handleRecyclerView();
         handleOrderBack();
-        handleOdDetailsRecyclerView();
-        handleBtCanael();
+        handleBtCancel();
+        handleBtOK();
+
     }
 
     private void findViews(View view) {
+        tv_admin_order_detail_id = view.findViewById(R.id.tv_admin_order_detail_id);
+        tv_admin_order_detail_date = view.findViewById(R.id.tv_admin_order_detail_date);
+        tv_admin_order_detail_amount = view.findViewById(R.id.tv_admin_order_detail_amount);
+        tv_admin_order_detail_state = view.findViewById(R.id.tv_admin_order_detail_state);
+        tv_admin_order_detail_receiver = view.findViewById(R.id.tv_admin_order_detail_receiver);
+        tv_admin_order_detail_phone = view.findViewById(R.id.tv_admin_order_detail_phone);
         iv_order_back = view.findViewById(R.id.iv_order_back);
-        cv_od_details = view.findViewById(R.id.cv_od_details);
-        odDetailsRecyclerView = view.findViewById(R.id.rv_order_details);
+        rv_admin_order_details = view.findViewById(R.id.rv_admin_order_details);
         bt_Cancel = view.findViewById(R.id.bt_Cancel);
+        bt_OK = view.findViewById(R.id.bt_OK);
     }
 
-    private void handleBtCanael() {
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG,"onStart");
+
+        reloadOrderDetail();
+    }
+
+    private void reloadOrderDetail() {
+
+        Log.d(TAG,"orderId : " + order.getId());
+
+        db.collection("orderDetail")
+                .whereEqualTo("orderId",order.getId())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() !=null){
+                        // 先清除舊資料後再儲存新資料
+                        if (!orderDetails.isEmpty()) {
+                            orderDetails.clear();
+                        }
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            OrderDetail orderDetail = document.toObject(OrderDetail.class);
+                            orderDetails.add(orderDetail);
+                            Log.d(TAG,"orderDetail.getId :" + orderDetail.getOrderId());
+                        }
+//                        Log.d(TAG,"orderDetail.getId :" + orderDetail.getOrderId());
+                        handleRecyclerView();
+                    }else{
+                        String message = task.getException() == null ?
+                                "No orderDetail found" :
+                                task.getException().getMessage();
+                        Log.e(TAG, "exception message: " + message);
+                    }
+                });
+    }
+
+//    private void reloadProduct() {
+//        db.collection("product")
+//                .whereEqualTo("id",orderDetail.getProductId())
+//                .get()
+//                .addOnCompleteListener(myTask -> {
+//                    if (myTask.isSuccessful() && myTask.getResult() != null) {
+//                        // 先清除舊資料後再儲存新資料
+//                        if (!products.isEmpty()) {
+//                            products.clear();
+//                        }
+//                        for (QueryDocumentSnapshot document : myTask.getResult()) {
+//                            products.add(document.toObject(Product.class));
+//                        }
+//                    }else{
+//                        String message = myTask.getException() == null ?
+//                                "No product found" :
+//                                myTask.getException().getMessage();
+//                        Log.e(TAG, "exception message: " + message);
+//                    }
+//                });
+//    }
+
+    private void showOrderData(Order order) {
+        tv_admin_order_detail_id.setText(order.getId());
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        tv_admin_order_detail_date.setText(sdf.format(order.getOrderTime()));
+        tv_admin_order_detail_amount.setText("$" + order.getOrderAmount());
+        tv_admin_order_detail_state.setText(order.getOrderStateName(order.getOrderState()));
+        tv_admin_order_detail_receiver.setText(order.getReceiverName());
+        tv_admin_order_detail_phone.setText(order.getReceiverPhone());
+
+
+        //TODO 要再想一下資料庫更新資料的順序
+    }
+
+    private void handleBtCancel() {
+        db.collection("order").document(order.getId()).set(order).addOnCompleteListener(task -> {});
+
         bt_Cancel.setOnClickListener(view->{
-            NewDialog();
+            if (order.getOrderState() == Order.ORDER_STATE_READY){
+                NewDialog();
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                builder.setMessage("此訂單無法取消！")
+                        .show();
+            }
+        });
+    }
+
+    private void handleBtOK() {
+        bt_OK.setOnClickListener(view ->{
+            if (order.getOrderState() == Order.ORDER_STATE_READY){
+                AlertDialog.Builder dia = new AlertDialog.Builder(activity);
+                dia.setMessage("確認送出?")
+                        .setPositiveButton("確認", ((dialog, which) -> {
+                            tv_admin_order_detail_state.setText(order.getOrderStateName(order.getOrderState()));
+                            // 取得NavController物件
+                            NavController navController = Navigation.findNavController(view);
+                            // 跳至頁面
+                            navController.navigate(R.id.action_adminOrderDetailsFragment_to_adminOrderFragment);
+                        }))
+                        .setNegativeButton("取消", (dialog, which) -> { })
+                        .show();
+                order.setOrderState(Order.ORDER_STATE_SHIPPED);
+                db.collection("order").document(order.getId()).set(order).addOnCompleteListener(task -> {});
+                Log.d(TAG,"order.getOrderState : "+ order.getOrderState());
+            }else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                builder.setMessage("此訂單已送出或取消！")
+                .show();
+            }
         });
     }
 
     private void handleOrderBack() {
         iv_order_back.setOnClickListener(view ->{
-                // 取得NavController物件
-                NavController navController = Navigation.findNavController(view);
-                // 跳至頁面
-                navController.navigate(R.id.action_adminOrderDetailsFragment_to_adminOrderFragment);
+            Navigation.findNavController(iv_order_back).popBackStack();
         });
     }
 
-    private void handleOdDetailsRecyclerView() {
-        // 4.2 設定Adapter
-        odDetailsRecyclerView.setAdapter(new odDetailsAdapter(this,getAdminOrderDetailsItem()));
-        // 4.3 設定LayoutManager
-        odDetailsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        // 4.3 設定LayoutManager
 
-
-        /** 可試試以下2種LayoutManager! */
-//        recyclerView.setLayoutManager(new GridLayoutManager(this, 4, RecyclerView.HORIZONTAL, false));
-//        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, RecyclerView.HORIZONTAL));
-
-//        cardView.setOnClickListener(view -> {
-//            NavController navController = Navigation.findNavController(view);
-//            navController.navigate(R.id.action_forumBrowseFragment_to_forumContextFragment);
-//        });
-
-
-    }
-    private static class odDetailsAdapter extends RecyclerView.Adapter<odDetailsAdapter.DetailsViewHolder> {
-
-        // 3.2 欄位: Context物件、選項資料物件
-        private final Context context;
-        private List<AdminOrderDetailsItem> list;
-
-        // 3.3 建構子: 2個參數(Context型態、選項資料的型態)，用來初始化2欄位
-        public odDetailsAdapter(AdminOrderDetailsFragment context, List<AdminOrderDetailsItem> list) {
-            this.context = context.getActivity();
-            this.list = list;
-        }
-
-        // 3.4 內部類別: 自定義ViewHolder類別
-        // 3.4.1 繼承RecyclerView.ViewHolder
-        private static class DetailsViewHolder extends RecyclerView.ViewHolder {
-            public View adminOrderDetailItem;
-            // 3.4.2 欄位: 對應選項容器元件，之內的所有元件
-            ImageView iv_order_product;
-            TextView tv_order_product;
-            TextView tv_order_price;
-            TextView tv_order_context;
-
-
-
-
-            // 3.4.3 建構子: 1個參數(View型態)，該參數就是選項容器元件，用來取得各容器元件的參考
-            public DetailsViewHolder(@NonNull View detailsItemView) {
-                super(detailsItemView);
-                iv_order_product = detailsItemView.findViewById(R.id.iv_order_product);
-                tv_order_product = detailsItemView.findViewById(R.id.tv_order_product);
-                tv_order_context = detailsItemView.findViewById(R.id.tv_order_context);
-                tv_order_price = detailsItemView.findViewById(R.id.tv_order_price);
-
-            }
-        }
-
-        // 3.5 方法(MyAdapter): 覆寫以下3方法
-        // 3.5.1 getItemCount(): 回傳選項數量
-        @Override
-        public int getItemCount() {
-            return list == null ? 0 : list.size();
-        }
-
-        // 3.5.2 onCreateViewHolder()
-        //  宣告itemView，並載入選項容器元件的外觀
-        //  實例化自定義的ViewHolder類別，並回傳
-        @NonNull
-        @Override
-        public DetailsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View forumContextResponseItemView = LayoutInflater.from(context).inflate(R.layout.admin_order_details_item, parent, false);
-            return new DetailsViewHolder(forumContextResponseItemView);
-
-        }
-
-        // 3.5.3 onBindViewHolder()
-        //  透過ViewHolder物件，將 資料 綁定 至 各元件上
-        //  各元件的其他處理，EX.註冊/實作監聽器
-        @Override
-        public void onBindViewHolder(@NonNull DetailsViewHolder holder, int position) {
-            final AdminOrderDetailsItem adminOrderDetailsItem = list.get(position);
-            holder.tv_order_price.setText(adminOrderDetailsItem.getPrice());
-            holder.tv_order_context.setText(adminOrderDetailsItem.getContext());
-            holder.tv_order_product.setText(adminOrderDetailsItem.getProduct());
-            holder.iv_order_product.setImageResource(adminOrderDetailsItem.getImage());
-
-
-
-
-//            final String text = position + 1 + ": " + forumBrowseLists.getTitle() ;
-//            holder.itemView.setOnClickListener(view -> Toast.makeText(context, text, Toast.LENGTH_SHORT).show());
-
-        }
-    }
-    private List<AdminOrderDetailsItem> getAdminOrderDetailsItem() {
-        List<AdminOrderDetailsItem> adminOrderDetailsItems = new ArrayList<>();
-        adminOrderDetailsItems.add(new AdminOrderDetailsItem(R.drawable.shark,"鯊鯊一號","呱呱","NT$1,000"));
-        adminOrderDetailsItems.add(new AdminOrderDetailsItem(R.drawable.shark,"鯊鯊一號","呱呱","NT$1,000"));
-        adminOrderDetailsItems.add(new AdminOrderDetailsItem(R.drawable.shark,"鯊鯊一號","呱呱","NT$1,000"));
-        adminOrderDetailsItems.add(new AdminOrderDetailsItem(R.drawable.shark,"鯊鯊一號","呱呱","NT$1,000"));
-        adminOrderDetailsItems.add(new AdminOrderDetailsItem(R.drawable.shark,"鯊鯊一號","呱呱","NT$1,000"));
-        return adminOrderDetailsItems;
-    }
 
     private void NewDialog(){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
@@ -192,10 +238,110 @@ public class AdminOrderDetailsFragment extends Fragment {
         alertDialog.setNegativeButton("送出", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                String reason = editText.getText().toString().trim();
+                if (reason.isEmpty()){
+                    editText.setError("請輸入原因");
+                }else {
+                    Log.d(TAG,"reason : " + reason);
+                    order.setCancel(reason);
+                    Log.d(TAG,"order.getCancel() : " + order.getCancel());
+                }
+                order.setOrderState(Order.ORDER_STATE_CANCEL);
+                Log.d(TAG,"order.getOrderState : "+ order.getOrderState());
+
+                db.collection("order").document(order.getId()).set(order).addOnCompleteListener(task -> {});
+
+
                 Toast.makeText(getActivity().getBaseContext(), "已送出", Toast.LENGTH_SHORT).show();
+                // 取得NavController物件
+                NavController navController = Navigation.findNavController(bt_OK);
+                // 跳至頁面
+                navController.navigate(R.id.action_adminOrderDetailsFragment_to_adminOrderFragment);
             }
         });
-        alertDialog.setCancelable(false);
         alertDialog.show();
     }
+
+    private void handleRecyclerView() {
+        AdminOrderDetailRVAdapter adapter = (AdminOrderDetailRVAdapter) rv_admin_order_details.getAdapter();
+        if (adapter == null){
+            adapter = new AdminOrderDetailRVAdapter();
+            rv_admin_order_details.setAdapter(adapter);
+        }
+        rv_admin_order_details.setLayoutManager(new LinearLayoutManager(activity));
+        adapter.setAdminOrderDetailList(orderDetails);
+    }
+
+    private class AdminOrderDetailRVAdapter extends RecyclerView.Adapter<AdminOrderDetailRVAdapter.AdminOderDetailViewHolder>{
+        private List<OrderDetail> list;
+        AdminOrderDetailRVAdapter(){
+        }
+
+        public void setAdminOrderDetailList(List<OrderDetail> list){
+            this.list = list;
+            notifyDataSetChanged();
+        }
+
+        class AdminOderDetailViewHolder extends RecyclerView.ViewHolder {
+            ImageView iv_order_product;    //Thought:從OrderDetail物件的productId去資料庫抓product圖片
+            TextView tv_admin_order_detail_product_name;     //上
+            TextView tv_admin_order_detail_price;    //上
+            TextView tv_admin_order_detail_product_number;
+
+            public AdminOderDetailViewHolder(@NonNull View itemView) {
+                super(itemView);
+                iv_order_product = itemView.findViewById(R.id.iv_order_product);
+                tv_admin_order_detail_product_name = itemView.findViewById(R.id.tv_admin_order_detail_product_name);
+                tv_admin_order_detail_price = itemView.findViewById(R.id.tv_admin_order_detail_price);
+                tv_admin_order_detail_product_number = itemView.findViewById(R.id.tv_admin_order_detail_product_number);
+            }
+        }
+
+        @Override
+        public AdminOderDetailViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.admin_order_details_item, parent, false);
+            return new AdminOderDetailViewHolder(itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(AdminOderDetailViewHolder holder, int position) {
+            OrderDetail orderDetail = list.get(position);
+
+            if (orderDetail.getProductPicturePath() == null) {
+                holder.iv_order_product.setImageResource(R.drawable.no_product_image);
+            } else {
+                showImage(holder.iv_order_product, orderDetail.getProductPicturePath());
+            }
+
+            holder.tv_admin_order_detail_product_name.setText(orderDetail.getProductName());
+            holder.tv_admin_order_detail_price.setText("$" + orderDetail.getProductPrice());
+            holder.tv_admin_order_detail_product_number.setText("x" + orderDetail.getProductNumber());
+        }
+
+
+
+        @Override
+        public int getItemCount() {
+            return list == null ? 0 : list.size();
+        }
+        private void showImage(ImageView iv_order_product, String imagePath) {
+            final int ONE_MEGABYTE = 1024 * 1024;
+            StorageReference imageRef = storage.getReference().child(imagePath);
+            imageRef.getBytes(ONE_MEGABYTE)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            byte[] bytes = task.getResult();
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                            iv_order_product.setImageBitmap(bitmap);
+                        } else {
+                            String message = task.getException() == null ?
+                                    "Download fail" + " : " + imagePath :
+                                    task.getException().getMessage() + " : " + imagePath;
+                            Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+    }
+
+
 }

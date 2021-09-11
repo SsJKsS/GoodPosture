@@ -31,7 +31,7 @@
                 android:text="出貨"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rv_order_details" />
+                app:layout_constraintTop_toBottomOf="@+id/rv_admin_order_details" />
 
             <TextView
                 android:id="@+id/textView35"
@@ -84,56 +84,56 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView30" />
 
             <TextView
-                android:id="@+id/textView37"
+                android:id="@+id/tv_admin_order_detail_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2021/08/25"
+                android:hint="訂單日期"
                 android:textSize="20sp"
                 app:layout_constraintStart_toEndOf="@+id/textView19"
                 app:layout_constraintTop_toTopOf="@+id/textView19" />
 
             <TextView
-                android:id="@+id/textView36"
+                android:id="@+id/tv_admin_order_detail_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="#D1234567"
+                android:hint="訂單編號"
                 android:textSize="20sp"
                 app:layout_constraintStart_toEndOf="@+id/textView18"
                 app:layout_constraintTop_toTopOf="@+id/textView18" />
 
             <TextView
-                android:id="@+id/textView38"
+                android:id="@+id/tv_admin_order_detail_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="NT$5,000"
+                android:hint="訂單總額"
                 android:textSize="20sp"
                 app:layout_constraintStart_toEndOf="@+id/textView23"
                 app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
             <TextView
-                android:id="@+id/textView40"
+                android:id="@+id/tv_admin_order_detail_receiver"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tibame"
+                android:hint="訂購人"
                 android:textSize="20sp"
                 app:layout_constraintStart_toEndOf="@+id/textView30"
                 app:layout_constraintTop_toTopOf="@+id/textView30" />
 
             <TextView
-                android:id="@+id/textView41"
+                android:id="@+id/tv_admin_order_detail_phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0912345678"
+                android:hint="訂購人聯絡電話"
                 android:textSize="20sp"
                 app:layout_constraintStart_toEndOf="@+id/textView31"
                 app:layout_constraintTop_toTopOf="@+id/textView31" />
 
             <TextView
-                android:id="@+id/textView39"
+                android:id="@+id/tv_admin_order_detail_state"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="配送中"
+                android:hint="訂單狀況"
                 android:textSize="20sp"
                 app:layout_constraintStart_toEndOf="@+id/textView29"
                 app:layout_constraintTop_toTopOf="@+id/textView29" />
@@ -160,7 +160,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_order_details"
+                android:id="@+id/rv_admin_order_details"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
@@ -179,7 +179,7 @@
                 android:text="取消訂單"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rv_order_details" />
+                app:layout_constraintTop_toBottomOf="@+id/rv_admin_order_details" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
