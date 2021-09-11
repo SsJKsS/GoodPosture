@@ -32,9 +32,6 @@
             android:id="@+id/action_fragmentMy_to_myAccountFragment"
             app:destination="@id/myAccountFragment" />
         <action
-            android:id="@+id/action_fragmentMy_to_myAboutFragment"
-            app:destination="@id/myAboutFragment" />
-        <action
             android:id="@+id/action_fragmentMy_to_myRecordIndexFragment"
             app:destination="@id/myRecordIndexFragment" />
     </fragment>
@@ -44,11 +41,8 @@
         android:label="fragment_home_display_body_info"
         tools:layout="@layout/fragment_home_display_body_info" >
         <action
-            android:id="@+id/actionDisplayToShopping"
-            app:destination="@id/fragmentShopping" />
-        <action
-            android:id="@+id/action_homeDisplayBodyInfoFragment_to_forumBrowseFragment"
-            app:destination="@id/forumBrowseFragment" />
+            android:id="@+id/action_homeDisplayBodyInfoFragment_to_fragmentMy"
+            app:destination="@id/fragmentMy" />
     </fragment>
     <fragment
         android:id="@+id/homeModifyBodyInfoFragment"
@@ -244,11 +238,6 @@
             android:id="@+id/action_myAccountFragment_to_myPersonalInfoFragment"
             app:destination="@id/myPersonalInfoFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/myAboutFragment"
-        android:name="idv.example.goodposture.user.my.MyAboutFragment"
-        android:label="fragment_my_aboout"
-        tools:layout="@layout/fragment_my_aboout" />
     <fragment
         android:id="@+id/myPersonalInfoFragment"
         android:name="idv.example.goodposture.user.my.MyPersonalInfoFragment"

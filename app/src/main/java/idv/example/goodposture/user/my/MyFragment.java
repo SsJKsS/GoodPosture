@@ -25,13 +25,11 @@ import idv.example.goodposture.user.PreActivity;
 
 public class MyFragment extends Fragment {
     private Button btMyBodyInfo, btMyCalorieRecord;
-    private Button btMyOrder, btMyAccountData, btAbout, btLogout;
-    private FirebaseAuth auth;
+    private Button btMyOrder, btMyAccountData;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        auth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -53,8 +51,6 @@ public class MyFragment extends Fragment {
         btMyCalorieRecord = view.findViewById(R.id.bt_myCalorieRecord);
         btMyOrder = view.findViewById(R.id.bt_myOrder);
         btMyAccountData = view.findViewById(R.id.bt_myAccountData);
-        btAbout = view.findViewById(R.id.bt_about);
-        btLogout = view.findViewById(R.id.bt_logout);
     }
 
     private void handleButton() {
@@ -81,36 +77,5 @@ public class MyFragment extends Fragment {
             NavController navController = Navigation.findNavController(view);
             navController.navigate(R.id.action_fragmentMy_to_myAccountFragment);
         });
-
-        btAbout.setOnClickListener(view -> {
-            NavController navController = Navigation.findNavController(view);
-            navController.navigate(R.id.action_fragmentMy_to_myAboutFragment);
-        });
-
-        btLogout.setOnClickListener(view -> {
-            Logout();
-        });
-    }
-
-    private void Logout(){
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
-        alertDialog.setMessage("是否確定登出");
-        alertDialog.setPositiveButton("否", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        });
-        alertDialog.setNegativeButton("是", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // 登出
-                auth.signOut();
-                // 登出後跳轉至歡迎頁
-                Intent intent = new Intent(getActivity(), PreActivity.class);
-                startActivity(intent);
-            }
-        });
-        alertDialog.setCancelable(false);   // disable click other area
-        alertDialog.show();
     }
 }

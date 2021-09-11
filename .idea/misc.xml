@@ -8,6 +8,9 @@
         <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/activity_pre.xml" value="0.4814438230808338" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_admin_home.xml" value="0.4814438230808338" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_admin_setting.xml" value="0.49322916666666666" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_home_display_body_info.xml" value="0.4814438230808338" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_home_modify_body_info.xml" value="0.49322916666666666" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_home_register.xml" value="0.28958333333333336" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_home_type_body_info.xml" value="0.49322916666666666" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_my.xml" value="0.49322916666666666" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_my_aboout.xml" value="0.49322916666666666" />
@@ -17,9 +20,11 @@
         <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_my_exercise_record.xml" value="0.49322916666666666" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_my_order_state.xml" value="0.49322916666666666" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_my_personal_info.xml" value="0.2786458333333333" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_my_personal_info_edit.xml" value="0.49322916666666666" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_my_record_index.xml" value="0.49322916666666666" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_my_reset_password.xml" value="0.4814438230808338" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_shopping_cart.xml" value="0.49322916666666666" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/shopping_bottom_sheet_checkout.xml" value="0.49322916666666666" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/menu/admin_bottom_nav_menu.xml" value="0.4814438230808338" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/menu/bottom_nav_menu.xml" value="0.4814438230808338" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/menu/my_personal_info_menu.xml" value="0.49322916666666666" />

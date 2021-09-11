@@ -67,7 +67,7 @@ public class HomeModifyBodyInfoFragment extends Fragment {
     private void handleButton() {
         // 監聽選擇的性別
         rgGender.setOnCheckedChangeListener((group, checkedId) -> {
-            if (checkedId == R.id.rb_male) {
+            if (checkedId == R.id.rb_modifyMale) {
                 bodyinfo.setGender("male");
             } else {
                 bodyinfo.setGender("female");

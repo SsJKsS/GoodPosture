@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +30,7 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import idv.example.goodposture.R;
 
 public class HomeRegisterFragment extends Fragment {
+    private ImageView ivFastAccount;
     private EditText etAccount;
     private EditText etPassword;
     private EditText etConfirmPassword;
@@ -60,6 +62,7 @@ public class HomeRegisterFragment extends Fragment {
     }
 
     private void findViews(View view) {
+        ivFastAccount = view.findViewById(R.id.iv_fastAccount);
         etAccount = view.findViewById(R.id.et_registerAccount);
         etPassword = view.findViewById(R.id.et_registerPassword);
         etConfirmPassword = view.findViewById(R.id.et_confirmPassword);
@@ -68,6 +71,12 @@ public class HomeRegisterFragment extends Fragment {
     }
 
     private void handleButton() {
+        ivFastAccount.setOnClickListener(view -> {
+            etAccount.setText("good@gmail.com");
+            etPassword.setText("111111");
+            etConfirmPassword.setText("111111");
+        });
+
         btRegister.setOnClickListener(view -> {
             final String account = String.valueOf(etAccount.getText());
             final String password = String.valueOf(etPassword.getText());
