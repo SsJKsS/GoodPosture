@@ -182,7 +182,6 @@ public class HomeDisplayBodyInfoFragment extends Fragment {
                                 task.getException().getMessage();
                         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                     }
-
                 });
     }
 

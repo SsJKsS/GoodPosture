@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="22dp"
-            android:text="本週銷售額"
+            android:text="本月銷售額"
             android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="bold"

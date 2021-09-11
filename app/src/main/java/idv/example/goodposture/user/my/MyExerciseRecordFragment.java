@@ -101,89 +101,89 @@ public class MyExerciseRecordFragment extends Fragment {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             myRecordList.add(document.toObject(MyRecord.class));
                         }
-                            for (int i = 0; i < myRecordList.size(); i++) {
-                                switch (myRecordList.get(i).getTime()) {
-                                    case "0:00":
-                                        totalCalorie[0] += myRecordList.get(i).getCalorie();
-                                        break;
-                                    case "1:00":
-                                        totalCalorie[1] += myRecordList.get(i).getCalorie();
-                                        break;
-                                    case "2:00":
-                                        totalCalorie[2] += myRecordList.get(i).getCalorie();
-                                        break;
-                                    case "3:00":
-                                        totalCalorie[3] += myRecordList.get(i).getCalorie();
-                                        break;
-                                    case "4:00":
-                                        totalCalorie[4] += myRecordList.get(i).getCalorie();
-                                        break;
-                                    case "5:00":
-                                        totalCalorie[5] += myRecordList.get(i).getCalorie();
-                                        break;
-                                    case "6:00":
-                                        totalCalorie[6] += myRecordList.get(i).getCalorie();
-                                        break;
-                                    case "7:00":
-                                        totalCalorie[7] += myRecordList.get(i).getCalorie();
-                                        break;
-                                    case "8:00":
-                                        totalCalorie[8] += myRecordList.get(i).getCalorie();
-                                        break;
-                                    case "9:00":
-                                        totalCalorie[9] += myRecordList.get(i).getCalorie();
-                                        break;
-                                    case "10:00":
-                                        totalCalorie[10] += myRecordList.get(i).getCalorie();
-                                        break;
-                                    case "11:00":
-                                        totalCalorie[11] += myRecordList.get(i).getCalorie();
-                                        break;
-                                    case "12:00":
-                                        totalCalorie[12] += myRecordList.get(i).getCalorie();
-                                        break;
-                                    case "13:00":
-                                        totalCalorie[13] += myRecordList.get(i).getCalorie();
-                                        break;
-                                    case "14:00":
-                                        totalCalorie[14] += myRecordList.get(i).getCalorie();
-                                        break;
-                                    case "15:00":
-                                        totalCalorie[15] += myRecordList.get(i).getCalorie();
-                                        break;
-                                    case "16:00":
-                                        totalCalorie[16] += myRecordList.get(i).getCalorie();
-                                        break;
-                                    case "17:00":
-                                        totalCalorie[17] += myRecordList.get(i).getCalorie();
-                                        break;
-                                    case "18:00":
-                                        totalCalorie[18] += myRecordList.get(i).getCalorie();
-                                        break;
-                                    case "19:00":
-                                        totalCalorie[19] += myRecordList.get(i).getCalorie();
-                                        break;
-                                    case "20:00":
-                                        totalCalorie[20] += myRecordList.get(i).getCalorie();
-                                        break;
-                                    case "21:00":
-                                        totalCalorie[21] += myRecordList.get(i).getCalorie();
-                                        break;
-                                    case "22:00":
-                                        totalCalorie[22] += myRecordList.get(i).getCalorie();
-                                        break;
-                                    case "23:00":
-                                        totalCalorie[23] += myRecordList.get(i).getCalorie();
-                                        break;
-                                    default:
-                                        break;
-                                }
+                        for (int i = 0; i < myRecordList.size(); i++) {
+                            switch (myRecordList.get(i).getTime()) {
+                                case "0:00":
+                                    totalCalorie[0] += myRecordList.get(i).getCalorie();
+                                    break;
+                                case "1:00":
+                                    totalCalorie[1] += myRecordList.get(i).getCalorie();
+                                    break;
+                                case "2:00":
+                                    totalCalorie[2] += myRecordList.get(i).getCalorie();
+                                    break;
+                                case "3:00":
+                                    totalCalorie[3] += myRecordList.get(i).getCalorie();
+                                    break;
+                                case "4:00":
+                                    totalCalorie[4] += myRecordList.get(i).getCalorie();
+                                    break;
+                                case "5:00":
+                                    totalCalorie[5] += myRecordList.get(i).getCalorie();
+                                    break;
+                                case "6:00":
+                                    totalCalorie[6] += myRecordList.get(i).getCalorie();
+                                    break;
+                                case "7:00":
+                                    totalCalorie[7] += myRecordList.get(i).getCalorie();
+                                    break;
+                                case "8:00":
+                                    totalCalorie[8] += myRecordList.get(i).getCalorie();
+                                    break;
+                                case "9:00":
+                                    totalCalorie[9] += myRecordList.get(i).getCalorie();
+                                    break;
+                                case "10:00":
+                                    totalCalorie[10] += myRecordList.get(i).getCalorie();
+                                    break;
+                                case "11:00":
+                                    totalCalorie[11] += myRecordList.get(i).getCalorie();
+                                    break;
+                                case "12:00":
+                                    totalCalorie[12] += myRecordList.get(i).getCalorie();
+                                    break;
+                                case "13:00":
+                                    totalCalorie[13] += myRecordList.get(i).getCalorie();
+                                    break;
+                                case "14:00":
+                                    totalCalorie[14] += myRecordList.get(i).getCalorie();
+                                    break;
+                                case "15:00":
+                                    totalCalorie[15] += myRecordList.get(i).getCalorie();
+                                    break;
+                                case "16:00":
+                                    totalCalorie[16] += myRecordList.get(i).getCalorie();
+                                    break;
+                                case "17:00":
+                                    totalCalorie[17] += myRecordList.get(i).getCalorie();
+                                    break;
+                                case "18:00":
+                                    totalCalorie[18] += myRecordList.get(i).getCalorie();
+                                    break;
+                                case "19:00":
+                                    totalCalorie[19] += myRecordList.get(i).getCalorie();
+                                    break;
+                                case "20:00":
+                                    totalCalorie[20] += myRecordList.get(i).getCalorie();
+                                    break;
+                                case "21:00":
+                                    totalCalorie[21] += myRecordList.get(i).getCalorie();
+                                    break;
+                                case "22:00":
+                                    totalCalorie[22] += myRecordList.get(i).getCalorie();
+                                    break;
+                                case "23:00":
+                                    totalCalorie[23] += myRecordList.get(i).getCalorie();
+                                    break;
+                                default:
+                                    break;
+                            }
                             handleChart();
                         }
                         for (int sizeIndex = 0; sizeIndex < myRecordList.size(); sizeIndex++) {
                             total += myRecordList.get(sizeIndex).getCalorie();
                         }
-                        tvExerciseCalorie.append(" " + (int)total + " 大卡");
+                        tvExerciseCalorie.append(" " + (int) total + " 大卡");
                     } else {
                         String message = task.getException() == null ?
                                 "Not Found" :
