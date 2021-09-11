@@ -56,15 +56,9 @@ public class MyOrderStateFragment extends Fragment {
     public MyOrderStateFragment() {
     }
 
+    //產生不同訂單狀態頁面的訂單狀態建構子
     public MyOrderStateFragment(int orderState) {
         this.orderState = orderState;
-//        List<Order> statedOrderList = new ArrayList<>();
-//        //從order表格所有資料取出指定的orderState的order資料
-//        for (Order order : allOrderList) {
-//            if (orderState == order.getOrderState()) {
-//                statedOrderList.add(order);
-//            }
-//        }
     }
 
     @Override
@@ -88,8 +82,6 @@ public class MyOrderStateFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         findViews(view);
-
-        //showMyOrderList();
         Log.d(TAG, "onViewCreated " + Order.getOrderStateName(orderState));
     }
 
@@ -97,7 +89,7 @@ public class MyOrderStateFragment extends Fragment {
     public void onStart() {
         super.onStart();
         Log.d(TAG, "onStart " + Order.getOrderStateName(orderState));
-        reloadOrders();
+        reloadOrders(); //  重新回到這個頁面，會重新載入頁面
     }
 
     @Override
@@ -185,12 +177,14 @@ public class MyOrderStateFragment extends Fragment {
         }
 
         private class OrderViewHolder extends RecyclerView.ViewHolder {
+            TextView tvOrderId;
             ImageView ivMyOrder;
             TextView tvMyOrderDate;
             TextView tvMyOrderAmount;
 
             public OrderViewHolder(View itemView) {
                 super(itemView);
+                tvOrderId = itemView.findViewById(R.id.tv_order_id);
                 ivMyOrder = itemView.findViewById(R.id.iv_my_order);
                 tvMyOrderDate = itemView.findViewById(R.id.tv_my_order_date);
                 tvMyOrderAmount = itemView.findViewById(R.id.tv_my_order_amount);
@@ -206,6 +200,7 @@ public class MyOrderStateFragment extends Fragment {
         @Override
         public void onBindViewHolder(OrderViewHolder holder, int position) {
             Order order = orders.get(position);
+            holder.tvOrderId.setText(order.getId());
             holder.ivMyOrder.setImageResource(R.drawable.ic_baseline_receipt_long_black_48);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             holder.tvMyOrderDate.setText(sdf.format(order.getOrderTime()));
