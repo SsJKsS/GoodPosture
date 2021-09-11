@@ -104,10 +104,7 @@ public class ForumAddFragment extends Fragment {
                 });
 
         iv_send.setOnClickListener( view ->{
-//            final String title = String.valueOf(et_title.getText());
-//            final String context = String.valueOf(et_context.getText());
             final String id = db.collection("forumBrowseList").document().getId();
-            forumBrowseList.setId(id);
 
 
             String title = et_title.getText().toString().trim();
@@ -123,19 +120,22 @@ public class ForumAddFragment extends Fragment {
             if (context.isEmpty()){
                 et_context.setError("請輸入內文");
             }else {
+                forumBrowseList.setId(id);
                 forumBrowseList.setTitle(title);
                 forumBrowseList.setContext(context);
                 forumBrowseList.setAuthor(myinfo.getNickname());
                 forumBrowseList.setImagePath(myinfo.getImagePath());
                 forumBrowseList.setAuthorUid(auth.getCurrentUser().getUid());
                 forumBrowseList.setTime(time);
+                forumBrowseList.setLikes(0);
+                forumBrowseList.setClick(false);
                 addForumBrowseList(forumBrowseList);
             }
         });
     }
 
     private void addForumBrowseList(final ForumBrowseList forumBrowseList){
-        db.collection("forumBrowseList").document().set(forumBrowseList)
+        db.collection("forumBrowseList").document(forumBrowseList.getId()).set(forumBrowseList)
                 .addOnCompleteListener(task ->{
                     if (task.isSuccessful()){
                         String message = "forumBrowseList is inserted" + "with ID:" +forumBrowseList.getId();

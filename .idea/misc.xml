@@ -3,32 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-<<<<<<< Updated upstream
-        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/activity_admin.xml" value="0.4814438230808338" />
-        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/activity_main.xml" value="0.4814438230808338" />
-        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/activity_pre.xml" value="0.4814438230808338" />
-        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_admin_home.xml" value="0.4814438230808338" />
-        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_admin_setting.xml" value="0.49322916666666666" />
-        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_home_display_body_info.xml" value="0.4814438230808338" />
-        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_home_modify_body_info.xml" value="0.49322916666666666" />
-        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_home_register.xml" value="0.28958333333333336" />
-=======
->>>>>>> Stashed changes
         <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_home_type_body_info.xml" value="0.49322916666666666" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_my_order_state.xml" value="0.49322916666666666" />
-<<<<<<< Updated upstream
-        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_my_personal_info.xml" value="0.2786458333333333" />
-        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_my_personal_info_edit.xml" value="0.49322916666666666" />
-        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_my_record_index.xml" value="0.49322916666666666" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_my_reset_password.xml" value="0.4814438230808338" />
-        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_shopping_cart.xml" value="0.49322916666666666" />
-        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/shopping_bottom_sheet_checkout.xml" value="0.49322916666666666" />
-        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/menu/admin_bottom_nav_menu.xml" value="0.4814438230808338" />
-        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/menu/bottom_nav_menu.xml" value="0.4814438230808338" />
-        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/menu/my_personal_info_menu.xml" value="0.49322916666666666" />
-=======
-        <entry key="..\:/Users/Owner/AndroidStudioProjects/GoodPosture/app/src/main/res/layout/fragment_my_reset_password.xml" value="0.4814438230808338" />
->>>>>>> Stashed changes
         <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/drawable/bt_admin_product.xml" value="0.2601851851851852" />
         <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/drawable/gray_button_frame_shape.xml" value="0.28055555555555556" />
         <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/drawable/ic_baseline_camera_alt_24.xml" value="0.28425925925925927" />
@@ -63,6 +40,7 @@
         <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/layout/fragment_my_personal_info.xml" value="0.1962962962962963" />
         <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/layout/item_view_admin_order.xml" value="0.2710926694329184" />
         <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/layout/item_view_my_order.xml" value="0.22" />
+        <entry key="..\:/Users/Tibame_T14/AndroidStudioProjects/GoodPostureNew/app/src/main/res/layout/item_view_shopping_list.xml" value="0.3536458333333333" />
       </map>
     </option>
   </component>

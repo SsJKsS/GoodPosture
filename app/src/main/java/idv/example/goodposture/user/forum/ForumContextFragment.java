@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.loader.content.AsyncTaskLoader;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,7 +42,7 @@ import idv.example.goodposture.user.my.Myinfo;
 
 public class ForumContextFragment extends Fragment {
     private static final String TAG = "TAG_ForumContextFragment";
-    private boolean click = false;
+    private boolean click = true;
     private AppCompatActivity activity;
     private FirebaseAuth auth;
     private FirebaseFirestore db;
@@ -63,6 +64,8 @@ public class ForumContextFragment extends Fragment {
     private ImageView iv_Response_Send;
     private ImageView iv_context_author;
     private ImageView iv_context_me;
+    private TextView tv_forum_context_likes;
+    private List<ForumBrowseList> forumBrowseLists;
 
 
     @Override
@@ -112,7 +115,14 @@ public class ForumContextFragment extends Fragment {
                 tv_context_time.setText(forumBrowseList.getTime());
                 tv_context_nickname.setText(forumBrowseList.getAuthor());
                 forumContextResponseList.setBr_id(forumBrowseList.getId());
+                tv_forum_context_likes.setText("" + forumBrowseList.getLikes());
                 showAuthorImage(iv_context_author, forumBrowseList.getImagePath());
+
+                if (forumBrowseList.getClick() == true){
+                    iv_thumb_black.setImageResource(R.drawable.ic_outline_thumb_up_blue_24);
+                } else {
+                    iv_thumb_black.setImageResource(R.drawable.ic_outline_thumb_up_black_48);
+                }
             }
 
         handleback();
@@ -148,6 +158,7 @@ public class ForumContextFragment extends Fragment {
         tv_context_time = view.findViewById(R.id.tv_context_time);
         iv_context_author = view.findViewById(R.id.iv_context_author);
         iv_context_me = view.findViewById(R.id.iv_context_me);
+        tv_forum_context_likes = view.findViewById(R.id.tv_forum_context_likes);
     }
 
     /**
@@ -219,12 +230,46 @@ public class ForumContextFragment extends Fragment {
         iv_thumb_black.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!click){
+                Log.d(TAG,"click : "+ forumBrowseList.getClick());
+                if(forumBrowseList.getClick() == false){
                     iv_thumb_black.setImageResource(R.drawable.ic_outline_thumb_up_blue_24);
-                    click = true;
+                    int liked_y = forumBrowseList.getLikes();
+                    forumBrowseList.setLikes(liked_y + 1);
+                    Log.d(TAG,"forumBrowseList.getLikes : " + forumBrowseList.getLikes());
+                    tv_forum_context_likes.setText("" + forumBrowseList.getLikes());
+                    forumBrowseList.setClick(true);
+                    db.collection("forumBrowseList")
+                            .document(forumBrowseList.getId())
+                            .set(forumBrowseList)
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()){
+                                    String message = "is liked" + forumBrowseList.getLikes();
+                                    Log.d(TAG,"message : " + message);
+                                } else {
+                                    String message = task.getException() == null ?
+                                            "isn't' like" : task.getException().getMessage();
+                                    Log.d(TAG,"message : " + message);
+                                }
+                            });
                 } else {
                     iv_thumb_black.setImageResource(R.drawable.ic_outline_thumb_up_black_48);
-                    click = false;
+                    int liked_n = forumBrowseList.getLikes();
+                    forumBrowseList.setLikes(liked_n - 1);
+                    tv_forum_context_likes.setText("" + forumBrowseList.getLikes());
+                    forumBrowseList.setClick(false);
+                    db.collection("forumBrowseList")
+                            .document(forumBrowseList.getId())
+                            .set(forumBrowseList)
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()){
+                                    String message = "is Liked" + forumBrowseList.getLikes();
+                                    Log.d(TAG,"message : " + message);
+                                } else {
+                                    String message = task.getException() == null ?
+                                            "like" : task.getException().getMessage();
+                                    Log.d(TAG,"message : " + message);
+                                }
+                            });
                 }
             }
         });

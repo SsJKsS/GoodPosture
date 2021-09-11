@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.internal.Storage;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -48,11 +49,15 @@ public class AdminOrderDetailsFragment extends Fragment {
     private static final String TAG = "TAG_AdminOrderDetailsFragment";
     private AppCompatActivity activity;
     private Order order;
+    private OrderDetail orderDetail;
+    private Product product;
     private FirebaseFirestore db;
     private ListenerRegistration registration;
     private FirebaseAuth auth;
     private List<OrderDetail> orderDetails;
+    private List<Product> products;
     private FirebaseStorage storage;
+    private int total = 0;
 
     private TextView tv_admin_order_detail_id;
     private TextView tv_admin_order_detail_date;
@@ -75,6 +80,8 @@ public class AdminOrderDetailsFragment extends Fragment {
         auth = FirebaseAuth.getInstance();
         storage = FirebaseStorage.getInstance();
         orderDetails = new ArrayList<>();
+        products = new ArrayList<>();
+
         Log.d(TAG,"onCreate");
     }
 
@@ -115,8 +122,8 @@ public class AdminOrderDetailsFragment extends Fragment {
     public void onStart() {
         super.onStart();
         Log.d(TAG,"onStart");
-
         reloadOrderDetail();
+//        reloadProduct();
     }
 
     private void reloadOrderDetail() {
@@ -124,20 +131,16 @@ public class AdminOrderDetailsFragment extends Fragment {
         Log.d(TAG,"orderId : " + order.getId());
 
         db.collection("orderDetail")
-                .whereEqualTo("orderId",order.getId())
+                .whereEqualTo("orderId", order.getId())
                 .get()
                 .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && task.getResult() !=null){
-                        // 先清除舊資料後再儲存新資料
-                        if (!orderDetails.isEmpty()) {
-                            orderDetails.clear();
-                        }
+                    if (task.isSuccessful() && task.getResult() != null) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             OrderDetail orderDetail = document.toObject(OrderDetail.class);
                             orderDetails.add(orderDetail);
-                            Log.d(TAG,"orderDetail.getId :" + orderDetail.getOrderId());
+                            Log.d(TAG,"orderDetail.getProductId : " + orderDetail.getProductId());
                         }
-//                        Log.d(TAG,"orderDetail.getId :" + orderDetail.getOrderId());
+//                        reloadProduct(orderDetails);
                         handleRecyclerView();
                     }else{
                         String message = task.getException() == null ?
@@ -148,27 +151,24 @@ public class AdminOrderDetailsFragment extends Fragment {
                 });
     }
 
-//    private void reloadProduct() {
-//        db.collection("product")
-//                .whereEqualTo("id",orderDetail.getProductId())
-//                .get()
-//                .addOnCompleteListener(myTask -> {
-//                    if (myTask.isSuccessful() && myTask.getResult() != null) {
-//                        // 先清除舊資料後再儲存新資料
-//                        if (!products.isEmpty()) {
-//                            products.clear();
-//                        }
-//                        for (QueryDocumentSnapshot document : myTask.getResult()) {
-//                            products.add(document.toObject(Product.class));
-//                        }
-//                    }else{
-//                        String message = myTask.getException() == null ?
-//                                "No product found" :
-//                                myTask.getException().getMessage();
-//                        Log.e(TAG, "exception message: " + message);
-//                    }
-//                });
-//    }
+    private void reloadProduct(List<OrderDetail> list) {
+
+//        db.collection("product").whereEqualTo("id",orderDetail.getProductId()).get();
+        String product_id = list.get(0).getProductId();
+        int product_number = list.get(0).getProductNumber();
+        db.collection("product")
+                .document(product_id).get().addOnCompleteListener(task -> {
+           if (task.isSuccessful() && task.getResult() != null){
+               DocumentSnapshot documentSnapshot = task.getResult();
+               product = documentSnapshot.toObject(Product.class);
+               total = product_number + product.getStock();
+               product.setStock(total);
+               db.collection("product").document(product_id).set(product);
+           }
+        });
+
+    }
+
 
     private void showOrderData(Order order) {
         tv_admin_order_detail_id.setText(order.getId());
@@ -217,28 +217,6 @@ public class AdminOrderDetailsFragment extends Fragment {
         }else {
             bt_OK.setVisibility(View.GONE);
         }
-
-//        bt_OK.setOnClickListener(view ->{
-//            if (order.getOrderState() == Order.ORDER_STATE_READY){
-//                AlertDialog.Builder dia = new AlertDialog.Builder(activity);
-//                dia.setMessage("確認送出?")
-//                        .setPositiveButton("確認", ((dialog, which) -> {
-//                            tv_admin_order_detail_state.setText(order.getOrderStateName(order.getOrderState()));
-//                            order.setOrderState(Order.ORDER_STATE_SHIPPED);
-//                            db.collection("order").document(order.getId()).set(order).addOnCompleteListener(task -> {});
-//                            // 取得NavController物件
-//                            NavController navController = Navigation.findNavController(view);
-//                            // 跳至頁面
-//                            navController.navigate(R.id.action_adminOrderDetailsFragment_to_adminOrderFragment);
-//                        }))
-//                        .setNegativeButton("取消", (dialog, which) -> { })
-//                        .show();
-//
-//                Log.d(TAG,"order.getOrderState : "+ order.getOrderState());
-//            }else {
-//                bt_OK.setVisibility(View.INVISIBLE);
-//            }
-//        });
     }
 
     private void handleOrderBack() {
@@ -246,8 +224,6 @@ public class AdminOrderDetailsFragment extends Fragment {
             Navigation.findNavController(iv_order_back).popBackStack();
         });
     }
-
-
 
     private void NewDialog(){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
@@ -261,12 +237,32 @@ public class AdminOrderDetailsFragment extends Fragment {
                 if (reason.isEmpty()){
                     editText.setError("請輸入原因");
                 }else {
-                    Log.d(TAG,"reason : " + reason);
+//                    Log.d(TAG,"reason : " + reason);
                     order.setCancel(reason);
-                    Log.d(TAG,"order.getCancel() : " + order.getCancel());
+//                    Log.d(TAG,"order.getCancel() : " + order.getCancel());
+                    db.collection("orderDetail")
+                            .whereEqualTo("orderId", order.getId())
+                            .get()
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful() && task.getResult() != null) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        OrderDetail orderDetail = document.toObject(OrderDetail.class);
+                                        orderDetails.add(orderDetail);
+                                        Log.d(TAG,"orderDetail.getProductId : " + orderDetail.getProductId());
+                                    }
+                                    reloadProduct(orderDetails);
+                                    handleRecyclerView();
+                                }else{
+                                    String message = task.getException() == null ?
+                                            "No orderDetail found" :
+                                            task.getException().getMessage();
+                                    Log.e(TAG, "exception message: " + message);
+                                }
+                            });
+
                 }
                 order.setOrderState(Order.ORDER_STATE_CANCEL);
-                Log.d(TAG,"order.getOrderState : "+ order.getOrderState());
+//                Log.d(TAG,"order.getOrderState : "+ order.getOrderState());
 
                 db.collection("order").document(order.getId()).set(order).addOnCompleteListener(task -> {});
 
@@ -331,13 +327,11 @@ public class AdminOrderDetailsFragment extends Fragment {
             } else {
                 showImage(holder.iv_order_product, orderDetail.getProductPicturePath());
             }
-
+            Log.d(TAG,"orderDetail.getProductId : "+ orderDetail.getProductId());
             holder.tv_admin_order_detail_product_name.setText(orderDetail.getProductName());
             holder.tv_admin_order_detail_price.setText("$" + orderDetail.getProductPrice());
             holder.tv_admin_order_detail_product_number.setText("x" + orderDetail.getProductNumber());
         }
-
-
 
         @Override
         public int getItemCount() {
@@ -361,6 +355,4 @@ public class AdminOrderDetailsFragment extends Fragment {
                     });
         }
     }
-
-
 }

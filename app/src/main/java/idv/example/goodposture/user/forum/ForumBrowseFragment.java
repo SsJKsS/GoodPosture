@@ -44,7 +44,7 @@ public class ForumBrowseFragment extends Fragment {
     private AppCompatActivity activity;
     private FirebaseAuth auth;
     private Myinfo myinfo;
-    private ForumBrowseList forumList;
+//    private ForumBrowseList forumList;
 
 
     @Override
@@ -55,7 +55,7 @@ public class ForumBrowseFragment extends Fragment {
         auth = FirebaseAuth.getInstance();
         forumBrowseLists = new ArrayList<>();
         myinfo = new Myinfo();
-        forumList = new ForumBrowseList();
+//        forumList = new ForumBrowseList();
         listenToSpot();
     }
 
@@ -232,7 +232,7 @@ public class ForumBrowseFragment extends Fragment {
             holder.tvAuthor.setText(forumBrowseList.getAuthor());
             holder.tvTime.setText(forumBrowseList.getTime());
             holder.ivLike.setImageResource(R.drawable.ic_outline_thumb_up_black_48);
-            holder.tvLikes.setText("20");
+            holder.tvLikes.setText("" + forumBrowseList.getLikes());
             holder.ivMessage.setImageResource(R.drawable.ic_baseline_forum_black_48);
             holder.tvMessages.setText("20");
 

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class ForumBrowseList implements Serializable {
-    private String likes;
+    private int likes;
     private String messages;
     private Integer ivLike;
     private Integer ivMessage;
@@ -15,12 +15,13 @@ public class ForumBrowseList implements Serializable {
     private String context;
     private String imagePath;
     private String authorUid;
+    private Boolean click;
 
 
     public ForumBrowseList() {
     }
 
-    public ForumBrowseList(String title, String author, String time, Integer ivLike,String likes, Integer ivMessage, String messages,String id,String context,String imagePath,String authorUid) {
+    public ForumBrowseList(String title, String author, String time, Integer ivLike,int likes, Integer ivMessage, String messages,String id,String context,String imagePath,String authorUid,Boolean click) {
         this.likes = likes;
         this.messages = messages;
         this.ivLike = ivLike;
@@ -32,13 +33,14 @@ public class ForumBrowseList implements Serializable {
         this.context = context;
         this.imagePath = imagePath;
         this.authorUid = authorUid;
+        this.click = click;
     }
 
-    public String getLikes() {
+    public int getLikes() {
         return likes;
     }
 
-    public void setLikes(String likes) {
+    public void setLikes(int likes) {
         this.likes = likes;
     }
 
@@ -120,5 +122,13 @@ public class ForumBrowseList implements Serializable {
 
     public void setAuthorUid(String authorUid) {
         this.authorUid = authorUid;
+    }
+
+    public Boolean getClick() {
+        return click;
+    }
+
+    public void setClick(Boolean click) {
+        this.click = click;
     }
 }

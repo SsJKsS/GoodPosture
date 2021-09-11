@@ -108,13 +108,13 @@
                     android:layout_height="30dp"
                     android:layout_marginEnd="10dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/textView21"
+                    app:layout_constraintEnd_toStartOf="@+id/tv_forum_context_likes"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_outline_thumb_up_black_48" />
                     android:clickable="true"
                     android:background="@drawable/thumb_click"
                 <TextView
-                    android:id="@+id/textView21"
+                    android:id="@+id/tv_forum_context_likes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
