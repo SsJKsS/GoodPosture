@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,10 +25,12 @@ import java.util.ArrayList;
 import idv.example.goodposture.R;
 
 public class MyOrderFragment extends Fragment {
+    private static final String TAG = "TAG_MyOrderFragment";
     private AppCompatActivity activity;
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager2 viewPager2;
+    //private int pageIndex;
 
 
     @Override
@@ -35,6 +38,7 @@ public class MyOrderFragment extends Fragment {
         super.onCreate(savedInstanceState);
         activity = (AppCompatActivity) getActivity();
         setHasOptionsMenu(true);
+        //pageIndex = (int) (getArguments() != null ? getArguments().get("pageIndex"):0);
     }
 
     @Override
@@ -98,7 +102,7 @@ public class MyOrderFragment extends Fragment {
                                 tab.setText(title.get(position));
                             }
                         });
-        //
         tabLayoutMediator.attach();
+        //viewPager2.setCurrentItem(pageIndex);
     }
 }

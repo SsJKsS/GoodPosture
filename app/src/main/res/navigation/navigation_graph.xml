@@ -231,7 +231,11 @@
         android:id="@+id/myOrderDetailFragment"
         android:name="idv.example.goodposture.user.my.MyOrderDetailFragment"
         android:label="fragment_my_order_detail"
-        tools:layout="@layout/fragment_my_order_detail" />
+        tools:layout="@layout/fragment_my_order_detail" >
+        <action
+            android:id="@+id/action_myOrderDetailFragment_to_myOrderFragment"
+            app:destination="@id/myOrderFragment" />
+    </fragment>
     <fragment
         android:id="@+id/myAccountFragment"
         android:name="idv.example.goodposture.user.my.MyAccountFragment"

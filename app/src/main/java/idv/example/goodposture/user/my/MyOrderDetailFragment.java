@@ -1,6 +1,8 @@
 package idv.example.goodposture.user.my;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +20,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +31,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -56,6 +61,7 @@ public class MyOrderDetailFragment extends Fragment {
     private RecyclerView rvOrderDetail;
     //firebase
     private FirebaseFirestore db;
+    private FirebaseStorage storage;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +71,7 @@ public class MyOrderDetailFragment extends Fragment {
         activity = (AppCompatActivity) getActivity();
         order = (Order) (getArguments() != null ? getArguments().getSerializable("order") : null);
         db = FirebaseFirestore.getInstance();
+        storage = FirebaseStorage.getInstance();
         orderDetails = new ArrayList<>();
         products = new ArrayList<>();
     }
@@ -172,17 +179,46 @@ public class MyOrderDetailFragment extends Fragment {
         }
         //點擊完成訂單按鈕
         btOrderDone.setOnClickListener(v -> {
-            order.setOrderState(Order.ORDER_STATE_RECEIVED);
             AlertDialog.Builder builder = new AlertDialog.Builder(activity);
             builder.setMessage("確定收貨?")
                     .setPositiveButton("確認", (dialog, which) -> {
+                        order.setOrderState(Order.ORDER_STATE_RECEIVED);
+                        //修改資料庫
+                        updateOrderState();
                         tvOrderState.setText("訂單狀態：" + order.getOrderStateName(order.getOrderState()));
                         btOrderDone.setVisibility(View.GONE);
                     })
                     .setNegativeButton("取消", (dialog, which) -> { })
                     .show();
-            order.setOrderState(Order.ORDER_STATE_RECEIVED);
+            //order.setOrderState(Order.ORDER_STATE_RECEIVED);
         });
+    }
+
+    private void updateOrderState() {
+        db.collection("order").document(order.getId()).set(order)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        String message = "Order state is updated"
+                                + " with ID: " + order.getId();
+                        Log.d(TAG, message);
+                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                        // 新增完畢回上頁
+                        //Navigation.findNavController(btOrderDone).popBackStack();
+                        NavController navController = Navigation.findNavController(btOrderDone);
+                        //Bundle bundle = new Bundle();
+                        //bundle.putInt("pageIndex",2);
+                        //暫時這樣寫，先讓畫面有刷新的感覺
+                        navController.navigate(R.id.action_myOrderDetailFragment_to_myOrderFragment);
+                        //Navigation.findNavController(btOrderDone).navigateUp();
+                    } else {
+                        String message = task.getException() == null ?
+                                "Update failed" :
+                                task.getException().getMessage();
+                        Log.e(TAG, "message: " + message);
+                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
     }
 
     private void  showOrderDetails() {
@@ -195,52 +231,23 @@ public class MyOrderDetailFragment extends Fragment {
                             OrderDetail orderDetail = document.toObject(OrderDetail.class);
                             orderDetails.add(orderDetail);
                         }
-                        //jfoijsdoijsoijfoidsjfoisjfods
-//                        for(OrderDetail orderDetail : orderDetails){
-//                            setProducts(orderDetail.getProductId());
-//                        }
                         handleRecyclerView();
-
-                        //setsProducts
                     }else{
                         String message = task.getException() == null ?
-                                "No Product found" :
+                                "No orderDetail found" :
                                 task.getException().getMessage();
                         Log.e(TAG, "exception message: " + message);
                     }
                 });
     }
 
-//
-//    //jdsoifjsoijfoidsjfoids
-//    //考慮要不要存商品資訊
-//    private void setProducts(String productId) {
-//        db.collection("product")
-//                .document(productId)
-//                .get()
-//                .addOnCompleteListener(task -> {
-//                    if (task.isSuccessful() && task.getResult() != null) {
-//                        DocumentSnapshot documentSnapshot = task.getResult();
-//                        products.add(documentSnapshot.toObject(Product.class));
-//                    }else{
-//                        String message = task.getException() == null ?
-//                                "No product found" :
-//                                task.getException().getMessage();
-//                        Log.e(TAG, "exception message: " + message);
-//                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//
-//    }
-
-
     private void handleRecyclerView() {
         rvOrderDetail.setAdapter(new MyOrderDetailRVAdapter(getContext(), orderDetails));
-        Log.d(TAG,"orderDetails 的大小：" + orderDetails.size());
+        //Log.d(TAG,"orderDetails 的大小：" + orderDetails.size());
         rvOrderDetail.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    private static class MyOrderDetailRVAdapter extends RecyclerView.Adapter<MyOrderDetailRVAdapter.MyOderDetailViewHolder>{
+    private class MyOrderDetailRVAdapter extends RecyclerView.Adapter<MyOrderDetailRVAdapter.MyOderDetailViewHolder>{
 
         private Context context;
 
@@ -250,7 +257,7 @@ public class MyOrderDetailFragment extends Fragment {
             this.list = list;
         }
 
-        private static class MyOderDetailViewHolder extends RecyclerView.ViewHolder {
+        private class MyOderDetailViewHolder extends RecyclerView.ViewHolder {
             ImageView ivProduct;    //Thought:從OrderDetail物件的productId去資料庫抓product圖片
             TextView tvProductName;     //上
             TextView tvProductPrice;    //上
@@ -273,9 +280,12 @@ public class MyOrderDetailFragment extends Fragment {
         @Override
         public void onBindViewHolder(MyOrderDetailRVAdapter.MyOderDetailViewHolder holder, int position) {
             OrderDetail orderDetail = list.get(position);
-            //Product product = new Product(orderDetail.getProductId());
-            holder.ivProduct.setImageResource(R.drawable.shopping_cat3);
-            holder.tvProductName.setText("product.getProductName()");
+            if (orderDetail.getProductPicturePath() == null) {
+                holder.ivProduct.setImageResource(R.drawable.no_product_image);
+            } else {
+                showImage(holder.ivProduct, orderDetail.getProductPicturePath());
+            }
+            holder.tvProductName.setText(orderDetail.getProductName());
             holder.tvProductPrice.setText("$" + orderDetail.getProductPrice());
             holder.tvProductNumber.setText("x" + orderDetail.getProductNumber());
         }
@@ -287,13 +297,25 @@ public class MyOrderDetailFragment extends Fragment {
 
     }
 
+    // 下載Firebase storage的照片並顯示在ivProduct上
+    private void showImage(final ImageView imageView, final String path) {
+        final int ONE_MEGABYTE = 1024 * 1024;
+        StorageReference imageRef = storage.getReference().child(path);
+        //byte[]轉成bitmap，貼上bitmap
+        imageRef.getBytes(ONE_MEGABYTE)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        byte[] bytes = task.getResult();
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        imageView.setImageBitmap(bitmap);
+                    } else {
+                        String message = task.getException() == null ?
+                                "Image download Failed" + ": " + path :
+                                task.getException().getMessage() + ": " + path;
+                        Log.e(TAG, message);
+                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                    }
+                });
 
-//    //假資料
-//    private List<OrderDetail> getProductList() {
-//        List<OrderDetail> orderDetailList = new ArrayList<>();
-//        for(int i =0;i < 10;i++){
-//            orderDetailList.add(new OrderDetail());
-//        }
-//        return orderDetailList;
-//    }
+    }
 }

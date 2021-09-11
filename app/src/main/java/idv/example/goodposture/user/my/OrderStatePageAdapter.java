@@ -10,16 +10,14 @@ import java.util.List;
 
 class OrderStatePageAdapter extends FragmentStateAdapter {
     List<Fragment> fragmentList = new ArrayList<>();
-    //List<String> orderState = new ArrayList<>();
 
     public OrderStatePageAdapter(FragmentActivity fragmentActivity) {
         super(fragmentActivity);
-//        //初始化orderState清單
-//        this.orderState.add("待出貨");
-//        this.orderState.add("已出貨");
-//        this.orderState.add("已完成");
-//        this.orderState.add("已取消");
-        //初始化pageAdaper切換的頁面們
+        //初始化pageAdaper切換的訂單狀態頁面們
+        //ORDER_STATE_READY：待出貨
+        //ORDER_STATE_SHIPPED：已出貨
+        //ORDER_STATE_RECEIVED：已完成
+        //ORDER_STATE_CANCEL：已取消
         this.fragmentList.add(new MyOrderStateFragment(Order.ORDER_STATE_READY));
         this.fragmentList.add(new MyOrderStateFragment(Order.ORDER_STATE_SHIPPED));
         this.fragmentList.add(new MyOrderStateFragment(Order.ORDER_STATE_RECEIVED));
