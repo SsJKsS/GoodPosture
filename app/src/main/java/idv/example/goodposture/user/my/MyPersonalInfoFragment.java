@@ -45,8 +45,7 @@ public class MyPersonalInfoFragment extends Fragment {
     private Toolbar toolbar;
     private ImageView ivMyAvatar;
     private TextView tvMyInfoNameContent, tvMyInfoAccountContent,
-            tvMyInfoAgeContent, tvMyInfoNicknameContent,
-            tvMyInfoGenderContent, tvMyInfoPhoneContent, tvMyInfoBirthContent;
+            tvMyInfoNicknameContent, tvMyInfoGenderContent, tvMyInfoPhoneContent, tvMyInfoBirthContent;
     private FirebaseAuth auth;
     private FirebaseFirestore db;
     private FirebaseStorage storage;

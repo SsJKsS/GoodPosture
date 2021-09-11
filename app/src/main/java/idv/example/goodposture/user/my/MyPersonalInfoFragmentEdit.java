@@ -57,7 +57,7 @@ public class MyPersonalInfoFragmentEdit extends Fragment implements DatePickerDi
     private Toolbar toolbar;
     private ImageView ivMyEditAvatar, ivCalendar;
     private EditText etMyInfoName, etMyInfoNickname, etMyInfoPhone, etMyInfoBirth;
-    private TextView tvMyInfoAccount, tvMyInfoAge, tvMyInfoGender, tvSubmitMyInfo;
+    private TextView tvMyInfoName, tvMyInfoAccount, tvMyInfoGender, tvSubmitMyInfo;
     private FirebaseAuth auth;
     private FirebaseFirestore db;
     private FirebaseStorage storage;
@@ -106,15 +106,21 @@ public class MyPersonalInfoFragmentEdit extends Fragment implements DatePickerDi
     private void findViews(View view) {
         toolbar = view.findViewById(R.id.tb_my);
         ivMyEditAvatar = view.findViewById(R.id.iv_my_edit_avatar);
+        tvMyInfoName = view.findViewById(R.id.my_info_name);
         ivCalendar = view.findViewById(R.id.iv_calendar);
         etMyInfoName = view.findViewById(R.id.et_my_info_name_content);
         etMyInfoNickname = view.findViewById(R.id.et_my_info_nickname_content);
         etMyInfoPhone = view.findViewById(R.id.et_my_info_telephone_content);
         etMyInfoBirth = view.findViewById(R.id.et_my_info_birth_content);
         tvMyInfoAccount = view.findViewById(R.id.tv_my_info_account_content);
-        tvMyInfoAge = view.findViewById(R.id.tv_my_info_age_content);
         tvMyInfoGender = view.findViewById(R.id.tv_my_info_gender_content);
         tvSubmitMyInfo = view.findViewById(R.id.tv_submitMyInfo);
+
+        tvMyInfoName.setOnClickListener(v -> {
+            etMyInfoName.setText("黃美好");
+            etMyInfoNickname.setText("美好");
+            etMyInfoPhone.setText("0977777777");
+        });
     }
 
     //顯示返回鍵
@@ -247,7 +253,6 @@ public class MyPersonalInfoFragmentEdit extends Fragment implements DatePickerDi
                         DocumentSnapshot documentSnapshot = bodyInfoTask.getResult();
                         bodyinfo = documentSnapshot.toObject(Bodyinfo.class);
                         assert bodyinfo != null;
-                        tvMyInfoAge.setText(bodyinfo.getAge());
                         if (bodyinfo.getGender().equals("male")) {
                             tvMyInfoGender.setText("男");
                         } else {
@@ -277,10 +282,6 @@ public class MyPersonalInfoFragmentEdit extends Fragment implements DatePickerDi
                 assert document != null;
                 if (!document.exists()) {
                     ivMyEditAvatar.setImageResource(R.drawable.no_image);
-                    etMyInfoName.setText("無資料");
-                    etMyInfoNickname.setText("無資料");
-                    etMyInfoPhone.setText("無資料");
-                    etMyInfoBirth.setText("無資料");
                 } else {
                     showInfo();
                 }
@@ -375,7 +376,6 @@ public class MyPersonalInfoFragmentEdit extends Fragment implements DatePickerDi
         tvSubmitMyInfo.setOnClickListener(v -> {
             final String name = String.valueOf(etMyInfoName.getText());
             final String account = String.valueOf(tvMyInfoAccount.getText());
-            final String age = String.valueOf(tvMyInfoAge.getText());
             final String nickname = String.valueOf(etMyInfoNickname.getText());
             final String gender = String.valueOf(tvMyInfoGender.getText());
             final String phone = String.valueOf(etMyInfoPhone.getText());
@@ -409,7 +409,6 @@ public class MyPersonalInfoFragmentEdit extends Fragment implements DatePickerDi
                 myinfo.setImagePath(imagePath);
                 myinfo.setName(name);
                 myinfo.setAccount(account);
-                myinfo.setAge(age);
                 myinfo.setNickname(nickname);
                 myinfo.setGender(gender);
                 myinfo.setPhone(phone);

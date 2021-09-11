@@ -52,7 +52,6 @@ public class MyExerciseRecordFragment extends Fragment {
     private TextView tvExerciseCalorie;
     private FloatingActionButton fabAddExerciseRecord;
     private List<MyRecord> myRecordList;
-    private MyRecord myRecord;
     private Float[] totalCalorie = new Float[24];
     private float total = 0;
 
@@ -62,7 +61,6 @@ public class MyExerciseRecordFragment extends Fragment {
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         myRecordList = new ArrayList<>();
-        myRecord = new MyRecord();
         for (int i = 0; i <= 23; i++) {
             totalCalorie[i] = 0f;
         }

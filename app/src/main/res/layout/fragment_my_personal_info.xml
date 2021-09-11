@@ -20,8 +20,7 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nestedScrollView_my_account"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#E1F5FE"
@@ -34,17 +33,20 @@
             android:id="@+id/cl_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".user.my.MyAccountFragment">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView_my_pic"
                 android:layout_width="180dp"
                 android:layout_height="180dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
                 app:cardCornerRadius="90dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
+
                 <ImageView
                     android:id="@+id/iv_my_avatar_info"
                     android:layout_width="match_parent"
@@ -224,7 +226,7 @@
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
