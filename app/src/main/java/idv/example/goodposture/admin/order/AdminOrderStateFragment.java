@@ -193,7 +193,9 @@ public class AdminOrderStateFragment extends Fragment {
 
                         for (DocumentSnapshot document : snapshots.getDocuments()) {
                             Order o = document.toObject(Order.class);
-                            orders.add(o);
+                            if (o.getOrderState() == adminOrderState){
+                                orders.add(o);
+                            }
                         }
                         this.orders = orders;
                         showOrders();

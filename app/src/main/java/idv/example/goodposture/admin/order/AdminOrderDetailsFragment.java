@@ -186,24 +186,24 @@ public class AdminOrderDetailsFragment extends Fragment {
     private void handleBtCancel() {
         db.collection("order").document(order.getId()).set(order).addOnCompleteListener(task -> {});
 
-        bt_Cancel.setOnClickListener(view->{
-            if (order.getOrderState() == Order.ORDER_STATE_READY){
+        if (order.getOrderState() == Order.ORDER_STATE_READY){
+            bt_Cancel.setOnClickListener(view->{
                 NewDialog();
-            } else {
-                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                builder.setMessage("此訂單無法取消！")
-                        .show();
-            }
-        });
+            });
+        } else {
+            bt_Cancel.setVisibility(View.GONE);
+        }
     }
 
     private void handleBtOK() {
-        bt_OK.setOnClickListener(view ->{
-            if (order.getOrderState() == Order.ORDER_STATE_READY){
+        if(order.getOrderState() == Order.ORDER_STATE_READY){
+            bt_OK.setOnClickListener(view ->{
                 AlertDialog.Builder dia = new AlertDialog.Builder(activity);
                 dia.setMessage("確認送出?")
                         .setPositiveButton("確認", ((dialog, which) -> {
                             tv_admin_order_detail_state.setText(order.getOrderStateName(order.getOrderState()));
+                            order.setOrderState(Order.ORDER_STATE_SHIPPED);
+                            db.collection("order").document(order.getId()).set(order).addOnCompleteListener(task -> {});
                             // 取得NavController物件
                             NavController navController = Navigation.findNavController(view);
                             // 跳至頁面
@@ -211,15 +211,34 @@ public class AdminOrderDetailsFragment extends Fragment {
                         }))
                         .setNegativeButton("取消", (dialog, which) -> { })
                         .show();
-                order.setOrderState(Order.ORDER_STATE_SHIPPED);
-                db.collection("order").document(order.getId()).set(order).addOnCompleteListener(task -> {});
+
                 Log.d(TAG,"order.getOrderState : "+ order.getOrderState());
-            }else {
-                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                builder.setMessage("此訂單已送出或取消！")
-                .show();
-            }
-        });
+            });
+        }else {
+            bt_OK.setVisibility(View.GONE);
+        }
+
+//        bt_OK.setOnClickListener(view ->{
+//            if (order.getOrderState() == Order.ORDER_STATE_READY){
+//                AlertDialog.Builder dia = new AlertDialog.Builder(activity);
+//                dia.setMessage("確認送出?")
+//                        .setPositiveButton("確認", ((dialog, which) -> {
+//                            tv_admin_order_detail_state.setText(order.getOrderStateName(order.getOrderState()));
+//                            order.setOrderState(Order.ORDER_STATE_SHIPPED);
+//                            db.collection("order").document(order.getId()).set(order).addOnCompleteListener(task -> {});
+//                            // 取得NavController物件
+//                            NavController navController = Navigation.findNavController(view);
+//                            // 跳至頁面
+//                            navController.navigate(R.id.action_adminOrderDetailsFragment_to_adminOrderFragment);
+//                        }))
+//                        .setNegativeButton("取消", (dialog, which) -> { })
+//                        .show();
+//
+//                Log.d(TAG,"order.getOrderState : "+ order.getOrderState());
+//            }else {
+//                bt_OK.setVisibility(View.INVISIBLE);
+//            }
+//        });
     }
 
     private void handleOrderBack() {
