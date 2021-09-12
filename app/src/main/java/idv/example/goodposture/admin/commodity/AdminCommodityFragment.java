@@ -1,6 +1,5 @@
 package idv.example.goodposture.admin.commodity;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -17,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -75,10 +73,8 @@ public class AdminCommodityFragment extends Fragment {
     }
 
     private void insertProduct() {
-        tvInsert.setOnClickListener(v -> {
-            Navigation.findNavController(tvInsert)
-                    .navigate(R.id.action_adminCommodityFragment_to_adminCommodityAddFragment);
-        });
+        tvInsert.setOnClickListener(v -> Navigation.findNavController(tvInsert)
+                .navigate(R.id.action_adminCommodityFragment_to_adminCommodityAddFragment));
     }
 
     //希望重新回到這個頁面可以重新更新資料
@@ -86,6 +82,15 @@ public class AdminCommodityFragment extends Fragment {
     public void onStart() {
         super.onStart();
         showAllProducts();
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // 解除異動監聽器
+        if (registration != null) {
+            registration.remove();
+            registration = null;
+        }
     }
 
     private void findViews(View view) {
@@ -246,7 +251,7 @@ public class AdminCommodityFragment extends Fragment {
             registration = db.collection("product").addSnapshotListener((snapshots, e) -> {
                 Log.d(TAG, "event happened");
                 if (e == null) {
-                    List<Product> spots = new ArrayList<>();
+                    List<Product> products = new ArrayList<>();
                     if (snapshots != null) {
                         //取得發生異動的資料
                         for (DocumentChange dc : snapshots.getDocumentChanges()) {
@@ -267,7 +272,7 @@ public class AdminCommodityFragment extends Fragment {
                         }
 
                         for (DocumentSnapshot document : snapshots.getDocuments()) {
-                            spots.add(document.toObject(Product.class));
+                            products.add(document.toObject(Product.class));
                         }
                         this.products = products;
                         showProducts();

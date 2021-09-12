@@ -12,7 +12,7 @@ public class Product implements Serializable {
     private Date date;     //上架日期
     private String picturePath;  //商品照片路徑
     private int type;     //商品類型    //  todo:FOOD:1, EQUIPMENT:2
-    private int sellAmount;   //商品賣出數量    ->可考慮轉成Number應該還行
+    private int sellAmount;   //商品賣出數量
 
     public Product() {
     }

@@ -34,6 +34,7 @@ import androidx.navigation.Navigation;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
@@ -53,8 +54,8 @@ public class AdminCommodityAddFragment extends Fragment {
     private ImageView ivBack;
     private TextView tvSend;
     private EditText etName;
-    //    private RadioButton radioFood;
-//    private RadioButton radioEquipment;
+    private RadioButton radioFood;
+    private RadioButton radioEquipment;
     private RadioGroup radioType;
     private EditText etPrice;
     private EditText etStock;
@@ -75,7 +76,7 @@ public class AdminCommodityAddFragment extends Fragment {
         activity = (AppCompatActivity) getActivity();
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
-        product = new Product();
+
     }
 
     @Override
@@ -88,6 +89,27 @@ public class AdminCommodityAddFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         findViews(view);
+        if (getArguments() != null) {
+            //
+            product = (Product) getArguments().getSerializable("product");
+            if (product.getPicturePath() == null) {
+                ivPicture.setImageResource(R.drawable.no_product_image);
+            } else {
+                showImage(ivPicture, product.getPicturePath());
+            }
+            etName.setText(product.getName());
+            if(product.getType()==1){
+                radioFood.setChecked(true);
+            }else{
+                radioEquipment.setChecked(true);
+            }
+            etPrice.setText(product.getPrice()+"");
+            etStock.setText(product.getStock()+"");
+            etDescription.setText(product.getDescription());
+
+        } else {
+            product = new Product();
+        }
         handlePicture();
         insertProduct();
     }
@@ -96,8 +118,8 @@ public class AdminCommodityAddFragment extends Fragment {
         ivBack = view.findViewById(R.id.iv_com_back);
         tvSend = view.findViewById(R.id.tv_com_send);
         etName = view.findViewById(R.id.et_com_name);
-//        radioFood = view.findViewById(R.id.radio_food);
-//        radioEquipment = view.findViewById(R.id.radio_equipment);
+        radioFood = view.findViewById(R.id.radio_food);
+        radioEquipment = view.findViewById(R.id.radio_equipment);
         radioType = view.findViewById(R.id.radio_type);
         etPrice = view.findViewById(R.id.et_com_price);
         etStock = view.findViewById(R.id.et_com_stock);
@@ -192,8 +214,7 @@ public class AdminCommodityAddFragment extends Fragment {
             product.setStock(Integer.parseInt(stock));
             product.setDescription(description);
             //種類已設定完
-            //如果更新商品的話，這邊要再想一下
-            product.setSellAmount(0);
+            //賣出數量不需設定，預設:0，如果是更新商品，也是維持原來的值
 
             // 如果有拍照，上傳至Firebase storage
             if (pictureTaken) {
@@ -249,6 +270,29 @@ public class AdminCommodityAddFragment extends Fragment {
                     }
                 });
     }
+
+    // 下載Firebase storage的照片並顯示在ImageView上
+    private void showImage(final ImageView imageView, final String path) {
+        final int ONE_MEGABYTE = 1024 * 1024;
+        StorageReference imageRef = storage.getReference().child(path);
+        //byte[]轉成bitmap，貼上bitmap
+        imageRef.getBytes(ONE_MEGABYTE)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        byte[] bytes = task.getResult();
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        imageView.setImageBitmap(bitmap);
+                    } else {
+                        String message = task.getException() == null ?
+                                getString(R.string.textImageDownloadFail) + ": " + path :
+                                task.getException().getMessage() + ": " + path;
+                        Log.e(TAG, message);
+                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+    }
+
     //--------------------以下跟拍照/照片有關---------------------
     //拍照的跳轉
     ActivityResultLauncher<Intent> takePictureLauncher = registerForActivityResult(
