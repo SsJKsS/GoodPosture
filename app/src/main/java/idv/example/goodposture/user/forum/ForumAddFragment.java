@@ -128,6 +128,7 @@ public class ForumAddFragment extends Fragment {
                 forumBrowseList.setAuthorUid(auth.getCurrentUser().getUid());
                 forumBrowseList.setTime(time);
                 forumBrowseList.setLikes(0);
+                forumBrowseList.setMessages(0);
                 forumBrowseList.setClick(false);
                 addForumBrowseList(forumBrowseList);
             }
@@ -140,12 +141,10 @@ public class ForumAddFragment extends Fragment {
                     if (task.isSuccessful()){
                         String message = "forumBrowseList is inserted" + "with ID:" +forumBrowseList.getId();
                         Log.e(TAG,"message"+message);
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                         Navigation.findNavController(iv_send).popBackStack();
                     } else {
                         String message = task.getException() == null ? "Insert failed" : task.getException().getMessage();
                         Log.e(TAG,"message: "+message);
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                     }
                 });
     }

@@ -162,7 +162,6 @@ public class ForumBrowseFragment extends Fragment {
                     } else {
                         String message = task.getException() == null ? "No forumBrowseList found" : task.getException().getMessage();
                         Log.e(TAG, "exception message:" + message);
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -234,7 +233,7 @@ public class ForumBrowseFragment extends Fragment {
             holder.ivLike.setImageResource(R.drawable.ic_outline_thumb_up_black_48);
             holder.tvLikes.setText("" + forumBrowseList.getLikes());
             holder.ivMessage.setImageResource(R.drawable.ic_baseline_forum_black_48);
-            holder.tvMessages.setText("20");
+            holder.tvMessages.setText("" + forumBrowseList.getMessages());
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -262,13 +261,13 @@ public class ForumBrowseFragment extends Fragment {
                             ForumBrowseList forumBrowseList = dc.getDocument().toObject(ForumBrowseList.class);
                             switch (dc.getType()) {
                                 case ADDED:
-                                    Log.d(TAG, "Added forumBrowse: " + forumBrowseList.getTitle());
+                                    Log.d(TAG, "Added forumBrowse: " + forumBrowseList.getTime());
                                     break;
                                 case MODIFIED:
-                                    Log.d(TAG, "Modified forumBrowse: " + forumBrowseList.getTitle());
+                                    Log.d(TAG, "Modified forumBrowse: " + forumBrowseList.getTime());
                                     break;
                                 case REMOVED:
-                                    Log.d(TAG, "Removed forumBrowse: " + forumBrowseList.getTitle());
+                                    Log.d(TAG, "Removed forumBrowse: " + forumBrowseList.getTime());
                                     break;
                                 default:
                                     break;
