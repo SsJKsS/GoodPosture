@@ -8,7 +8,7 @@
     tools:context=".user.forum.ForumAddFragment" >
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar3"
+        android:id="@+id/tb_forum_add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FF64B5F6"
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:src="@drawable/ic_baseline_arrow_back_24"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbar3"
+        app:layout_constraintBottom_toBottomOf="@+id/tb_forum_add"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -34,9 +34,9 @@
         android:layout_height="40dp"
         android:layout_marginEnd="10dp"
         android:src="@drawable/ic_baseline_send_white_48"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbar3"
-        app:layout_constraintEnd_toEndOf="@+id/toolbar3"
-        app:layout_constraintTop_toTopOf="@+id/toolbar3" />
+        app:layout_constraintBottom_toBottomOf="@+id/tb_forum_add"
+        app:layout_constraintEnd_toEndOf="@+id/tb_forum_add"
+        app:layout_constraintTop_toTopOf="@+id/tb_forum_add" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -44,10 +44,10 @@
         android:layout_height="80dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar3">
+        app:layout_constraintTop_toBottomOf="@+id/tb_forum_add">
 
         <TextView
-            android:id="@+id/textView9"
+            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
@@ -66,7 +66,7 @@
             android:hint="標題"
             android:inputType="textPersonName"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView9"
+            app:layout_constraintStart_toEndOf="@+id/tv_title"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
