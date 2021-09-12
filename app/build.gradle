@@ -52,4 +52,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore'
     // 拍照套件
     implementation 'com.github.yalantis:ucrop:2.2.4'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 }

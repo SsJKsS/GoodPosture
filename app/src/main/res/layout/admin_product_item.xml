@@ -1,48 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cv_com"
     android:layout_width="match_parent"
-    android:layout_height="170dp"
-    android:foreground="?selectableItemBackground">
+    android:layout_height="wrap_content"
+    android:foreground="?selectableItemBackground"
+    app:cardCornerRadius="8dp"
+    android:layout_margin="4dp"
+    app:cardElevation="6dp"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="170dp"
-        android:background="@drawable/myborder">
+        android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/iv_com"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
+            android:id="@+id/iv_com_product"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/shark2" />
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/tv_com_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="商品編號"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/iv_com_product"
+            app:layout_constraintTop_toTopOf="@+id/iv_com_product"
+            />
 
         <TextView
             android:id="@+id/tv_com_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:text="鯊鯊 A"
+            android:layout_marginTop="4dp"
+            android:text="商品名稱"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="normal"
-            app:layout_constraintStart_toEndOf="@+id/iv_com"
-            app:layout_constraintTop_toTopOf="@+id/iv_com" />
+            app:layout_constraintStart_toEndOf="@+id/iv_com_product"
+            app:layout_constraintTop_toBottomOf="@+id/tv_com_id"
+             />
 
         <TextView
             android:id="@+id/tv_com_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="NT$5,000"
+            android:layout_marginTop="4dp"
+            android:text="商品價格"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/tv_com_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_com_name" />
 
@@ -50,15 +69,16 @@
             android:id="@+id/tv_com_good"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="2dp"
             android:text="商品數量"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_com" />
+            app:layout_constraintStart_toStartOf="@+id/tv_com_price"
+            app:layout_constraintTop_toBottomOf="@+id/tv_com_price" />
 
         <TextView
-            android:id="@+id/tv_com_goods"
+            android:id="@+id/tv_com_stock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -74,11 +94,11 @@
             android:layout_marginStart="20dp"
             android:text="已賣出"
             android:textSize="16sp"
-            app:layout_constraintStart_toEndOf="@+id/tv_com_goods"
-            app:layout_constraintTop_toTopOf="@+id/tv_com_goods" />
+            app:layout_constraintStart_toEndOf="@+id/tv_com_stock"
+            app:layout_constraintTop_toTopOf="@+id/tv_com_stock" />
 
         <TextView
-            android:id="@+id/tv_com_sold"
+            android:id="@+id/tv_com_sell_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
