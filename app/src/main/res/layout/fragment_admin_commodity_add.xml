@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout8"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E1F5FE"
@@ -25,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
-        android:text="商品標題"
+        android:text="商品名稱："
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="商品描述"
+        android:text="商品描述："
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/textView57"
@@ -47,7 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="庫存"
+        android:text="庫存："
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/textView59"
@@ -58,7 +57,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="商品種類"
+        android:text="商品種類："
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/textView55"
@@ -69,7 +68,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="商品售價"
+        android:text="商品售價："
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/textView58"
@@ -80,14 +79,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="商品圖片"
+        android:text="商品圖片："
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/textView56"
-        app:layout_constraintTop_toBottomOf="@+id/et_com_describe" />
+        app:layout_constraintTop_toBottomOf="@+id/et_com_description" />
 
     <EditText
-        android:id="@+id/et_com_title"
+        android:id="@+id/et_com_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -115,7 +114,7 @@
         app:layout_constraintTop_toTopOf="@+id/textView59" />
 
     <EditText
-        android:id="@+id/et_com_remain"
+        android:id="@+id/et_com_stock"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
@@ -128,7 +127,7 @@
         app:layout_constraintTop_toTopOf="@+id/textView57" />
 
     <EditText
-        android:id="@+id/et_com_describe"
+        android:id="@+id/et_com_description"
         android:layout_width="350dp"
         android:layout_height="190dp"
         android:layout_marginTop="15dp"
@@ -151,17 +150,17 @@
         android:background="@drawable/bt_admin_product"
         android:padding="30dp"
         android:src="@drawable/ic_baseline_camera_alt_24"
-        app:layout_constraintStart_toStartOf="@+id/et_com_describe"
+        app:layout_constraintStart_toStartOf="@+id/et_com_description"
         app:layout_constraintTop_toBottomOf="@+id/textView60" />
 
     <TextView
-        android:id="@+id/tv_com_add_send"
+        android:id="@+id/tv_com_send"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
         android:text="送出"
         android:textColor="@color/white"
-        android:textSize="30sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar12"
         app:layout_constraintEnd_toEndOf="parent"
@@ -170,14 +169,14 @@
     <RadioGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
+        android:layout_marginStart="10dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="@+id/textView58"
         app:layout_constraintStart_toEndOf="@+id/textView58"
         app:layout_constraintTop_toTopOf="@+id/textView58">
 
         <RadioButton
-            android:id="@+id/radioButton"
+            android:id="@+id/radio_food"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
@@ -186,7 +185,7 @@
             android:textColor="@color/black" />
 
         <RadioButton
-            android:id="@+id/radioButton2"
+            android:id="@+id/radio_equipment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
@@ -195,9 +194,9 @@
     </RadioGroup>
 
     <ImageView
-        android:id="@+id/iv_com_add_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/iv_com_back"
+        android:layout_width="31dp"
+        android:layout_height="30dp"
         android:layout_marginStart="10dp"
         android:src="@drawable/ic_baseline_arrow_back_24"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar12"
