@@ -49,7 +49,7 @@ public class MyOrderDetailFragment extends Fragment {
     //資料
     private Order order;     //從MyOrderStateFragment傳來的Order物件
     private List<OrderDetail> orderDetails;
-    private List<Product> products;
+    //private List<Product> products;
     //元件
     private Toolbar toolbar;
     private TextView tvOrderId;
@@ -73,7 +73,7 @@ public class MyOrderDetailFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
         orderDetails = new ArrayList<>();
-        products = new ArrayList<>();
+        //products = new ArrayList<>();
     }
 
     @Override
@@ -91,40 +91,41 @@ public class MyOrderDetailFragment extends Fragment {
         showOrderData();
         showOrderDetails();
     }
+
     @Override
     public void onStart() {
         super.onStart();
-        Log.d(TAG, "onStart ");
+        //Log.d(TAG, "onStart ");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume ");
+        //Log.d(TAG, "onResume ");
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        Log.d(TAG, "onPause  ");
+        //Log.d(TAG, "onPause  ");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Log.d(TAG, "onStop  ");
+        //Log.d(TAG, "onStop  ");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.d(TAG, "onDestroyView ");
+        //Log.d(TAG, "onDestroyView ");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "onDestroy ");
+        //Log.d(TAG, "onDestroy ");
     }
 
     private void findViews(View view) {
@@ -140,7 +141,7 @@ public class MyOrderDetailFragment extends Fragment {
 
     private void handleToolbar() {
         activity.setSupportActionBar(toolbar);
-        toolbar.setTitle("訂單詳情");
+        toolbar.setTitle("訂單內容");
         ActionBar actionBar = activity.getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -160,21 +161,21 @@ public class MyOrderDetailFragment extends Fragment {
     private void showOrderData() {
         //將訂單顯示在畫面上
         tvOrderId.setText("訂單編號：" + order.getId());
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         tvOrderDate.setText("訂購日期：" + sdf.format(order.getOrderTime()));
         tvOrderAmount.setText("訂購總額：$" + order.getOrderAmount());
         tvOrderState.setText("訂單狀態：" + order.getOrderStateName(order.getOrderState()));
         //訂單狀態是"已取消"顯示取消原因
-        if(order.getOrderState() == Order.ORDER_STATE_CANCEL){
+        if (order.getOrderState() == Order.ORDER_STATE_CANCEL) {
             tvOrderCancel.setVisibility(View.VISIBLE);
-            tvOrderCancel.setText("取消原因：" + "order.getCancel()");
-        }else{
+            tvOrderCancel.setText("取消原因：" + order.getCancel());
+        } else {
             tvOrderCancel.setVisibility(View.GONE);
         }
         //訂單狀態為"已配送"顯示完成訂單按鈕
-        if(order.getOrderState() == Order.ORDER_STATE_SHIPPED){
+        if (order.getOrderState() == Order.ORDER_STATE_SHIPPED) {
             btOrderDone.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             btOrderDone.setVisibility(View.GONE);
         }
         //點擊完成訂單按鈕
@@ -183,17 +184,20 @@ public class MyOrderDetailFragment extends Fragment {
             builder.setMessage("確定收貨?")
                     .setPositiveButton("確認", (dialog, which) -> {
                         order.setOrderState(Order.ORDER_STATE_RECEIVED);
-                        //修改資料庫
+                        //更新訂單資料庫
                         updateOrderState();
-                        tvOrderState.setText("訂單狀態：" + order.getOrderStateName(order.getOrderState()));
-                        btOrderDone.setVisibility(View.GONE);
+                        //更新Product資料庫-訂單完成，增加賣出數量
+                        updateProductSellAmount();
+                        Navigation.findNavController(btOrderDone).popBackStack();
+                        //tvOrderState.setText("訂單狀態：" + order.getOrderStateName(order.getOrderState()));
+                        //btOrderDone.setVisibility(View.GONE);
                     })
-                    .setNegativeButton("取消", (dialog, which) -> { })
+                    .setNegativeButton("取消", (dialog, which) -> {
+                    })
                     .show();
-            //order.setOrderState(Order.ORDER_STATE_RECEIVED);
         });
     }
-
+    //更新訂單資料庫
     private void updateOrderState() {
         db.collection("order").document(order.getId()).set(order)
                 .addOnCompleteListener(task -> {
@@ -201,15 +205,9 @@ public class MyOrderDetailFragment extends Fragment {
                         String message = "Order state is updated"
                                 + " with ID: " + order.getId();
                         Log.d(TAG, message);
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
-                        // 新增完畢回上頁
-                        //Navigation.findNavController(btOrderDone).popBackStack();
-                        NavController navController = Navigation.findNavController(btOrderDone);
-                        //Bundle bundle = new Bundle();
-                        //bundle.putInt("pageIndex",2);
-                        //暫時這樣寫，先讓畫面有刷新的感覺
-                        navController.navigate(R.id.action_myOrderDetailFragment_to_myOrderFragment);
-                        //Navigation.findNavController(btOrderDone).navigateUp();
+                        //Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                        // 新增完畢回訂單列表
+
                     } else {
                         String message = task.getException() == null ?
                                 "Update failed" :
@@ -221,7 +219,28 @@ public class MyOrderDetailFragment extends Fragment {
 
     }
 
-    private void  showOrderDetails() {
+    //更新Product資料庫，然後更新商品的賣出數量
+    private void updateProductSellAmount() {
+        for (OrderDetail orderDetail : orderDetails) {
+            int orderDetailProductNumber = orderDetail.getProductNumber();
+            db.collection("product").document(orderDetail.getProductId()).get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            DocumentSnapshot document = task.getResult();
+                            Product product = document.toObject(Product.class);
+                            product.setSellAmount(orderDetailProductNumber + product.getSellAmount());
+                            db.collection("product").document(product.getId()).set(product);
+                        } else {
+                            String message = task.getException() == null ?
+                                    "No Product found" :
+                                    task.getException().getMessage();
+                            Log.e(TAG, "exception message: " + message);
+                        }
+                    });
+        }
+    }
+    
+    private void showOrderDetails() {
         db.collection("orderDetail")
                 .whereEqualTo("orderId", order.getId())
                 .get()
@@ -232,7 +251,7 @@ public class MyOrderDetailFragment extends Fragment {
                             orderDetails.add(orderDetail);
                         }
                         handleRecyclerView();
-                    }else{
+                    } else {
                         String message = task.getException() == null ?
                                 "No orderDetail found" :
                                 task.getException().getMessage();
@@ -243,25 +262,26 @@ public class MyOrderDetailFragment extends Fragment {
 
     private void handleRecyclerView() {
         rvOrderDetail.setAdapter(new MyOrderDetailRVAdapter(getContext(), orderDetails));
-        //Log.d(TAG,"orderDetails 的大小：" + orderDetails.size());
         rvOrderDetail.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    private class MyOrderDetailRVAdapter extends RecyclerView.Adapter<MyOrderDetailRVAdapter.MyOderDetailViewHolder>{
+    private class MyOrderDetailRVAdapter extends RecyclerView.Adapter<MyOrderDetailRVAdapter.MyOderDetailViewHolder> {
 
         private Context context;
 
         private List<OrderDetail> list;
+
         public MyOrderDetailRVAdapter(Context context, List<OrderDetail> list) {
             this.context = context;
             this.list = list;
         }
 
         private class MyOderDetailViewHolder extends RecyclerView.ViewHolder {
-            ImageView ivProduct;    //Thought:從OrderDetail物件的productId去資料庫抓product圖片
-            TextView tvProductName;     //上
-            TextView tvProductPrice;    //上
+            ImageView ivProduct;
+            TextView tvProductName;
+            TextView tvProductPrice;
             TextView tvProductNumber;
+
             public MyOderDetailViewHolder(@NonNull View itemView) {
                 super(itemView);
                 ivProduct = itemView.findViewById(R.id.iv_product);
@@ -271,6 +291,7 @@ public class MyOrderDetailFragment extends Fragment {
             }
 
         }
+
         @Override
         public MyOrderDetailRVAdapter.MyOderDetailViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_view_shopping_order, parent, false);

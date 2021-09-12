@@ -64,7 +64,7 @@ public class MyOrderStateFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate " + Order.getOrderStateName(orderState));
+        //Log.d(TAG, "onCreate " + Order.getOrderStateName(orderState));
         activity = (AppCompatActivity) getActivity();
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
@@ -88,38 +88,38 @@ public class MyOrderStateFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.d(TAG, "onStart " + Order.getOrderStateName(orderState));
+        //Log.d(TAG, "onStart " + Order.getOrderStateName(orderState));
         reloadOrders(); //  重新回到這個頁面，會重新載入頁面
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume " + Order.getOrderStateName(orderState));
+        //Log.d(TAG, "onResume " + Order.getOrderStateName(orderState));
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        Log.d(TAG, "onPause  " + Order.getOrderStateName(orderState));
+        //Log.d(TAG, "onPause  " + Order.getOrderStateName(orderState));
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Log.d(TAG, "onStop  " + Order.getOrderStateName(orderState));
+        //Log.d(TAG, "onStop  " + Order.getOrderStateName(orderState));
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.d(TAG, "onDestroyView " + Order.getOrderStateName(orderState));
+        //Log.d(TAG, "onDestroyView " + Order.getOrderStateName(orderState));
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "onDestroy " + Order.getOrderStateName(orderState));
+        //Log.d(TAG, "onDestroy " + Order.getOrderStateName(orderState));
     }
 
     private void findViews(View view) {
@@ -160,7 +160,7 @@ public class MyOrderStateFragment extends Fragment {
             orderAdapter = new OrderAdapter();
             rvMyOrder.setAdapter(orderAdapter);
         }
-        Log.d(TAG, "showOrder 的 orders 大小：" + orders.size());
+        //Log.d(TAG, "showOrder 的 orders 大小：" + orders.size());
         orderAdapter.setOrders(orders);
         orderAdapter.notifyDataSetChanged();
     }
@@ -201,7 +201,7 @@ public class MyOrderStateFragment extends Fragment {
         public void onBindViewHolder(OrderViewHolder holder, int position) {
             Order order = orders.get(position);
             holder.tvOrderId.setText(order.getId());
-            holder.ivMyOrder.setImageResource(R.drawable.ic_baseline_receipt_long_black_48);
+            holder.ivMyOrder.setImageResource(R.drawable.ic_baseline_library_books_24);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             holder.tvMyOrderDate.setText(sdf.format(order.getOrderTime()));
             holder.tvMyOrderAmount.setText("$" + order.getOrderAmount());
