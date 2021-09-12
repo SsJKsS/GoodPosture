@@ -49,7 +49,7 @@ public class MyOrderDetailFragment extends Fragment {
     //資料
     private Order order;     //從MyOrderStateFragment傳來的Order物件
     private List<OrderDetail> orderDetails;
-    private List<Product> products;
+    //private List<Product> products;
     //元件
     private Toolbar toolbar;
     private TextView tvOrderId;
@@ -73,7 +73,7 @@ public class MyOrderDetailFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
         orderDetails = new ArrayList<>();
-        products = new ArrayList<>();
+        //products = new ArrayList<>();
     }
 
     @Override
@@ -197,7 +197,7 @@ public class MyOrderDetailFragment extends Fragment {
                     .show();
         });
     }
-
+    //更新訂單資料庫
     private void updateOrderState() {
         db.collection("order").document(order.getId()).set(order)
                 .addOnCompleteListener(task -> {
@@ -222,62 +222,24 @@ public class MyOrderDetailFragment extends Fragment {
     //更新Product資料庫，然後更新商品的賣出數量
     private void updateProductSellAmount() {
         for (OrderDetail orderDetail : orderDetails) {
+            int orderDetailProductNumber = orderDetail.getProductNumber();
             db.collection("product").document(orderDetail.getProductId()).get()
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful() && task.getResult() != null) {
                             DocumentSnapshot document = task.getResult();
                             Product product = document.toObject(Product.class);
-                            //Log.d(TAG, product.getId());
-                            products.add(product);
-                            //Log.d(TAG,"products 在getProducts內的大小："+products.size());
+                            product.setSellAmount(orderDetailProductNumber + product.getSellAmount());
+                            db.collection("product").document(product.getId()).set(product);
                         } else {
                             String message = task.getException() == null ?
                                     "No Product found" :
                                     task.getException().getMessage();
                             Log.e(TAG, "exception message: " + message);
                         }
-                        //抓完商品資料後，去更改products的sellAmount
-                        updateProductsSellAmount();
-                    });
-
-        }
-    }
-
-    //修正products清單，然後上傳到資料庫
-    private void updateProductsSellAmount() {
-        //更改每個product的sellAmount
-        for (Product product : products) {
-            for (OrderDetail orderDetail : orderDetails) {
-                if (product.getId().equals(orderDetail.getProductId())) {
-                    product.setSellAmount(product.getSellAmount() + orderDetail.getProductNumber());
-                    break;
-                }
-            }
-        }
-        updateProduct();
-    }
-
-    //更新Product資料庫
-    private void updateProduct() {
-        for(Product product : products){
-            db.collection("product").document(product.getId()).set(product)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            String message = "Product is updated"
-                                    + " with ID: " + product.getId();
-                            Log.d(TAG, message);
-                            Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
-                        } else {
-                            String message = task.getException() == null ?
-                                   "Insert failed" :
-                                    task.getException().getMessage();
-                            Log.e(TAG, "message: " + message);
-                            Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
-                        }
                     });
         }
     }
-
+    
     private void showOrderDetails() {
         db.collection("orderDetail")
                 .whereEqualTo("orderId", order.getId())
