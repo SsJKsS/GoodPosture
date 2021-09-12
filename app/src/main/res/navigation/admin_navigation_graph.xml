@@ -67,11 +67,10 @@
         android:label="fragment_admin_commodity_add"
         tools:layout="@layout/fragment_admin_commodity_add" >
         <action
-            android:id="@+id/action_adminCommodityAddFragment_to_adminCommodityContextFragment"
-            app:destination="@id/adminCommodityContextFragment" />
-        <action
             android:id="@+id/action_adminCommodityAddFragment_to_adminCommodityFragment"
-            app:destination="@id/adminCommodityFragment" />
+            app:destination="@id/adminCommodityFragment"
+            app:popUpTo="@id/adminCommodityFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/adminCommodityContextFragment"
@@ -81,9 +80,6 @@
         <action
             android:id="@+id/action_adminCommodityContextFragment_to_adminCommodityAddFragment"
             app:destination="@id/adminCommodityAddFragment" />
-        <action
-            android:id="@+id/action_adminCommodityContextFragment_to_adminCommodityFragment"
-            app:destination="@id/adminCommodityFragment" />
     </fragment>
     <fragment
         android:id="@+id/adminSettingTypeSalesFragment"

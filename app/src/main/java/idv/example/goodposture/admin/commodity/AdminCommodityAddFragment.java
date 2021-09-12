@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.google.firebase.firestore.ThrowOnExtraProperties;
@@ -20,15 +22,18 @@ import com.google.firebase.firestore.ThrowOnExtraProperties;
 import idv.example.goodposture.R;
 
 public class AdminCommodityAddFragment extends Fragment {
-    private TextView tv_com_add_send;
-    private ImageView iv_com_add_back;
-    private EditText et_com_title;
-    private EditText et_com_price;
-    private EditText et_com_remain;
-    private EditText et_com_describe;
-    private ImageView iv_com_picture;
+    private static final String TAG = "TAG_AdminCommodityAddFragment";
+    private AppCompatActivity activity;
 
-
+    private ImageView ivBack;
+    private TextView tvSend;
+    private EditText etName;
+    private RadioButton radioFood;
+    private RadioButton radioEquipment;
+    private EditText etPrice;
+    private EditText etStock;
+    private EditText etDescription;
+    private ImageView ivPicture;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,49 +53,50 @@ public class AdminCommodityAddFragment extends Fragment {
     }
 
     private void findViews(View view) {
-        tv_com_add_send = view.findViewById(R.id.tv_com_add_send);
-        iv_com_add_back = view.findViewById(R.id.iv_com_add_back);
-        et_com_title = view.findViewById(R.id.et_com_title);
-        et_com_price = view.findViewById(R.id.et_com_price);
-        et_com_remain = view.findViewById(R.id.et_com_remain);
-        et_com_describe = view.findViewById(R.id.et_com_describe);
-        iv_com_picture = view.findViewById(R.id.iv_com_picture);
+        ivBack = view.findViewById(R.id.iv_com_back);
+        tvSend = view.findViewById(R.id.tv_com_send);
+        etName = view.findViewById(R.id.et_com_name);
+        radioFood = view.findViewById(R.id.radio_food);
+        radioEquipment = view.findViewById(R.id.radio_equipment);
+        etPrice = view.findViewById(R.id.et_com_price);
+        etStock = view.findViewById(R.id.et_com_stock);
+        etDescription = view.findViewById(R.id.et_com_description);
+        ivPicture = view.findViewById(R.id.iv_com_picture);
     }
 
     private void handleButton() {
-        tv_com_add_send.setOnClickListener(view->{
-            final String title = String.valueOf(et_com_title.getText());
-            final String price = String.valueOf(et_com_price.getText());
-            final String remain = String.valueOf(et_com_remain.getText());
-            final String describe = String.valueOf(et_com_describe.getText());
-
-            if (title.isEmpty()){
-                et_com_title.setError("請輸入標題");
-            }
-            if (price.isEmpty()){
-                et_com_price.setError("請輸入價格");
-            }
-            if (remain.isEmpty()){
-                et_com_remain.setError("請輸入剩餘數量");
-            }
-            if (describe.isEmpty()){
-                et_com_describe.setError("請輸入商品描述");
-            }
-            if(!title.isEmpty() && !remain.isEmpty() && !price.isEmpty() && !describe.isEmpty()){
-                // 取得NavController物件
-                NavController navController = Navigation.findNavController(view);
-                // 跳至頁面
-                navController.navigate(R.id.action_adminCommodityAddFragment_to_adminCommodityContextFragment);
-            }
+        tvSend.setOnClickListener(view->{
+//            final String title = String.valueOf(et_com_title.getText());
+//            final String price = String.valueOf(et_com_price.getText());
+//            final String remain = String.valueOf(et_com_remain.getText());
+//            final String describe = String.valueOf(et_com_describe.getText());
+//
+//            if (title.isEmpty()){
+//                et_com_title.setError("請輸入標題");
+//            }
+//            if (price.isEmpty()){
+//                et_com_price.setError("請輸入價格");
+//            }
+//            if (remain.isEmpty()){
+//                et_com_remain.setError("請輸入剩餘數量");
+//            }
+//            if (describe.isEmpty()){
+//                et_com_describe.setError("請輸入商品描述");
+//            }
+//            if(!title.isEmpty() && !remain.isEmpty() && !price.isEmpty() && !describe.isEmpty()){
+//                // 取得NavController物件
+//                //NavController navController = Navigation.findNavController(view);
+//                // 跳至頁面
+//                //navController.navigate(R.id.action_adminCommodityAddFragment_to_adminCommodityContextFragment);
+//            }
+            NavController navController = Navigation.findNavController(view);
+            navController.navigate(R.id.action_adminCommodityAddFragment_to_adminCommodityFragment);
 
         });
 
-        iv_com_add_back.setOnClickListener(view->{
-//            // 取得NavController物件
-//            NavController navController = Navigation.findNavController(view);
-//            // 跳至頁面
-//            navController.navigate(R.id.action_adminCommodityAddFragment_to_adminCommodityFragment);
-            Navigation.findNavController(iv_com_add_back).popBackStack();
+        ivBack.setOnClickListener(view->{
+            //dialog
+            Navigation.findNavController(ivBack).popBackStack();
         });
     }
 
