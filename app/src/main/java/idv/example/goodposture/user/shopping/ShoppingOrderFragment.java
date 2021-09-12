@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -46,8 +47,7 @@ public class ShoppingOrderFragment extends Fragment {
     private Toolbar toolbar;
     //資料
     private Bundle bundle;
-    //public static List<Product> orderProductListFromCart = ShoppingOrderData.orderProductListFromCart;
-    private List<Product> products;
+    private List<Product> products;     //訂單內容內的商品，這裡的stock欄位是購買數量非庫存數量
     private Order order;
     double orderAmount = 0;        //訂單總金額
     //元件
@@ -244,13 +244,14 @@ public class ShoppingOrderFragment extends Fragment {
             }
             //刪除購買的購物車明細
             deleteCartDetailList();
-            //Log.d(TAG,"跑完後cartDetailsDelete 的大小：" + cartDetailsDelete.size());
+            //扣除商品的庫存數量
+            deleteProductStock();
             NavController navController = Navigation.findNavController(btOrderSend);
             navController.navigate(R.id.action_shoppingOrderFragment_to_shoppingPayResultFragment);
         });
 
     }
-
+    //加入一筆訂單進入資料庫
     private void addOrderToDb(Order order) {
         db.collection("order").document(order.getId()).set(order)
                 .addOnCompleteListener(task -> {
@@ -271,7 +272,7 @@ public class ShoppingOrderFragment extends Fragment {
                     }
                 });
     }
-
+    //加入多筆訂單詳情進入資料庫
     private void addOrderDetailToDb(OrderDetail orderDetail) {
         db.collection("orderDetail").document(orderDetail.getId()).set(orderDetail)
                 .addOnCompleteListener(task -> {
@@ -288,7 +289,8 @@ public class ShoppingOrderFragment extends Fragment {
                    }
                 });
     }
-
+    //刪除購買的購物車明細
+    //抓出當前使用者購買的商品的購物車明細，然後在deleteCartDetail刪除購物車明細
     private void deleteCartDetailList() {
         //List<CartDetail> cartDetailsDelete = new ArrayList<>();
         db.collection("cartDetail")
@@ -318,7 +320,7 @@ public class ShoppingOrderFragment extends Fragment {
                     }
                 });
     }
-
+    //刪除購物車明細
     private void deleteCartDetail(CartDetail cartDetail) {
         db.collection("cartDetail").document(cartDetail.getId()).delete()
                 .addOnCompleteListener(task ->{
@@ -328,6 +330,28 @@ public class ShoppingOrderFragment extends Fragment {
                         Log.d(TAG, "delete failed");
                     }
                 });
+    }
+    //扣除商品的庫存數量
+    private void deleteProductStock() {
+        //products是訂單內容內的商品
+        for(Product product : products){
+            db.collection("product").document(product.getId()).get()
+                    .addOnCompleteListener(task -> {
+                       if(task.isSuccessful() && task.getResult() != null){
+                           DocumentSnapshot document  = task.getResult();
+                           Product p = document.toObject(Product.class);
+                           int newStock = p.getStock()-product.getStock();
+                           p.setStock(newStock);
+                           db.collection("product").document(p.getId()).set(p);
+                       } else{
+                           //如果錯誤，則印出錯誤訊息
+                           String message = task.getException() == null ?
+                                   "No product found" :
+                                   task.getException().getMessage();
+                           Log.e(TAG, "exception message: " + message);
+                       }
+                    });
+        }
     }
 
     private class shoppingOrderRVAdapter extends RecyclerView.Adapter<shoppingOrderRVAdapter.shoppingOrderViewHolder> {
