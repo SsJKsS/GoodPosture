@@ -297,18 +297,6 @@ public class AdminHomeFragment extends Fragment {
         values.add(new Entry(10, saleAmount[9]));
         values.add(new Entry(11, saleAmount[10]));
         values.add(new Entry(12, saleAmount[11]));
-//        values.add(new Entry(1, 2));
-//        values.add(new Entry(2, 4));
-//        values.add(new Entry(3, 6));
-//        values.add(new Entry(4, 3));
-//        values.add(new Entry(5, 5));
-//        values.add(new Entry(6, 6));
-//        values.add(new Entry(7, 14));
-//        values.add(new Entry(8, 8));
-//        values.add(new Entry(9, 10));
-//        values.add(new Entry(10, 12));
-//        values.add(new Entry(11, 6));
-//        values.add(new Entry(12, 10));
         LineDataSet lineDataSet = new LineDataSet(values, "近 12 個月銷售狀況");
         lineDataSet.setMode(LineDataSet.Mode.LINEAR);
         lineDataSet.setLineWidth(1);
