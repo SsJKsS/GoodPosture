@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,6 +45,7 @@ public class ForumAddFragment extends Fragment {
     private ForumBrowseList forumBrowseList;
     private FirebaseAuth auth;
     private Myinfo myinfo;
+    private TextView tv_title;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,6 +71,7 @@ public class ForumAddFragment extends Fragment {
         findViews(view);
         handleback2();
         handlesend();
+        handleTv_title();
     }
 
     private void findViews(View view) {
@@ -75,6 +79,14 @@ public class ForumAddFragment extends Fragment {
         iv_send = view.findViewById(R.id.iv_send);
         et_context = view.findViewById(R.id.et_context);
         et_title = view.findViewById(R.id.et_title);
+        tv_title = view.findViewById(R.id.tv_title);
+    }
+
+    private void handleTv_title() {
+        tv_title.setOnClickListener(view->{
+            et_title.setText("如何吃得健康？");
+            et_context.setText("原則一：均衡飲食！ \n" + "原則二：不食用加工食品！ \n"+"原則三：適當補充維他命及抗氧化物！ \n "+"額外話題....最重要的：請配合運動！");
+        });
     }
 
     private void handleback2() {
@@ -128,6 +140,7 @@ public class ForumAddFragment extends Fragment {
                 forumBrowseList.setAuthorUid(auth.getCurrentUser().getUid());
                 forumBrowseList.setTime(time);
                 forumBrowseList.setLikes(0);
+                forumBrowseList.setMessages(0);
                 forumBrowseList.setClick(false);
                 addForumBrowseList(forumBrowseList);
             }
@@ -140,12 +153,10 @@ public class ForumAddFragment extends Fragment {
                     if (task.isSuccessful()){
                         String message = "forumBrowseList is inserted" + "with ID:" +forumBrowseList.getId();
                         Log.e(TAG,"message"+message);
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                         Navigation.findNavController(iv_send).popBackStack();
                     } else {
                         String message = task.getException() == null ? "Insert failed" : task.getException().getMessage();
                         Log.e(TAG,"message: "+message);
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                     }
                 });
     }

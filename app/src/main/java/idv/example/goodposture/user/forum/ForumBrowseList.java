@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class ForumBrowseList implements Serializable {
     private int likes;
-    private String messages;
+    private int messages;
     private Integer ivLike;
     private Integer ivMessage;
     private String title;
@@ -21,7 +21,7 @@ public class ForumBrowseList implements Serializable {
     public ForumBrowseList() {
     }
 
-    public ForumBrowseList(String title, String author, String time, Integer ivLike,int likes, Integer ivMessage, String messages,String id,String context,String imagePath,String authorUid,Boolean click) {
+    public ForumBrowseList(String title, String author, String time, Integer ivLike,int likes, Integer ivMessage, int messages,String id,String context,String imagePath,String authorUid,Boolean click) {
         this.likes = likes;
         this.messages = messages;
         this.ivLike = ivLike;
@@ -44,11 +44,11 @@ public class ForumBrowseList implements Serializable {
         this.likes = likes;
     }
 
-    public String getMessages() {
+    public int getMessages() {
         return messages;
     }
 
-    public void setMessages(String messages) {
+    public void setMessages(int messages) {
         this.messages = messages;
     }
 

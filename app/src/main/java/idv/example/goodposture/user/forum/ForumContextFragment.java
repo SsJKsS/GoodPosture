@@ -65,7 +65,6 @@ public class ForumContextFragment extends Fragment {
     private ImageView iv_context_author;
     private ImageView iv_context_me;
     private TextView tv_forum_context_likes;
-    private List<ForumBrowseList> forumBrowseLists;
 
 
     @Override
@@ -116,6 +115,7 @@ public class ForumContextFragment extends Fragment {
                 tv_context_nickname.setText(forumBrowseList.getAuthor());
                 forumContextResponseList.setBr_id(forumBrowseList.getId());
                 tv_forum_context_likes.setText("" + forumBrowseList.getLikes());
+
                 showAuthorImage(iv_context_author, forumBrowseList.getImagePath());
 
                 if (forumBrowseList.getClick() == true){
@@ -129,6 +129,7 @@ public class ForumContextFragment extends Fragment {
         handlethumb();
         handleResRecycleView();
         handleResponseSend();
+        handleIv_context_me();
         }
     }
 
@@ -161,6 +162,12 @@ public class ForumContextFragment extends Fragment {
         tv_forum_context_likes = view.findViewById(R.id.tv_forum_context_likes);
     }
 
+    private void handleIv_context_me() {
+        iv_context_me.setOnClickListener(view->{
+            et_response.setText("感謝大大無私分享！");
+        });
+    }
+
     /**
      * 3. 自定義Adapter類別
      * 3.1 繼承RecyclerView.Adapter
@@ -179,7 +186,6 @@ public class ForumContextFragment extends Fragment {
                         String message = resTask.getException() == null ?
                                 "查無資料" :
                                 resTask.getException().getMessage();
-                        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -200,6 +206,22 @@ public class ForumContextFragment extends Fragment {
                 addForumContextRes(forumContextResponseList);
             }
             et_response.setText("");
+
+            int messages = forumBrowseList.getMessages();
+            forumBrowseList.setMessages(messages + 1);
+            db.collection("forumBrowseList")
+                    .document(forumBrowseList.getId())
+                    .set(forumBrowseList)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()){
+                            String message = "messages + 1" + forumBrowseList.getMessages();
+                            Log.d(TAG,"message : " + message);
+                        } else {
+                            String message = task.getException() == null ?
+                                    "isn't' like" : task.getException().getMessage();
+                            Log.d(TAG,"message : " + message);
+                        }
+                    });
         });
 //        resAdapter.notifyDataSetChanged();
     }
@@ -210,11 +232,9 @@ public class ForumContextFragment extends Fragment {
                     if (task.isSuccessful()){
                         String message = "forumContextRes is inserted" + "with ID:" +forumContextResponseList.getId();
                         Log.e(TAG,"message"+message);
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                     } else {
                         String message = task.getException() == null ? "Insert failed" : task.getException().getMessage();
                         Log.e(TAG,"message: "+message);
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -279,7 +299,7 @@ public class ForumContextFragment extends Fragment {
 
         db.collection("forumContextRes")
                 .whereEqualTo("br_id",forumBrowseList.getId())
-                .orderBy("tv_Response_Time", Query.Direction.DESCENDING)
+                .orderBy("tv_Response_Time", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(resTask ->{
                     if (resTask.isSuccessful() && resTask.getResult() != null) {
@@ -302,7 +322,6 @@ public class ForumContextFragment extends Fragment {
                                 "forumContextRes is not found" :
                                 resTask.getException().getMessage();
                         Log.e(TAG, "exception message: " + message);
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -384,7 +403,6 @@ public class ForumContextFragment extends Fragment {
                         String message = task.getException() == null ?
                                 "Download fail" + " : " + imagePath :
                                 task.getException().getMessage() + " : " + imagePath;
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -402,7 +420,6 @@ public class ForumContextFragment extends Fragment {
                         String message = task.getException() == null ?
                                 "Download fail" + " : " + imagePath :
                                 task.getException().getMessage() + " : " + imagePath;
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
