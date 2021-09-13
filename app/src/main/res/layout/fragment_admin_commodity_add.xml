@@ -7,199 +7,198 @@
     android:background="#E1F5FE"
     tools:context=".admin.commodity.AdminCommodityAddFragment">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar12"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar_add_product"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FF64B5F6"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
+        tools:ignore="MissingConstraints">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tb_add_product_context"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
 
-    <TextView
-        android:id="@+id/textView55"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
-        android:text="商品名稱："
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar12" />
-
-    <TextView
-        android:id="@+id/textView56"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="商品描述："
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/textView57"
-        app:layout_constraintTop_toBottomOf="@+id/textView57" />
-
-    <TextView
-        android:id="@+id/textView57"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="庫存："
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/textView59"
-        app:layout_constraintTop_toBottomOf="@+id/textView59" />
-
-    <TextView
-        android:id="@+id/textView58"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="商品種類："
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/textView55"
-        app:layout_constraintTop_toBottomOf="@+id/textView55" />
-
-    <TextView
-        android:id="@+id/textView59"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="商品售價："
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/textView58"
-        app:layout_constraintTop_toBottomOf="@+id/textView58" />
-
-    <TextView
-        android:id="@+id/textView60"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:text="商品圖片："
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/textView56"
-        app:layout_constraintTop_toBottomOf="@+id/et_com_description" />
-
-    <EditText
-        android:id="@+id/et_com_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView55"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView55"
-        app:layout_constraintTop_toTopOf="@+id/textView55" />
-
-    <EditText
-        android:id="@+id/et_com_price"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView59"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView59"
-        app:layout_constraintTop_toTopOf="@+id/textView59" />
-
-    <EditText
-        android:id="@+id/et_com_stock"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView57"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/et_com_price"
-        app:layout_constraintTop_toTopOf="@+id/textView57" />
-
-    <EditText
-        android:id="@+id/et_com_description"
-        android:layout_width="350dp"
-        android:layout_height="190dp"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/bt_admin_product"
-        android:ems="10"
-        android:gravity="top"
-        android:inputType="textMultiLine|textPersonName"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:singleLine="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textView56"
-        app:layout_constraintTop_toBottomOf="@+id/textView56" />
-
-    <ImageView
-        android:id="@+id/iv_com_picture"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/bt_admin_product"
-        android:padding="30dp"
-        android:src="@drawable/ic_baseline_camera_alt_24"
-        app:layout_constraintStart_toStartOf="@+id/et_com_description"
-        app:layout_constraintTop_toBottomOf="@+id/textView60" />
-
-    <TextView
-        android:id="@+id/tv_com_send"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:text="送出"
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbar12"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/toolbar12" />
-
-    <RadioGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="@+id/textView58"
-        app:layout_constraintStart_toEndOf="@+id/textView58"
-        app:layout_constraintTop_toTopOf="@+id/textView58">
-
-        <RadioButton
-            android:id="@+id/radio_food"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:checked="true"
-            android:text="食材"
-            android:textColor="@color/black" />
+            android:orientation="vertical">
 
-        <RadioButton
-            android:id="@+id/radio_equipment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:text="器材"
-            android:textColor="@color/black" />
-    </RadioGroup>
+            <TextView
+                android:id="@+id/textView55"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:text="商品名稱："
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/iv_com_back"
-        android:layout_width="31dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="10dp"
-        android:src="@drawable/ic_baseline_arrow_back_24"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbar12"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/toolbar12" />
+            <EditText
+                android:id="@+id/et_com_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView55"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView55"
+                app:layout_constraintTop_toTopOf="@+id/textView55" />
+
+            <TextView
+                android:id="@+id/textView58"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="商品種類："
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="@+id/textView55"
+                app:layout_constraintTop_toBottomOf="@+id/textView55" />
+
+            <RadioGroup
+                android:id="@+id/radio_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="@+id/textView58"
+                app:layout_constraintStart_toEndOf="@+id/textView58"
+                app:layout_constraintTop_toTopOf="@+id/textView58">
+
+                <RadioButton
+                    android:id="@+id/radio_food"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:checked="false"
+                    android:text="食材"
+                    android:textColor="@color/black" />
+
+                <RadioButton
+                    android:id="@+id/radio_equipment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:text="器材"
+                    android:textColor="@color/black" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/textView59"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="商品售價："
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="@+id/textView58"
+                app:layout_constraintTop_toBottomOf="@+id/textView58" />
+
+            <EditText
+                android:id="@+id/et_com_price"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:ems="10"
+                android:inputType="number"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView59"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView59"
+                app:layout_constraintTop_toTopOf="@+id/textView59" />
+
+            <TextView
+                android:id="@+id/textView57"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="庫存："
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="@+id/textView59"
+                app:layout_constraintTop_toBottomOf="@+id/textView59" />
+
+            <EditText
+                android:id="@+id/et_com_stock"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:ems="10"
+                android:inputType="number"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView57"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/et_com_price"
+                app:layout_constraintTop_toTopOf="@+id/textView57" />
+
+            <TextView
+                android:id="@+id/textView56"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="商品描述："
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="@+id/textView57"
+                app:layout_constraintTop_toBottomOf="@+id/textView57" />
+
+            <TextView
+                android:id="@+id/textView60"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="商品圖片："
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="@+id/textView56"
+                app:layout_constraintTop_toBottomOf="@+id/et_com_description" />
+
+            <EditText
+                android:id="@+id/et_com_description"
+                android:layout_width="350dp"
+                android:layout_height="190dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/bt_admin_product"
+                android:ems="10"
+                android:gravity="top"
+                android:inputType="textMultiLine|textPersonName"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:singleLine="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/textView56"
+                app:layout_constraintTop_toBottomOf="@+id/textView56" />
+
+            <ImageView
+                android:id="@+id/iv_com_picture"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="24dp"
+                android:padding="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView60"
+                app:srcCompat="@drawable/ic_baseline_add_a_photo_24" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -107,7 +107,6 @@ public class ShoppingProductFragment extends Fragment {
     }
 
     private void handleToolbar() {
-        activity.setSupportActionBar(toolbar);
         //ToolBar的標題預設是AndroidManifest檔案中<Application/>標籤下屬性label設定的值
         toolbar.setTitle("");
         //設定toolbar為狀態列

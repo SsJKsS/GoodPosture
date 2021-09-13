@@ -1,44 +1,69 @@
 package idv.example.goodposture.admin.commodity;
 
-import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.SearchView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.SearchView;
-import android.widget.TextView;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import idv.example.goodposture.R;
+import idv.example.goodposture.user.shopping.Product;
 
 public class AdminCommodityFragment extends Fragment {
-    private TextView tv_com_insert;
-    private RecyclerView comRecyclerView;
-    private ArrayAdapter<AdminCommodityList> adminCommodityListArrayAdapter;
-    private comAdapter comAdapter;
-    private CardView cv_com;
-    private SearchView sv_com;
+    private static final String TAG = "TAG_AdminCommodityFragment";
     private AppCompatActivity activity;
+    private List<Product> products;
+
+    private Toolbar toolbar;
+    private SearchView svCommodity;
+    private TextView tvInsert;
+    private RecyclerView rvCommodity;
+
+    private FirebaseFirestore db;
+    private FirebaseStorage storage;
+    private ListenerRegistration registration;  //全程監控db的資料，所以db一變動就會更新資料
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+        activity = (AppCompatActivity) getActivity();
+        db = FirebaseFirestore.getInstance();
+        storage = FirebaseStorage.getInstance();
+        products = new ArrayList<>();
+        // 加上異動監聽器
+        listenToProducts();
     }
 
     @Override
@@ -51,172 +76,242 @@ public class AdminCommodityFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         findViews(view);
-        handleComRecyclerView();
+        handleToolbar();
         handleSearchView();
-        handleButton();
+    }
+
+    //希望重新回到這個頁面可以重新更新資料
+    @Override
+    public void onStart() {
+        super.onStart();
+        showAllProducts();
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // 解除異動監聽器
+        if (registration != null) {
+            registration.remove();
+            registration = null;
+        }
     }
 
     private void findViews(View view) {
-        comRecyclerView = view.findViewById(R.id.rv_com);
-        cv_com = view.findViewById(R.id.cv_com);
-        sv_com = view.findViewById(R.id.sv_com);
-        tv_com_insert = view.findViewById(R.id.tv_com_insert);
+        toolbar = view.findViewById(R.id.tb_admin_commodity_context);
+        svCommodity = view.findViewById(R.id.sv_com);
+        //tvInsert = view.findViewById(R.id.tv_com_insert);
+        rvCommodity = view.findViewById(R.id.rv_com);
+        rvCommodity.setLayoutManager(new LinearLayoutManager(activity));
+    }
+
+    private void handleToolbar() {
+        activity.setSupportActionBar(toolbar);
+        toolbar.setTitle("");
+        ActionBar actionBar = activity.getSupportActionBar();
     }
 
     private void handleSearchView() {
-
-        // 註冊/實作 查詢文字監聽器
-        sv_com.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            // 當點擊提交鍵(虛擬鍵盤)時，自動被呼叫
+        svCommodity.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
             }
-
-            // 當查詢文字改變時，自動被呼叫
             @Override
             public boolean onQueryTextChange(String newText) {
-                comAdapter adapter = (comAdapter) comRecyclerView.getAdapter();
-                if (adapter == null) {
-                    return false;
-                }
-
-                if (newText.isEmpty()) {
-                    adapter.list = getAdminCommodityList();
-                } else {
-                    List<AdminCommodityList> resultList = new ArrayList<>();
-                    for (AdminCommodityList adminCommodityList : adapter.list) {
-                        if (adminCommodityList.getTv_com_name().toLowerCase().contains(newText.toLowerCase())) {
-                            resultList.add(adminCommodityList);
-                        }
-                    }
-                    adapter.list = resultList;
-                }
-                adapter.notifyDataSetChanged();
+                showProducts();
                 return true;
             }
         });
     }
 
-    private void handleComRecyclerView() {
-        // 4.2 設定Adapter
-        comRecyclerView.setAdapter(new comAdapter(this, getAdminCommodityList()));
-        // 4.3 設定LayoutManager
-        comRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        /** 可試試以下2種LayoutManager! */
-//        recyclerView.setLayoutManager(new GridLayoutManager(this, 4, RecyclerView.HORIZONTAL, false));
-//        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, RecyclerView.HORIZONTAL));
-
-//        cardView.setOnClickListener(view -> {
-//            NavController navController = Navigation.findNavController(view);
-//            navController.navigate(R.id.action_forumBrowseFragment_to_forumContextFragment);
-//        });
-
-
+    //建立ToolBar的menu選單
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        //載入menu
+        inflater.inflate(R.menu.admin_commodity_list_menu, menu);
     }
 
-    /**
-     * 3. 自定義Adapter類別
-     * 3.1 繼承RecyclerView.Adapter
-     */
-    private static class comAdapter extends RecyclerView.Adapter<comAdapter.MyComViewHolder> {
-        // 3.2 欄位: Context物件、選項資料物件
-        private final Context context;
-        private List<AdminCommodityList> list;
-
-        // 3.3 建構子: 2個參數(Context型態、選項資料的型態)，用來初始化2欄位
-        public comAdapter(AdminCommodityFragment context, List<AdminCommodityList> list) {
-            this.context = context.getActivity();
-            this.list = list;
+    //覆寫menu選項的監聽 //返回鑑被視為功能選單的選項
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        NavController navController = Navigation.findNavController(toolbar);
+        int itemId = item.getItemId();
+        if (itemId == R.id.menu_toolbar_add) {
+            navController.navigate(R.id.action_adminCommodityFragment_to_adminCommodityAddFragment);
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
+    }
 
-        // 3.4 內部類別: 自定義ViewHolder類別
-        // 3.4.1 繼承RecyclerView.ViewHolder
-        private static class MyComViewHolder extends RecyclerView.ViewHolder {
-            public View adminCommodityList;
-            // 3.4.2 欄位: 對應選項容器元件，之內的所有元件
-            TextView tv_com_name;
-            TextView tv_com_price;
-            TextView tv_com_goods;
-            TextView tv_com_sold;
-            ImageView iv_com;
-
-            // 3.4.3 建構子: 1個參數(View型態)，該參數就是選項容器元件，用來取得各容器元件的參考
-            public MyComViewHolder(@NonNull View adminCommodityList) {
-                super(adminCommodityList);
-                tv_com_goods = adminCommodityList.findViewById(R.id.tv_com_goods);
-                tv_com_name = adminCommodityList.findViewById(R.id.tv_com_name);
-                tv_com_price = adminCommodityList.findViewById(R.id.tv_com_goods);
-                tv_com_sold = adminCommodityList.findViewById(R.id.tv_com_sold);
-                iv_com = adminCommodityList.findViewById(R.id.iv_com);
-
-
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        // 取得NavController物件
-                        NavController navController = Navigation.findNavController(view);
-                        // 跳至頁面
-                        navController.navigate(R.id.action_adminCommodityFragment_to_adminCommodityContextFragment);
+    // 顯示所有景點資訊
+    private void showAllProducts() {
+        //get()會抓db所有資料
+        db.collection("product").get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        // 先清除舊資料後再儲存新資料
+                        if (!products.isEmpty()) {
+                            products.clear();
+                        }
+                        //把每個document轉成object物件
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            products.add(document.toObject(Product.class));
+                        }
+                        showProducts();
+                    } else {
+                        String message = task.getException() == null ?
+                                "No Product Found":
+                                task.getException().getMessage();
+                        Log.e(TAG, "exception message: " + message);
+                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    //拿到Products list並轉成object去解析
+    private void showProducts() {
+        ProductAdapter productAdapter = (ProductAdapter) rvCommodity.getAdapter();
+        if (productAdapter == null) {
+            productAdapter = new ProductAdapter();
+            rvCommodity.setAdapter(productAdapter);
+        }
+        // 處理搜尋結果
+        String queryStr = svCommodity.getQuery().toString();
+        List<Product> searchProducts = new ArrayList<>();
+        // 搜尋商品名字(不區別大小寫)
+        for (Product product : products) {
+            if (product.getName().toUpperCase().contains(queryStr.toUpperCase())) {
+                searchProducts.add(product);
+            }
+        }
+        productAdapter.setProducts(searchProducts);
+        productAdapter.notifyDataSetChanged();
+    }
+
+    private class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
+        List<Product> products;
+
+        ProductAdapter() {
+        }
+
+        public void setProducts(List<Product> products) {
+            this.products = products;
+        }
+
+        class ProductViewHolder extends RecyclerView.ViewHolder {
+            ImageView ivProduct;
+            TextView tvId, tvName, tvPrice, tvStock, tvSellAmount;
+
+            ProductViewHolder(View itemView) {
+                super(itemView);
+                ivProduct = itemView.findViewById(R.id.iv_com_product);
+                tvId = itemView.findViewById(R.id.tv_com_id);
+                tvName = itemView.findViewById(R.id.tv_com_name);
+                tvPrice = itemView.findViewById(R.id.tv_com_price);
+                tvStock = itemView.findViewById(R.id.tv_com_stock);
+                tvSellAmount = itemView.findViewById(R.id.tv_com_sell_amount);
             }
         }
 
-        // 3.5 方法(MyAdapter): 覆寫以下3方法
-        // 3.5.1 getItemCount(): 回傳選項數量
         @Override
         public int getItemCount() {
-            return list == null ? 0 : list.size();
+            return products.size();
         }
 
-        // 3.5.2 onCreateViewHolder()
-        //  宣告itemView，並載入選項容器元件的外觀
-        //  實例化自定義的ViewHolder類別，並回傳
         @NonNull
         @Override
-        public comAdapter.MyComViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View adminCommodityList = LayoutInflater.from(context).inflate(R.layout.admin_product_item, parent, false);
-            return new comAdapter.MyComViewHolder(adminCommodityList);
-
+        public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater layoutInflater = LayoutInflater.from(activity);
+            View itemView = layoutInflater.inflate(R.layout.admin_product_item, parent, false);
+            return new ProductViewHolder(itemView);
         }
 
-        // 3.5.3 onBindViewHolder()
-        //  透過ViewHolder物件，將 資料 綁定 至 各元件上
-        //  各元件的其他處理，EX.註冊/實作監聽器
         @Override
-        public void onBindViewHolder(@NonNull MyComViewHolder holder, int position) {
-            final AdminCommodityList adminCommodityList = list.get(position);
-            holder.tv_com_name.setText(adminCommodityList.getTv_com_name());
-            holder.tv_com_sold.setText(adminCommodityList.getTv_com_sold());
-            holder.tv_com_price.setText(adminCommodityList.getTv_com_price());
-            holder.tv_com_goods.setText(adminCommodityList.getTv_com_goods());
-            holder.iv_com.setImageResource(adminCommodityList.getIv_com());
+        public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
+            final Product product = products.get(position);
+            //景點圖片路徑為空值 -> 給default圖片
+            if (product.getPicturePath() == null) {
+                holder.ivProduct.setImageResource(R.drawable.no_product_image);
+            } else {
+                showImage(holder.ivProduct, product.getPicturePath());
+            }
+            holder.tvId.setText(product.getId());
+            holder.tvName.setText(product.getName());
+            holder.tvPrice.setText("$"+product.getPrice());
+            holder.tvStock.setText(product.getStock() + "");
+            holder.tvSellAmount.setText(product.getSellAmount() + "");
 
-
-
-//            final String text = position + 1 + ": " + forumBrowseLists.getTitle() ;
-//            holder.itemView.setOnClickListener(view -> Toast.makeText(context, text, Toast.LENGTH_SHORT).show());
+            // 點選會開啟修改頁面
+            holder.itemView.setOnClickListener(v -> {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("product", product);
+                Navigation.findNavController(v)
+                        .navigate(R.id.action_adminCommodityFragment_to_adminCommodityContextFragment, bundle);
+            });
 
         }
     }
-    private List<AdminCommodityList> getAdminCommodityList() {
-        List<AdminCommodityList> adminCommodityLists = new ArrayList<>();
-        adminCommodityLists.add(new AdminCommodityList(R.drawable.shark,"鯊鯊A","NT1,999","999","10"));
-        adminCommodityLists.add(new AdminCommodityList(R.drawable.shark,"鯊鯊B","NT1,999","999","10"));
-        adminCommodityLists.add(new AdminCommodityList(R.drawable.shark,"鯊鯊C","NT1,999","999","10"));
-        adminCommodityLists.add(new AdminCommodityList(R.drawable.shark,"鯊鯊D","NT1,999","999","10"));
-        adminCommodityLists.add(new AdminCommodityList(R.drawable.shark,"鯊鯊E","NT1,999","999","10"));
-        return adminCommodityLists;
+
+    // 下載Firebase storage的照片並顯示在ImageView上
+    private void showImage(final ImageView imageView, final String path) {
+        final int ONE_MEGABYTE = 1024 * 1024;
+        StorageReference imageRef = storage.getReference().child(path);
+        //byte[]轉成bitmap，貼上bitmap
+        imageRef.getBytes(ONE_MEGABYTE)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        byte[] bytes = task.getResult();
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        imageView.setImageBitmap(bitmap);
+                    } else {
+                        String message = task.getException() == null ?
+                                getString(R.string.textImageDownloadFail) + ": " + path :
+                                task.getException().getMessage() + ": " + path;
+                        Log.e(TAG, message);
+                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
     }
 
-    private void handleButton() {
-        tv_com_insert.setOnClickListener(view->{
-            // 取得NavController物件
-            NavController navController = Navigation.findNavController(view);
-            // 跳至頁面
-            navController.navigate(R.id.action_adminCommodityFragment_to_adminCommodityAddFragment);
-        });
+    private void listenToProducts() {
+        if (registration == null) {
+            //監聽到這個表有異動
+            registration = db.collection("product").addSnapshotListener((snapshots, e) -> {
+                Log.d(TAG, "event happened");
+                if (e == null) {
+                    List<Product> products = new ArrayList<>();
+                    if (snapshots != null) {
+                        //取得發生異動的資料
+                        for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                            Product product = dc.getDocument().toObject(Product.class);
+                            switch (dc.getType()) {
+                                case ADDED:
+                                    Log.d(TAG, "Added product: " + product.getName());
+                                    break;
+                                case MODIFIED:
+                                    Log.d(TAG, "Modified product: " + product.getName());
+                                    break;
+                                case REMOVED:
+                                    Log.d(TAG, "Removed product: " + product.getName());
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+
+                        for (DocumentSnapshot document : snapshots.getDocuments()) {
+                            products.add(document.toObject(Product.class));
+                        }
+                        this.products = products;
+                        showProducts();
+                    }
+                } else {
+                    Log.e(TAG, e.getMessage(), e);
+                }
+            });
+        }
     }
 }

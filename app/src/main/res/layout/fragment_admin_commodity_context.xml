@@ -22,10 +22,10 @@
     <ImageView
         android:id="@+id/iv_product"
         android:layout_width="match_parent"
-        android:layout_height="240dp"
+        android:layout_height="200dp"
+        tools:src="@tools:sample/avatars"
         android:paddingTop="2dp"
         android:paddingBottom="2dp"
-        android:src="@drawable/shark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBar_admin_context" />
@@ -41,28 +41,76 @@
         app:layout_constraintTop_toBottomOf="@+id/iv_product">
 
         <TextView
-            android:id="@+id/tv_product_name"
+            android:id="@+id/tv_product_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="商品名字"
-            android:textSize="20sp"
+            android:text="商品編號："
             android:textColor="@color/black"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
+            android:id="@+id/tv_product_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="商品名稱："
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@+id/tv_product_id"
+            app:layout_constraintTop_toBottomOf="@+id/tv_product_id" />
+
+        <TextView
             android:id="@+id/tv_product_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="價錢"
-            android:textColor="@android:color/holo_red_light"
+            android:text="價錢："
+            android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="@+id/tv_product_name"
-
             app:layout_constraintTop_toBottomOf="@+id/tv_product_name" />
+        <TextView
+            android:id="@+id/tv_product_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="上架日期："
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@+id/tv_product_price"
+            app:layout_constraintTop_toBottomOf="@+id/tv_product_price" />
+        <TextView
+            android:id="@+id/tv_product_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="商品種類："
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@+id/tv_product_date"
+            app:layout_constraintTop_toBottomOf="@+id/tv_product_date" />
+        <TextView
+            android:id="@+id/tv_product_stock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="商品庫存："
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@+id/tv_product_type"
+            app:layout_constraintTop_toBottomOf="@+id/tv_product_type" />
+
+        <TextView
+            android:id="@+id/tv_product_sell_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="4dp"
+            android:text="賣出數量："
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -7,36 +7,26 @@
     android:background="#E1F5FE"
     tools:context=".admin.commodity.AdminCommodityFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/top_com"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar_admin_commodity"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="#FF64B5F6"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
 
-        <SearchView
-            android:id="@+id/sv_com"
-            android:layout_width="304dp"
-            android:layout_height="38dp"
-            android:iconifiedByDefault="false"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tb_admin_commodity_context"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize" >
 
-        <TextView
-            android:id="@+id/tv_com_insert"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
-            android:text="新增"
-            android:textColor="@color/white"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/sv_com" />
+            <SearchView
+                android:id="@+id/sv_com"
+                android:layout_width="304dp"
+                android:layout_height="38dp"
+                android:iconifiedByDefault="false"
+                android:searchIcon="@drawable/ic_outline_search_white_36" />
+        </androidx.appcompat.widget.Toolbar>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
 
     <androidx.core.widget.NestedScrollView
@@ -46,7 +36,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/top_com">
+        app:layout_constraintTop_toBottomOf="@+id/appBar_admin_commodity">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_com"

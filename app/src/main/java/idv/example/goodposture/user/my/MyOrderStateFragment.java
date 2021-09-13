@@ -119,6 +119,11 @@ public class MyOrderStateFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        // 解除異動監聽器
+        if (registration != null) {
+            registration.remove();
+            registration = null;
+        }
         //Log.d(TAG, "onDestroy " + Order.getOrderStateName(orderState));
     }
 
