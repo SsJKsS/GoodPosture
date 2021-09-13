@@ -1,11 +1,13 @@
 package idv.example.goodposture.admin.commodity;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -15,7 +17,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -41,6 +45,7 @@ public class AdminCommodityFragment extends Fragment {
     private AppCompatActivity activity;
     private List<Product> products;
 
+    private Toolbar toolbar;
     private SearchView svCommodity;
     private TextView tvInsert;
     private RecyclerView rvCommodity;
@@ -52,6 +57,7 @@ public class AdminCommodityFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         activity = (AppCompatActivity) getActivity();
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
@@ -70,15 +76,8 @@ public class AdminCommodityFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         findViews(view);
+        handleToolbar();
         handleSearchView();
-        insertProduct();
-    }
-
-    private void insertProduct() {
-        tvInsert.setOnClickListener(v -> {
-            Navigation.findNavController(tvInsert)
-                    .navigate(R.id.action_adminCommodityFragment_to_adminCommodityAddFragment);
-        });
     }
 
     //希望重新回到這個頁面可以重新更新資料
@@ -87,12 +86,28 @@ public class AdminCommodityFragment extends Fragment {
         super.onStart();
         showAllProducts();
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // 解除異動監聽器
+        if (registration != null) {
+            registration.remove();
+            registration = null;
+        }
+    }
 
     private void findViews(View view) {
+        toolbar = view.findViewById(R.id.tb_admin_commodity_context);
         svCommodity = view.findViewById(R.id.sv_com);
-        tvInsert = view.findViewById(R.id.tv_com_insert);
+        //tvInsert = view.findViewById(R.id.tv_com_insert);
         rvCommodity = view.findViewById(R.id.rv_com);
         rvCommodity.setLayoutManager(new LinearLayoutManager(activity));
+    }
+
+    private void handleToolbar() {
+        activity.setSupportActionBar(toolbar);
+        toolbar.setTitle("");
+        ActionBar actionBar = activity.getSupportActionBar();
     }
 
     private void handleSearchView() {
@@ -107,6 +122,27 @@ public class AdminCommodityFragment extends Fragment {
                 return true;
             }
         });
+    }
+
+    //建立ToolBar的menu選單
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        //載入menu
+        inflater.inflate(R.menu.admin_commodity_list_menu, menu);
+    }
+
+    //覆寫menu選項的監聽 //返回鑑被視為功能選單的選項
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        NavController navController = Navigation.findNavController(toolbar);
+        int itemId = item.getItemId();
+        if (itemId == R.id.menu_toolbar_add) {
+            navController.navigate(R.id.action_adminCommodityFragment_to_adminCommodityAddFragment);
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
     }
 
     // 顯示所有景點資訊
@@ -246,7 +282,7 @@ public class AdminCommodityFragment extends Fragment {
             registration = db.collection("product").addSnapshotListener((snapshots, e) -> {
                 Log.d(TAG, "event happened");
                 if (e == null) {
-                    List<Product> spots = new ArrayList<>();
+                    List<Product> products = new ArrayList<>();
                     if (snapshots != null) {
                         //取得發生異動的資料
                         for (DocumentChange dc : snapshots.getDocumentChanges()) {
@@ -267,7 +303,7 @@ public class AdminCommodityFragment extends Fragment {
                         }
 
                         for (DocumentSnapshot document : snapshots.getDocuments()) {
-                            spots.add(document.toObject(Product.class));
+                            products.add(document.toObject(Product.class));
                         }
                         this.products = products;
                         showProducts();

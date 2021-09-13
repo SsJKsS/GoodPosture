@@ -161,6 +161,10 @@ public class ShoppingCartFragment extends Fragment {
                                 cartDetailList.add(cartDetail);
                             }
                         }
+                        //如果購物車沒有東西就無法結帳
+                        if(cartDetailList.size() == 0){
+                            btCartCheckout.setEnabled(false);
+                        }
                         showCartDetails();
                     } else {
                         String message = task.getException() == null ?

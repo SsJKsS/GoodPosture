@@ -65,7 +65,6 @@ public class ForumContextFragment extends Fragment {
     private ImageView iv_context_author;
     private ImageView iv_context_me;
     private TextView tv_forum_context_likes;
-    private List<ForumBrowseList> forumBrowseLists;
 
 
     @Override
@@ -130,6 +129,7 @@ public class ForumContextFragment extends Fragment {
         handlethumb();
         handleResRecycleView();
         handleResponseSend();
+        handleIv_context_me();
         }
     }
 
@@ -160,6 +160,12 @@ public class ForumContextFragment extends Fragment {
         iv_context_author = view.findViewById(R.id.iv_context_author);
         iv_context_me = view.findViewById(R.id.iv_context_me);
         tv_forum_context_likes = view.findViewById(R.id.tv_forum_context_likes);
+    }
+
+    private void handleIv_context_me() {
+        iv_context_me.setOnClickListener(view->{
+            et_response.setText("感謝大大無私分享！");
+        });
     }
 
     /**
