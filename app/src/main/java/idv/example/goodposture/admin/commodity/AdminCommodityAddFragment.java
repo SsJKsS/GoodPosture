@@ -59,8 +59,6 @@ public class AdminCommodityAddFragment extends Fragment {
     private String toolbarTitle;
 
     private Toolbar toolbar;
-    private ImageView ivBack;
-    private TextView tvSend;
     private EditText etName;
     private RadioButton radioFood;
     private RadioButton radioEquipment;
