@@ -40,7 +40,7 @@ import idv.example.goodposture.user.home.Password;
 public class MyResetPasswordFragment extends Fragment {
     private AppCompatActivity activity;
     private Toolbar toolBar;
-    private ImageView ivAvatar;
+    private ImageView ivAvatar, ivFastNewPassword;
     private EditText etOldPassword, etNewPassword, etConfirmNewPassword;
     private Button btReset;
     private FirebaseAuth auth;
@@ -78,6 +78,7 @@ public class MyResetPasswordFragment extends Fragment {
 
     private void findViews(View view) {
         toolBar = view.findViewById(R.id.toolbar);
+        ivFastNewPassword = view.findViewById(R.id.iv_fastNewPassword);
         ivAvatar = view.findViewById(R.id.ivResetAvatar);
         etOldPassword = view.findViewById(R.id.et_oldPassword);
         etNewPassword = view.findViewById(R.id.et_newPassword);
@@ -147,6 +148,12 @@ public class MyResetPasswordFragment extends Fragment {
     }
 
     private void handleButton() {
+        ivFastNewPassword.setOnClickListener(view -> {
+            etOldPassword.setText("111111");
+            etNewPassword.setText("222222");
+            etConfirmNewPassword.setText("222222");
+        });
+
         // 查詢指定集合
         db.collection("password")
                 .document(Objects.requireNonNull(auth.getCurrentUser()).getUid())
