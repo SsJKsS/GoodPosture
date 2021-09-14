@@ -1,6 +1,5 @@
 package idv.example.goodposture.user.shopping;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -31,11 +30,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,7 +41,6 @@ import java.util.Objects;
 import java.util.Set;
 
 import idv.example.goodposture.R;
-import idv.example.goodposture.user.my.Myinfo;
 
 public class ShoppingCartFragment extends Fragment {
     private static final String TAG = "TAG_ShoppingCartFragment";
@@ -53,7 +48,6 @@ public class ShoppingCartFragment extends Fragment {
     //資料
     private List<CartDetail> cartDetailList;
     private List<Product> productList;
-    //private double cartTotal;
     //元件
     private Toolbar toolbar;
     private RecyclerView recyclerView;
@@ -178,7 +172,10 @@ public class ShoppingCartFragment extends Fragment {
     }
 
     private void showCartDetails() {
-        //CartDetailRvAdapter cartDetailRvAdapter = (CartDetailRvAdapter) recyclerView.getAdapter();
+        //如果購物車沒有東西就無法結帳
+        if(cartDetailList.size() == 0){
+            btCartCheckout.setEnabled(false);
+        }
         cartDetailRvAdapter = (CartDetailRvAdapter) recyclerView.getAdapter();
         if (cartDetailRvAdapter == null) {
             cartDetailRvAdapter = new CartDetailRvAdapter();
@@ -194,12 +191,6 @@ public class ShoppingCartFragment extends Fragment {
         cartDetailRvAdapter.setCartDetailList(cartDetailList);
         cartDetailRvAdapter.setProductList(productList);
         cartDetailRvAdapter.notifyDataSetChanged();
-//        cartTotal = cartDetailRvAdapter.getTotal();
-//        if(cartTotal == 0){
-//            btCartCheckout.setEnabled(false);
-//        }else{
-//            btCartCheckout.setEnabled(true);
-//        }
     }
 
     private class CartDetailRvAdapter extends RecyclerView.Adapter<CartDetailRvAdapter.CartDetailViewHolder> {
@@ -271,6 +262,7 @@ public class ShoppingCartFragment extends Fragment {
             }
             setTotal(totalCal);
             tvTotalPrice.setText("$" + total);
+            btCartCheckout.setEnabled(totalCal>0);
         }
 
         //被選取的item的product存在一個陣列
@@ -481,6 +473,7 @@ public class ShoppingCartFragment extends Fragment {
 //                        }
 
                         showMyCartDetails();
+                        //showCartDetails();
                     }
                 } else {
                     Log.e(TAG, e.getMessage(), e);

@@ -34,6 +34,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -268,6 +269,9 @@ public class MyOrderStateFragment extends Fragment {
                             }
 
                         }
+                        //依照日期排序products
+                        Collections.sort(orders, (p1, p2) ->
+                                -1 * p1.getOrderTime().compareTo(p2.getOrderTime()));
                         this.orders = orders;
                         showOrders();
                     }

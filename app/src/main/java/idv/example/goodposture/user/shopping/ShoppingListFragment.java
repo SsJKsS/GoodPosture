@@ -360,10 +360,11 @@ public class ShoppingListFragment extends Fragment {
                         }
                         //todo 監聽器問題
                         //異動前 = 異動後 就呼叫 showProducts()
-                        this.products = products;
+
                         //依照日期排序products
                         Collections.sort(products, (p1, p2) ->
                                 -1 * p1.getDate().compareTo(p2.getDate()));
+                        this.products = products;
                         showProducts();
                     }
                 } else {
