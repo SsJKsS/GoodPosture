@@ -2,6 +2,7 @@ package idv.example.goodposture.user.shopping;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,6 +38,9 @@ import com.google.firebase.storage.StorageReference;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import idv.example.goodposture.R;
@@ -61,7 +65,7 @@ public class ShoppingListFragment extends Fragment {
         //Log.d(TAG,"onCreate() ");
         setHasOptionsMenu(true);
         activity = (AppCompatActivity) getActivity();
-        type = (int)(getArguments() != null? getArguments().get("type") : 0);
+        type = (int) (getArguments() != null ? getArguments().get("type") : 0);
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
         products = new ArrayList<>();
@@ -71,7 +75,7 @@ public class ShoppingListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(TAG,"onCreateView() " );
+        Log.d(TAG, "onCreateView() ");
         return inflater.inflate(R.layout.fragment_shopping_list, container, false);
     }
 
@@ -83,13 +87,15 @@ public class ShoppingListFragment extends Fragment {
         handleSearchView();
     }
 
+
     //希望重新回到這個頁面可以重新更新資料
     @Override
     public void onStart() {
         super.onStart();
-        showAllProducts();
+        Log.d(TAG, "onStart() ");
+        //showAllProducts();
+        showProducts();
         searchView.requestFocus();
-        Log.d(TAG,"onStart() ");
     }
 
     @Override
@@ -145,17 +151,16 @@ public class ShoppingListFragment extends Fragment {
 
 
     private void handleSearchView() {
-        if(type == 1){
-            searchView.setQuery("食品",true);
-        }else if(type == 2){
-            searchView.setQuery("器材",true);
+        if (type == 1) {
+            searchView.setQuery("食品", true);
+        } else if (type == 2) {
+            searchView.setQuery("器材", true);
         }
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             //提交文字時呼叫
             @Override
             public boolean onQueryTextSubmit(String query) {
                 showProducts();
-                Log.d(TAG, "handleSearchView");
                 return false;
             }
             // 文字搜尋框發生變化時呼叫
@@ -165,11 +170,12 @@ public class ShoppingListFragment extends Fragment {
             }
         });
     }
+
     // 顯示所有商品資訊
     private void showAllProducts() {
         //get()會抓db所有資料
         db.collection("product")
-                .orderBy("date", Query.Direction.DESCENDING)
+                //.orderBy("date", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
@@ -181,6 +187,8 @@ public class ShoppingListFragment extends Fragment {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             products.add(document.toObject(Product.class));
                         }
+//                        //依照日期排序products
+//                        Collections.sort(products, (p1, p2) -> -1 * p1.getDate().compareTo(p2.getDate()));
                         showProducts();
                     } else {
                         String message = task.getException() == null ?
@@ -205,22 +213,21 @@ public class ShoppingListFragment extends Fragment {
         String queryStr = searchView.getQuery().toString();
         if (queryStr.isEmpty()) {
             productRvAdapter.setProducts(products);
-            //Log.d(TAG,"query.isEmpty()");
         } else {
             List<Product> searchProducts = new ArrayList<>();
-            if(queryStr.equals("食品")){
+            if (queryStr.equals("食品")) {
                 for (Product product : products) {
                     if (product.getType() == 1) {
                         searchProducts.add(product);
                     }
                 }
-            }else if(queryStr.equals("器材")){
+            } else if (queryStr.equals("器材")) {
                 for (Product product : products) {
                     if (product.getType() == 2) {
                         searchProducts.add(product);
                     }
                 }
-            }else{
+            } else {
                 // 搜尋原始資料內有無包含關鍵字(不區別大小寫)
                 for (Product product : products) {
                     if (product.getName().toUpperCase().contains(queryStr.toUpperCase())) {
@@ -249,12 +256,14 @@ public class ShoppingListFragment extends Fragment {
             ImageView ivProduct;
             TextView tvProductName;
             TextView tvProductPrice;
+            TextView tvProductStock;
 
             public ProductViewHolder(@NonNull View itemView) {
                 super(itemView);
                 ivProduct = itemView.findViewById(R.id.iv_product);
                 tvProductName = itemView.findViewById(R.id.tv_product_name);
                 tvProductPrice = itemView.findViewById(R.id.tv_product_price);
+                tvProductStock = itemView.findViewById(R.id.tv_product_stock);
             }
         }
 
@@ -277,6 +286,7 @@ public class ShoppingListFragment extends Fragment {
             //holder.ivProduct.setImageResource(R.drawable.shopping_cat3);
             holder.tvProductName.setText(product.getName());
             holder.tvProductPrice.setText("$" + product.getPrice());
+            holder.tvProductStock.setText("商品數量  " + product.getStock());
             holder.itemView.setOnClickListener(v -> {
                 //寫帶過去的資料
                 Bundle bundle = new Bundle();
@@ -313,6 +323,7 @@ public class ShoppingListFragment extends Fragment {
                 });
 
     }
+
     /**
      * 監聽資料是否發生異動，有則同步更新。
      * 開啟2台模擬器，一台新增/修改/刪除；另一台畫面會同步更新
@@ -347,7 +358,12 @@ public class ShoppingListFragment extends Fragment {
                         for (DocumentSnapshot document : snapshots.getDocuments()) {
                             products.add(document.toObject(Product.class));
                         }
+                        //todo 監聽器問題
+                        //異動前 = 異動後 就呼叫 showProducts()
                         this.products = products;
+                        //依照日期排序products
+                        Collections.sort(products, (p1, p2) ->
+                                -1 * p1.getDate().compareTo(p2.getDate()));
                         showProducts();
                     }
                 } else {

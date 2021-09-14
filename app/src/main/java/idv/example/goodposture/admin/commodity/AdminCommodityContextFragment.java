@@ -27,7 +27,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -35,6 +37,7 @@ import java.text.SimpleDateFormat;
 
 import idv.example.goodposture.R;
 import idv.example.goodposture.user.PreActivity;
+import idv.example.goodposture.user.shopping.CartDetail;
 import idv.example.goodposture.user.shopping.Product;
 
 public class AdminCommodityContextFragment extends Fragment {
@@ -152,6 +155,18 @@ public class AdminCommodityContextFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 db.collection("product").document(product.getId()).delete();
+                //判斷刪除購物車明細
+//                db.collection("cartDetail")
+//                        .whereEqualTo("productId", product.getId())
+//                        .get()
+//                        .addOnCompleteListener(task -> {
+//                            if(task.isSuccessful() && task.getResult() != null){
+//                                for(QueryDocumentSnapshot document : task.getResult()){
+//                                    CartDetail cartDetail = document.toObject(CartDetail.class);
+//                                    db.collection("cartDetail").document(cartDetail.getId()).delete();
+//                                }
+//                            }
+//                        });
                 Navigation.findNavController(toolbar).popBackStack();
             }
         });

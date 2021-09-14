@@ -90,7 +90,7 @@ public class MyOrderStateFragment extends Fragment {
     public void onStart() {
         super.onStart();
         //Log.d(TAG, "onStart " + Order.getOrderStateName(orderState));
-        reloadOrders(); //  重新回到這個頁面，會重新載入頁面
+        //reloadOrders(); //  重新回到這個頁面，會重新載入頁面
     }
 
     @Override

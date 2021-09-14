@@ -121,6 +121,15 @@ public class AdminCommodityAddFragment extends Fragment {
             product.setId(id);
             toolbarTitle = "新增商品";
         }
+
+        radioType.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.radio_food) {
+                product.setType(1);
+            } else if (checkedId == R.id.radio_equipment) {
+                product.setType(2);
+            }
+        });
+
         handleToolbar();
         handlePicture();
         fillOutDate();
@@ -174,17 +183,9 @@ public class AdminCommodityAddFragment extends Fragment {
     //覆寫menu選項的監聽 //返回鑑被視為功能選單的選項
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        NavController navController = Navigation.findNavController(toolbar);
         int itemId = item.getItemId();
         if (itemId == R.id.menu_toolbar_send) {
-            //建立navController// 跳至shoppingCart頁面
-            radioType.setOnCheckedChangeListener((group, checkedId) -> {
-                if (checkedId == R.id.radio_food) {
-                    product.setType(1);
-                } else if (checkedId == R.id.radio_equipment) {
-                    product.setType(2);
-                }
-            });
+
             //先判斷是否有填資料
             String name = String.valueOf(etName.getText());
             String price = String.valueOf(etPrice.getText());
@@ -204,7 +205,7 @@ public class AdminCommodityAddFragment extends Fragment {
                 etDescription.setError("請輸入商品描述");
             }
             if (product.getType() != 1 && product.getType() != 2) {
-                Toast.makeText(activity, "請輸入商品種類", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "請輸入商品種類" + product.getType(), Toast.LENGTH_SHORT).show();
                 return false;
             }
 
