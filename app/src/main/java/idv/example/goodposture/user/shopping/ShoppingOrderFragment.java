@@ -1,9 +1,12 @@
 package idv.example.goodposture.user.shopping;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -12,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -172,6 +176,8 @@ public class ShoppingOrderFragment extends Fragment {
 
     private void sendOrder() {
         btOrderSend.setOnClickListener(v -> {
+
+
             //抓取判斷資料
             String receiverName = String.valueOf(etReceiverName.getText());
             String receiverAddress = String.valueOf(etReceiverAddress.getText());
@@ -246,8 +252,30 @@ public class ShoppingOrderFragment extends Fragment {
             deleteCartDetailList();
             //扣除商品的庫存數量
             deleteProductStock();
-            NavController navController = Navigation.findNavController(btOrderSend);
-            navController.navigate(R.id.action_shoppingOrderFragment_to_shoppingPayResultFragment);
+            //跳出進度條
+            ProgressDialog dialog = new ProgressDialog(getContext());
+            /**設置UI形式為轉圈圈*/
+            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            dialog.setTitle("結帳資訊確認中");
+            dialog.show();
+            new Thread(()->{
+                for (int i = 0; i <100 ; i++) {
+                    /**設置要告訴用戶的話*/
+                    dialog.setMessage("結帳中");
+                    SystemClock.sleep(30);
+                }
+                dialog.dismiss();
+
+            }).start();
+            //讓主執行緒等一下
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    //執行在主執行緒
+                    NavController navController = Navigation.findNavController(btOrderSend);
+                    navController.navigate(R.id.action_shoppingOrderFragment_to_shoppingPayResultFragment);
+                }
+            },3000);
         });
 
     }
@@ -259,16 +287,14 @@ public class ShoppingOrderFragment extends Fragment {
                         String message = "Order is inserted"
                                 + " with ID: " + order.getId();
                         Log.d(TAG, message);
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                         // 訂單新增完畢回訂單成功頁面
-                        //todo 新增成功 return; delete OrderDetail和update product stock and sellAmount
-
                     } else {
                         String message = task.getException() == null ?
                                 "Insert order failed" :
                                 task.getException().getMessage();
                         Log.e(TAG, "message: " + message);
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -420,7 +446,7 @@ public class ShoppingOrderFragment extends Fragment {
                                 getString(R.string.textImageDownloadFail) + ": " + path :
                                 task.getException().getMessage() + ": " + path;
                         Log.e(TAG, message);
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                     }
                 });
     }

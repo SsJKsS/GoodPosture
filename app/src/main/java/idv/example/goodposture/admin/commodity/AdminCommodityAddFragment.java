@@ -121,6 +121,15 @@ public class AdminCommodityAddFragment extends Fragment {
             product.setId(id);
             toolbarTitle = "新增商品";
         }
+
+        radioType.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.radio_food) {
+                product.setType(1);
+            } else if (checkedId == R.id.radio_equipment) {
+                product.setType(2);
+            }
+        });
+
         handleToolbar();
         handlePicture();
         fillOutDate();
@@ -137,7 +146,6 @@ public class AdminCommodityAddFragment extends Fragment {
                     "5種力度可組合使用\n" +
                     "堅固的金屬安全釦\n" +
                     "多種健身方法使用\n"+"內容物：收納袋*1、拉力繩*5、魔鬼氈腳環*2、防滑把手*2、安全門扣*1");
-            ivPicture.setImageResource(R.drawable.demo_insert_product);
         });
     }
 
@@ -175,17 +183,9 @@ public class AdminCommodityAddFragment extends Fragment {
     //覆寫menu選項的監聽 //返回鑑被視為功能選單的選項
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        NavController navController = Navigation.findNavController(toolbar);
         int itemId = item.getItemId();
         if (itemId == R.id.menu_toolbar_send) {
-            //建立navController// 跳至shoppingCart頁面
-            radioType.setOnCheckedChangeListener((group, checkedId) -> {
-                if (checkedId == R.id.radio_food) {
-                    product.setType(1);
-                } else if (checkedId == R.id.radio_equipment) {
-                    product.setType(2);
-                }
-            });
+
             //先判斷是否有填資料
             String name = String.valueOf(etName.getText());
             String price = String.valueOf(etPrice.getText());
@@ -205,7 +205,7 @@ public class AdminCommodityAddFragment extends Fragment {
                 etDescription.setError("請輸入商品描述");
             }
             if (product.getType() != 1 && product.getType() != 2) {
-                Toast.makeText(activity, "請輸入商品種類", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "請輸入商品種類" + product.getType(), Toast.LENGTH_SHORT).show();
                 return false;
             }
 
@@ -234,7 +234,7 @@ public class AdminCommodityAddFragment extends Fragment {
                                         "Product upload failed" :
                                         task.getException().getMessage();
                                 Log.e(TAG, "message: " + message);
-                                Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                             }
                             //無論圖檔上傳成功或失敗都要將文字資料新增至資料庫
                             addOrReplace(product);
@@ -308,7 +308,7 @@ public class AdminCommodityAddFragment extends Fragment {
                         String message = "Product is inserted"
                                 + " with ID: " + product.getId();
                         Log.d(TAG, message);
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                         // 商品新增完畢，返回商品列表
                         NavController navController = Navigation.findNavController(toolbar);
                         navController.navigate(R.id.action_adminCommodityAddFragment_to_adminCommodityFragment);
@@ -317,7 +317,7 @@ public class AdminCommodityAddFragment extends Fragment {
                                 "Insert failed" :
                                 task.getException().getMessage();
                         Log.e(TAG, "message: " + message);
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -338,7 +338,7 @@ public class AdminCommodityAddFragment extends Fragment {
                                 getString(R.string.textImageDownloadFail) + ": " + path :
                                 task.getException().getMessage() + ": " + path;
                         Log.e(TAG, message);
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                     }
                 });
 

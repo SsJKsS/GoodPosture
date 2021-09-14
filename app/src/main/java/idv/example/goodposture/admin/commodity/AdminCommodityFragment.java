@@ -35,6 +35,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import idv.example.goodposture.R;
@@ -47,7 +48,6 @@ public class AdminCommodityFragment extends Fragment {
 
     private Toolbar toolbar;
     private SearchView svCommodity;
-    private TextView tvInsert;
     private RecyclerView rvCommodity;
 
     private FirebaseFirestore db;
@@ -84,16 +84,17 @@ public class AdminCommodityFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        showAllProducts();
+        //showAllProducts();
+        showProducts();
     }
     @Override
     public void onDestroy() {
         super.onDestroy();
-        // 解除異動監聽器
-        if (registration != null) {
-            registration.remove();
-            registration = null;
-        }
+//        // 解除異動監聽器
+//        if (registration != null) {
+//            registration.remove();
+//            registration = null;
+//        }
     }
 
     private void findViews(View view) {
@@ -159,6 +160,9 @@ public class AdminCommodityFragment extends Fragment {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             products.add(document.toObject(Product.class));
                         }
+                        //依照日期排序products
+                        Collections.sort(products, (p1, p2) ->
+                                -1 * p1.getDate().compareTo(p2.getDate()));
                         showProducts();
                     } else {
                         String message = task.getException() == null ?
@@ -305,7 +309,10 @@ public class AdminCommodityFragment extends Fragment {
                         for (DocumentSnapshot document : snapshots.getDocuments()) {
                             products.add(document.toObject(Product.class));
                         }
+                        //依照日期排序products
                         this.products = products;
+                        Collections.sort(products, (p1, p2) ->
+                                -1 * p1.getDate().compareTo(p2.getDate()));
                         showProducts();
                     }
                 } else {

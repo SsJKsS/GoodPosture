@@ -8,8 +8,8 @@
     app:cardBackgroundColor="#B3E5FC"
     app:cardCornerRadius="10dp"
     app:contentPadding="8dp"
-    app:contentPaddingTop="8dp
-">
+    app:contentPaddingTop="8dp"
+    android:foreground="?selectableItemBackground">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

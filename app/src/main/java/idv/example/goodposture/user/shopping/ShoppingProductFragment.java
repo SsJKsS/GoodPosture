@@ -173,7 +173,7 @@ public class ShoppingProductFragment extends Fragment {
                                 getString(R.string.textImageDownloadFail) + ": " + path :
                                 task.getException().getMessage() + ": " + path;
                         Log.e(TAG, message);
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -215,7 +215,7 @@ public class ShoppingProductFragment extends Fragment {
                                     "No cartDetail found" :
                                     task.getException().getMessage();
                             Log.e(TAG, "exception message: " + message);
-                            Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                         }
                     });
         });
@@ -230,13 +230,13 @@ public class ShoppingProductFragment extends Fragment {
                         String message = "Update "
                                 + " with ID: " + cartDetail.getId();
                         Log.d(TAG, message);
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                     } else {
                         String message = task.getException() == null ?
                                 "Insert Fail ":
                                 task.getException().getMessage();
                         Log.e(TAG, "message: " + message);
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -255,13 +255,13 @@ public class ShoppingProductFragment extends Fragment {
                         String message = "cartDetail is inserted"
                                 + " with ID: " + cartDetail.getId();
                         Log.d(TAG, message);
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                     } else {
                         String message = task.getException() == null ?
                                 "Insert failed" :
                                 task.getException().getMessage();
                         Log.e(TAG, "message: " + message);
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -306,7 +306,7 @@ public class ShoppingProductFragment extends Fragment {
         btCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(activity.getApplicationContext(), "checkout ", Toast.LENGTH_LONG).show();
+                //Toast.makeText(activity.getApplicationContext(), "checkout ", Toast.LENGTH_LONG).show();
                 //處理帶到結帳頁面的product
                 Bundle bundle = new Bundle();
                 Product p = product;

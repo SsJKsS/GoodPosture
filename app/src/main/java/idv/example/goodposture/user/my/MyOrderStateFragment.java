@@ -26,6 +26,7 @@ import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -89,7 +90,7 @@ public class MyOrderStateFragment extends Fragment {
     public void onStart() {
         super.onStart();
         //Log.d(TAG, "onStart " + Order.getOrderStateName(orderState));
-        reloadOrders(); //  重新回到這個頁面，會重新載入頁面
+        //reloadOrders(); //  重新回到這個頁面，會重新載入頁面
     }
 
     @Override
@@ -137,6 +138,7 @@ public class MyOrderStateFragment extends Fragment {
         db.collection("order")
                 .whereEqualTo("uid", auth.getCurrentUser().getUid())
                 .whereEqualTo("orderState", orderState)
+                .orderBy("orderTime", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
