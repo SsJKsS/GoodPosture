@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp">
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp">
     <!--app:cardCornerRadius="16dp"-->
     <!--    app:contentPadding="dp"-->
     <LinearLayout
@@ -40,7 +41,9 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:gravity="center|start"
-                android:text="CartProductName" />
+                android:text="CartProductName"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/tv_product_price"

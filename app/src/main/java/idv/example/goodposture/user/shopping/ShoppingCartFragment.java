@@ -53,6 +53,7 @@ public class ShoppingCartFragment extends Fragment {
     //資料
     private List<CartDetail> cartDetailList;
     private List<Product> productList;
+    //private double cartTotal;
     //元件
     private Toolbar toolbar;
     private RecyclerView recyclerView;
@@ -76,6 +77,7 @@ public class ShoppingCartFragment extends Fragment {
         auth = FirebaseAuth.getInstance();
         cartDetailList = new ArrayList<>();
         productList = new ArrayList<>();
+        //cartTotal = 0;
         listenToCartDetail();   //todo 是否需要做全程監聽
     }
 
@@ -95,7 +97,6 @@ public class ShoppingCartFragment extends Fragment {
     }
 
     //希望重新回到這個頁面可以重新更新資料
-
     @Override
     public void onStart() {
         super.onStart();
@@ -180,7 +181,6 @@ public class ShoppingCartFragment extends Fragment {
         //CartDetailRvAdapter cartDetailRvAdapter = (CartDetailRvAdapter) recyclerView.getAdapter();
         cartDetailRvAdapter = (CartDetailRvAdapter) recyclerView.getAdapter();
         if (cartDetailRvAdapter == null) {
-            Log.d(TAG, "cartDetailRvAdapter is null");
             cartDetailRvAdapter = new CartDetailRvAdapter();
             recyclerView.setAdapter(cartDetailRvAdapter);
         }
@@ -189,9 +189,17 @@ public class ShoppingCartFragment extends Fragment {
         cbSelectAll.setOnClickListener(v -> {
             cartDetailRvAdapter.selectAllItemView();
         });
+
+
         cartDetailRvAdapter.setCartDetailList(cartDetailList);
         cartDetailRvAdapter.setProductList(productList);
         cartDetailRvAdapter.notifyDataSetChanged();
+//        cartTotal = cartDetailRvAdapter.getTotal();
+//        if(cartTotal == 0){
+//            btCartCheckout.setEnabled(false);
+//        }else{
+//            btCartCheckout.setEnabled(true);
+//        }
     }
 
     private class CartDetailRvAdapter extends RecyclerView.Adapter<CartDetailRvAdapter.CartDetailViewHolder> {
@@ -203,6 +211,7 @@ public class ShoppingCartFragment extends Fragment {
         private HashMap<Integer, Integer> amMap;
         //productMap，存放每個位置的product
         private HashMap<Integer, Product> productMap;
+        private double total;
 
         public CartDetailRvAdapter() {
         }
@@ -212,13 +221,18 @@ public class ShoppingCartFragment extends Fragment {
             this.cbMap = new HashMap<>();
             this.amMap = new HashMap<>();
             this.productMap = new HashMap<>();
-            //list有多少條資料就增加多少個checlbox的Hashmap集合
+            //list有多少條資料就增加多少個checkbox的Hashmap集合
             for (int i = 0; i < cartDetailList.size(); i++) {
                 this.cbMap.put(i, false);
                 this.amMap.put(i, 1);
             }
-            //商品資訊
-            //buyProduct = new ArrayList<>();
+        }
+        public void setTotal(double total){
+            this.total = total;
+        }
+
+        public double getTotal() {
+            return total;
         }
 
         public void setProductList(List<Product> productList) {
@@ -239,7 +253,7 @@ public class ShoppingCartFragment extends Fragment {
         public void showTotal() {
             Set<Map.Entry<Integer, Boolean>> cbEntries = cbMap.entrySet();
             Set<Integer> positions = amMap.keySet();
-            double total = 0;
+            double totalCal = 0;
             for (Map.Entry<Integer, Boolean> entry : cbEntries) {
                 int amount = 0;
                 double price = 0;
@@ -253,8 +267,9 @@ public class ShoppingCartFragment extends Fragment {
                         }
                     }
                 }
-                total += (double) amount * price;
+                totalCal += (double) amount * price;
             }
+            setTotal(totalCal);
             tvTotalPrice.setText("$" + total);
         }
 
@@ -267,8 +282,6 @@ public class ShoppingCartFragment extends Fragment {
             List<Product> orderProductList = new ArrayList<>();
             for (Map.Entry<Integer, Boolean> entry : cbEntries) {
                 if (entry.getValue()) {
-                    //bug-productlist不一定會對齊 =>解決
-                    //Product product = productList.get(entry.getKey());
                     Product product = productMap.get(entry.getKey());
                     for (Integer position : positions) {
                         if (entry.getKey() == position) {

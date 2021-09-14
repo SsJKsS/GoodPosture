@@ -259,16 +259,14 @@ public class ShoppingOrderFragment extends Fragment {
                         String message = "Order is inserted"
                                 + " with ID: " + order.getId();
                         Log.d(TAG, message);
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                         // 訂單新增完畢回訂單成功頁面
-                        //todo 新增成功 return; delete OrderDetail和update product stock and sellAmount
-
                     } else {
                         String message = task.getException() == null ?
                                 "Insert order failed" :
                                 task.getException().getMessage();
                         Log.e(TAG, "message: " + message);
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -420,7 +418,7 @@ public class ShoppingOrderFragment extends Fragment {
                                 getString(R.string.textImageDownloadFail) + ": " + path :
                                 task.getException().getMessage() + ": " + path;
                         Log.e(TAG, message);
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                     }
                 });
     }

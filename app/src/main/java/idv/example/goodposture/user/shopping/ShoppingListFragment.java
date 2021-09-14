@@ -29,6 +29,7 @@ import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -43,7 +44,7 @@ import idv.example.goodposture.R;
 public class ShoppingListFragment extends Fragment {
     private static final String TAG = "TAG_ShoppingListFragment";
     private AppCompatActivity activity;
-    private Bundle bundle;  //  從shoppingFragment傳過來的searchText字串
+    private int type;  //從首頁傳過來的商品種類int
 
     private Toolbar toolbar;
     private SearchView searchView;
@@ -60,7 +61,7 @@ public class ShoppingListFragment extends Fragment {
         //Log.d(TAG,"onCreate() ");
         setHasOptionsMenu(true);
         activity = (AppCompatActivity) getActivity();
-        bundle = getArguments() != null? getArguments(): null;
+        type = (int)(getArguments() != null? getArguments().get("type") : 0);
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
         products = new ArrayList<>();
@@ -110,7 +111,7 @@ public class ShoppingListFragment extends Fragment {
 
     private void handleToolbar() {
         activity.setSupportActionBar(toolbar);
-        toolbar.setTitle("");
+        toolbar.setTitle("商品列表");
         ActionBar actionBar = activity.getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -144,6 +145,11 @@ public class ShoppingListFragment extends Fragment {
 
 
     private void handleSearchView() {
+        if(type == 1){
+            searchView.setQuery("食品",true);
+        }else if(type == 2){
+            searchView.setQuery("器材",true);
+        }
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             //提交文字時呼叫
             @Override
@@ -162,7 +168,9 @@ public class ShoppingListFragment extends Fragment {
     // 顯示所有商品資訊
     private void showAllProducts() {
         //get()會抓db所有資料
-        db.collection("product").get()
+        db.collection("product")
+                .orderBy("date", Query.Direction.DESCENDING)
+                .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
                         // 先清除舊資料後再儲存新資料
@@ -200,19 +208,28 @@ public class ShoppingListFragment extends Fragment {
             //Log.d(TAG,"query.isEmpty()");
         } else {
             List<Product> searchProducts = new ArrayList<>();
-            // 搜尋原始資料內有無包含關鍵字(不區別大小寫)
-            for (Product spot : products) {
-                if (spot.getName().toUpperCase().contains(queryStr.toUpperCase())) {
-                    searchProducts.add(spot);
+            if(queryStr.equals("食品")){
+                for (Product product : products) {
+                    if (product.getType() == 1) {
+                        searchProducts.add(product);
+                    }
+                }
+            }else if(queryStr.equals("器材")){
+                for (Product product : products) {
+                    if (product.getType() == 2) {
+                        searchProducts.add(product);
+                    }
+                }
+            }else{
+                // 搜尋原始資料內有無包含關鍵字(不區別大小寫)
+                for (Product product : products) {
+                    if (product.getName().toUpperCase().contains(queryStr.toUpperCase())) {
+                        searchProducts.add(product);
+                    }
                 }
             }
-            //setSpots是在Adapter類別內自定義的一個方法
-            //searchSpots指要放在rv的東西
+            //setProducts是在Adapter類別內自定義的一個方法，用來設定顯示的清單
             productRvAdapter.setProducts(searchProducts);
-//            Log.d(TAG,"query is not empty");
-//            if(searchProducts == null){
-//                Log.d(TAG,"searchProducts is empty");
-//            }
         }
 
         productRvAdapter.notifyDataSetChanged();

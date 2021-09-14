@@ -30,7 +30,6 @@ public class ShoppingFragment extends Fragment {
     private AppCompatActivity activity;
     private Toolbar toolbar;
     private ViewFlipper vfAd;
-    private SearchView searchView;
     int slideshow[] = {R.drawable.shopping_slideshow1, R.drawable.shopping_slideshow2, R.drawable.shopping_slideshow3};
     private ImageButton ibFood, ibEquipment;
 
@@ -69,10 +68,7 @@ public class ShoppingFragment extends Fragment {
     private void handleToolbar() {
         activity.setSupportActionBar(toolbar);
         //ToolBar的標題預設是AndroidManifest檔案中<Application/>標籤下屬性label設定的值
-        toolbar.setTitle("Shopping");
-//        ////todo studying the attri!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-//        activity.getSupportActionBar().setHomeButtonEnabled(false);
+        toolbar.setTitle("購物");
     }
 
     //建立ToolBar的menu選單
@@ -81,7 +77,6 @@ public class ShoppingFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         //載入menu
         inflater.inflate(R.menu.shopping_toolbar_menu, menu);
-
 //        MenuItem searchActionMenuItem = menu.findItem(R.id.menu_toolbar_search);
 //        searchView = (SearchView) searchActionMenuItem.getActionView();
 //        searchView.setIconified(false);
@@ -98,7 +93,6 @@ public class ShoppingFragment extends Fragment {
             navController.navigate(R.id.action_fragmentShopping_to_shoppingCartFragment);
             return true;
         }else if(itemId == R.id.menu_toolbar_search){
-
 //            //通過MenuItem.getActionView()方法獲取SearchView
 //            searchView = (SearchView) item.getActionView();
 //            //item.expandActionView();
@@ -170,7 +164,8 @@ public class ShoppingFragment extends Fragment {
     private void handleIbFood() {
         ibFood.setOnClickListener(v -> {
             Bundle bundle =new Bundle();
-            bundle.putString("searchText","a");
+            //bundle.putString("searchText","a");
+            bundle.putInt("type",1);    //food:1
             NavController navController = Navigation.findNavController(ibFood);
             // 跳至頁面
             navController.navigate(R.id.action_fragmentShopping_to_shoppingListFragment,bundle);
@@ -179,9 +174,9 @@ public class ShoppingFragment extends Fragment {
     //顯示器材類型商品
     private void handleIbEquipment() {
         ibEquipment.setOnClickListener(v -> {
-
             Bundle bundle =new Bundle();
-            bundle.putString("searchText","b");
+            //bundle.putString("searchText","b");
+            bundle.putInt("type",2);    //equipment:2
             NavController navController = Navigation.findNavController(ibEquipment);
             // 跳至頁面
             navController.navigate(R.id.action_fragmentShopping_to_shoppingListFragment,bundle);

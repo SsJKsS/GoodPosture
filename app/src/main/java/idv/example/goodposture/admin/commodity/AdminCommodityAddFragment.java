@@ -137,7 +137,6 @@ public class AdminCommodityAddFragment extends Fragment {
                     "5種力度可組合使用\n" +
                     "堅固的金屬安全釦\n" +
                     "多種健身方法使用\n"+"內容物：收納袋*1、拉力繩*5、魔鬼氈腳環*2、防滑把手*2、安全門扣*1");
-            ivPicture.setImageResource(R.drawable.demo_insert_product);
         });
     }
 
@@ -234,7 +233,7 @@ public class AdminCommodityAddFragment extends Fragment {
                                         "Product upload failed" :
                                         task.getException().getMessage();
                                 Log.e(TAG, "message: " + message);
-                                Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                             }
                             //無論圖檔上傳成功或失敗都要將文字資料新增至資料庫
                             addOrReplace(product);
@@ -308,7 +307,7 @@ public class AdminCommodityAddFragment extends Fragment {
                         String message = "Product is inserted"
                                 + " with ID: " + product.getId();
                         Log.d(TAG, message);
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                         // 商品新增完畢，返回商品列表
                         NavController navController = Navigation.findNavController(toolbar);
                         navController.navigate(R.id.action_adminCommodityAddFragment_to_adminCommodityFragment);
@@ -317,7 +316,7 @@ public class AdminCommodityAddFragment extends Fragment {
                                 "Insert failed" :
                                 task.getException().getMessage();
                         Log.e(TAG, "message: " + message);
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -338,7 +337,7 @@ public class AdminCommodityAddFragment extends Fragment {
                                 getString(R.string.textImageDownloadFail) + ": " + path :
                                 task.getException().getMessage() + ": " + path;
                         Log.e(TAG, message);
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                     }
                 });
 
